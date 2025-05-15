@@ -16,3 +16,14 @@
     --foreground: #ededed;
   }
 } */
+
+.cac-links{
+  @apply text-[#555] mb-[10px]
+}
+
+
+@media screen and (min-width: 768px) {
+  .cac-hero{
+    background: url('./cac/images/World_map_blue_flat_vector___TeaGraphicDesign-removebg-preview.png') #f5f8fa;
+  }
+}
