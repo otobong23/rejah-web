@@ -8,8 +8,9 @@ export default function HomeScreen() {
    return (
       <div className="min-h-screen bg-[var(--color4)] text-[var(--color2)] px-4 pb-24 pt-6 space-y-6">
          {/* Top Card */}
-         {TOP_CARD_LIST.map(({ subTitle, title, titleIcon, description, descriptionIcon, description2, descriptionIcon2, image }, index) => (
-            <div style={{ backgroundImage: `url(${image.src})` }} className={`bg-right bg-no-repeat object-contain rounded-xl p-4 text-sm relative overflow-hidden`} key={index}>
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {TOP_CARD_LIST.map(({ subTitle, title, titleIcon, description, descriptionIcon, description2, descriptionIcon2, image }, index) => (
+            <div style={{ backgroundImage: `url(${image.src})` }} className={`bg-right bg-no-repeat bg-cover rounded-xl p-4 text-sm relative overflow-hidden`} key={index}>
                <h3 className="text-[--color2] text-xs font-medium">{subTitle}</h3>
                <div className="flex items-center">
                   <Icon icon={titleIcon} className="text-4xl" />
@@ -25,6 +26,7 @@ export default function HomeScreen() {
                </div>
             </div>
          ))}
+         </div>
 
          {/* Callouts */}
          <div className="grid grid-cols-2 gap-4 text-[#424545] text-sm font-medium">
