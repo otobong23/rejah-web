@@ -10,12 +10,15 @@
   },
   "dependencies": {
     "@iconify/react": "^6.0.0",
+    "@supabase/supabase-js": "^2.49.8",
     "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
     "motion": "^12.12.1",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sweetalert2": "^11.21.2"
+    "sweetalert2": "^11.21.2",
+    "swiper": "^11.2.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

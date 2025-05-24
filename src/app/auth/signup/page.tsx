@@ -2,7 +2,9 @@
 
 import { showToast } from '@/utils/alert'
 import { validatePhone } from '@/utils/validators'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
+//import supabase from '@/config/supabase.client'
 
 export default function Signup() {
    const [form, setForm] = useState({ phone: '', username: '', password: '', confirm_password: '', recruiter_code: '' })
@@ -81,10 +83,11 @@ export default function Signup() {
 
          <button
             type="submit"
-            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
+            className={`w-full bg-[var(--color7)] text-white text-lg font-bold py-[18px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
          >
             Continue
          </button>
+         <p className='text-center text-sm mt-5 text-[var(--color2)]'>Already have an account <Link className='text-[var(--color7)] hover:opacity-80 transition-all duration-300' href={'/auth/login/'}>Login</Link></p>
       </form>
    )
 }

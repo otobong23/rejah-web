@@ -2,6 +2,7 @@
 
 import { showToast } from '@/utils/alert'
 import { validatePhone } from '@/utils/validators'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 
@@ -74,6 +75,8 @@ const Login = () => {
          >
             Continue
          </button>
+         <p className='text-center text-sm mt-5 text-[var(--color2)]'>Don&apos;t have an account <Link className='text-[var(--color7)] hover:opacity-80 transition-all duration-300' href={'/auth/login/'}>Sign-up</Link></p>
+         <p className='text-center text-sm mt-1 text-[var(--color2)]'><Link className='text-[var(--color7)] hover:opacity-80 transition-all duration-300' href={'/auth/password-recovery/'}>Forgotten Password</Link></p>
       </form>
   )
 }
