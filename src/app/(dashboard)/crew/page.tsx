@@ -1,0 +1,135 @@
+'use client';
+import { Icon } from '@iconify/react/dist/iconify.js';
+import Image from 'next/image';
+import React, { useState } from 'react'
+import team_commission from '@/assets/team-commission.svg'
+
+const TABLEDATA = [
+   ['LVL 1', '5%', '1st person Ref'],
+   ['LVL 2', '2%', '2st person Ref'],
+   ['LVL 3', '1%', '3st person Ref'],
+]
+
+const REFERRAL = [
+   {
+      userId: '6893762',
+      level: '1st',
+      text: 'TreadForge | $80'
+   },{
+      userId: '6893762',
+      level: '1st',
+      text: 'TreadForge | $80'
+   },{
+      userId: '6893762',
+      level: '1st',
+      text: 'TreadForge | $80'
+   },{
+      userId: '6893762',
+      level: '1st',
+      text: 'TreadForge | $80'
+   },{
+      userId: '6893762',
+      level: '1st',
+      text: 'TreadForge | $80'
+   },{
+      userId: '6893762',
+      level: '1st',
+      text: 'TreadForge | $80'
+   },
+]
+const page = () => {
+   const [stack, setStack] = useState(1)
+   return (
+      <div>
+         <div className={`text-(--color2) rounded-[15px] py-[23px] px-[25px] relative bg-white/7 mb-3`}>
+            <div className="text-[10px] font-light mb-3.5 flex items-center gap-1.5">
+               <span>Your Crew, Your Power</span>
+            </div>
+            <div className="flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px] mb-[5px]">
+               <h1 className="text-sm">https://yourplatform.com/ref</h1>
+               <button>
+                  <Icon icon='akar-icons:copy' className='text-[20px]' />
+               </button>
+            </div>
+            <div className="flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px]">
+               <h1 className="text-sm">2GR57DX</h1>
+               <button>
+                  <Icon icon='akar-icons:copy' className='text-[20px]' />
+               </button>
+            </div>
+         </div>
+         <div className='bg-[#003B46] rounded-[20px] py-[22px] px-[25px] mb-3'>
+            <div className='flex justify-center mb-6'>
+               <Image src={team_commission} alt="Team Commission" className='object-cover mt-6' width={192} />
+            </div>
+            <div className='font-semibold text-white'>
+               <div className="thead grid grid-cols-[0.8fr_0.6fr_1.2fr] justify-items-center text-sm">
+                  <div>Level (LVL)</div>
+                  <div>RVG (%)</div>
+                  <div>CCD</div>
+               </div>
+               <div className='border border-white rounded-[10px] overflow-hidden mt-[10px] text-lg'>
+                  {TABLEDATA.map(([item1, item2, item3], index) => (
+                     <div key={index} className='grid grid-cols-[0.8fr_0.6fr_1.2fr]'>
+                        <div className='py-4 border border-white text-center'>{item1}</div>
+                        <div className='py-4 border border-white text-center'>{item2}</div>
+                        <div className='py-4 border border-white text-center'>{item3}</div>
+                     </div>
+                  ))}
+               </div>
+            </div>
+         </div>
+         <div className='flex gap-2 mb-3'>
+            {new Array(3).fill("").map((a, i) => <button onClick={() => setStack(i + 1)} className={`text-center flex-1 py-3.5 rounded-[20px] shadow-[0px_0px_24px_0px_#6B6B6B/25] transition-all duration-300  ${stack === (i + 1) ? 'bg-[#003B46]' : 'bg-[#002732]'}`} key={i + 1}>Level {i + 1}</button>)}
+         </div>
+
+         {/* stack */}
+         <div className='max-h-[500px] overflow-scroll scrollbar-hide flex flex-col gap-3'>
+            {stack === 1 && (<>
+               {REFERRAL.map(({ userId, level, text }, i) => (
+                  <div key={userId + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
+                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
+                        <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
+                     </div>
+                     <div>
+                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userId}</h2>
+                        <p className='text-(--color2)/50 text-xs'>{level}</p>
+                        <p className='text-(--color2)/50 text-xs'>{text}</p>
+                     </div>
+                  </div>
+               ))}
+            </>)}
+            {stack === 2 && (<>
+               {REFERRAL.map(({ userId, level, text }, i) => (
+                  <div key={userId + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
+                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
+                        <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
+                     </div>
+                     <div>
+                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userId}</h2>
+                        <p className='text-(--color2)/50 text-xs'>{level}</p>
+                        <p className='text-(--color2)/50 text-xs'>{text}</p>
+                     </div>
+                  </div>
+               ))}
+            </>)}
+            {stack === 3 && (<>
+               {REFERRAL.map(({ userId, level, text }, i) => (
+                  <div key={userId + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
+                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
+                        <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
+                     </div>
+                     <div>
+                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userId}</h2>
+                        <p className='text-(--color2)/50 text-xs'>{level}</p>
+                        <p className='text-(--color2)/50 text-xs'>{text}</p>
+                     </div>
+                  </div>
+               ))}
+            </>)}
+         </div>
+      </div>
+   )
+}
+
+export default page

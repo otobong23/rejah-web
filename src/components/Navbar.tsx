@@ -13,12 +13,12 @@ const NAVBAR_LIST = [
    {
       title: 'tier',
       icon: 'majesticons:data',
-      path: '/tier-listing',
+      path: '/tier',
    },
    {
       title: 'referrals',
       icon: 'fluent:people-24-filled',
-      path: '/referrals',
+      path: '/crew',
    },
    {
       title: 'vault',
@@ -41,7 +41,7 @@ const Navbar = () => {
    }, [pathname, isActive])
    return (
       <div className='bg-(--color4) text-[#E5EDDA] shadow-[-5px_-5px_15px_5px_#0D2730] rounded-[15px]'>
-         <ul className='flex justify-between items-center gap-4 py-5 px-14'>
+         <ul className='flex items-center justify-between gap-4 py-5 px-14'>
             {NAVBAR_LIST.map(({ icon, path, title }) => (
                <li key={icon}>
                   <Link href={path} className={isActive === title ? 'text-(--color7)' : 'text-(--color2)'} key={icon}>

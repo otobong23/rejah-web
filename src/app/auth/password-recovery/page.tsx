@@ -5,7 +5,7 @@ import { validatePhone } from '@/utils/validators'
 import { useEffect, useState } from 'react'
 
 const Email = () => {
-   const [form, setForm] = useState({ phone: '' })
+   const [form, setForm] = useState({ email: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
 
@@ -15,7 +15,7 @@ const Email = () => {
    }
 
    useEffect(() => {
-      if (form.phone) {
+      if (form.email) {
          setActive(true)
       } else {
          setActive(false)
@@ -25,7 +25,7 @@ const Email = () => {
    const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault()
       const newError: typeof error = {}
-      if (!validatePhone(form.phone)) newError.phone = 'phone number is invalid'
+      if (!validatePhone(form.email)) newError.phone = 'Email number is invalid'
 
       setError(newError)
       if (Object.keys(newError).length === 0) {
@@ -34,19 +34,19 @@ const Email = () => {
       }
    }
   return (
-    <form onSubmit={handleSubmit} className="p-10 w-full max-w-md">
-         <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Your Phone</h1>
+    <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
+         <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Your Email</h1>
          <p className='text-center text-sm mb-10 text-[var(--color2)]'>Reclaim your access. Reclaim<br />your impact</p>
 
-         {['phone'].map((field) => (
+         {['email'].map((field) => (
             <div key={field} className="mb-[30px]">
                <div className='flex gap-3.5'>
-                  {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>}
+                  {/* {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>} */}
                   <input
                      id={field}
                      name={field}
-                     type='phone'
-                     autoComplete={field === 'phone' ? 'phone' : ''}
+                     type='email'
+                     autoComplete={field === 'email' ? 'email' : ''}
                      value={form[field as keyof typeof form]}
                      onChange={handleChange}
                      className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]

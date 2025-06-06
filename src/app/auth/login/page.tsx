@@ -1,13 +1,12 @@
 'use client'
-
 import { showToast } from '@/utils/alert'
-import { validatePhone } from '@/utils/validators'
+import { validateEmail } from '@/utils/validators'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 
 const Login = () => {
-   const [form, setForm] = useState({ phone: '', username: '', password: '' })
+   const [form, setForm] = useState({ email: '', username: '', password: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
 
@@ -17,7 +16,7 @@ const Login = () => {
    }
 
    useEffect(() => {
-      if (form.phone && form.username && form.password) {
+      if (form.email && form.username && form.password) {
          setActive(true)
       } else {
          setActive(false)
@@ -28,7 +27,7 @@ const Login = () => {
       e.preventDefault()
       const newError: typeof error = {}
 
-      if (!validatePhone(form.phone)) newError.phone = 'Phone number is invalid'
+      if (!validateEmail(form.email)) newError.phone = 'Email is invalid'
       if (form.username.length < 3) newError.username = 'Username too short'
       if (form.username.includes(' ')) newError.username = 'Username cannot contain spaces'
       if (form.password.length < 6) newError.password = 'Password too short'
@@ -40,18 +39,18 @@ const Login = () => {
       }
    }
   return (
-    <form onSubmit={handleSubmit} className="p-10 w-full max-w-md">
+    <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
          <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Login</h1>
          <p className='text-center text-sm mb-10 text-[var(--color2)]'>Welcome back user — check in<br />& claim your daily reward.</p>
 
-         {['phone', 'username', 'password'].map((field) => (
+         {['email', 'username', 'password'].map((field) => (
             <div key={field} className="mb-[30px]">
                <div className='flex gap-3.5'>
-                  {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>}
+                  {/* {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>} */}
                   <input
                      id={field}
                      name={field}
-                     type={field === 'password' ? 'password' : 'text'}
+                     type={field === 'password' ? 'password' : field === 'email' ? 'email' : 'text'}
                      value={form[field as keyof typeof form]}
                      onChange={handleChange}
                      className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
@@ -60,7 +59,7 @@ const Login = () => {
                            : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
                         }`}
                      placeholder={field.split('_').join(' ')}
-                     autoComplete={field === 'phone' ? 'tel' : field === 'username' ? 'username' : field === 'password' ? 'new-password' : ''}
+                     autoComplete={field === 'email' ? 'email' : field === 'username' ? 'username' : field === 'password' ? 'new-password' : ''}
                   />
                </div>
                {error[field] && (

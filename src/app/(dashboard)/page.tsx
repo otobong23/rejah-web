@@ -25,7 +25,7 @@ export default function HomeScreen() {
                   <h3 className="text-(--color2) text-[10px] font-light mb-1.5">{subTitle}</h3>
                   <div className="flex items-center gap-1.5">
                      <Icon icon={titleIcon} className="text-4xl" />
-                     <h1 className="text-3xl lg:text-4xl font-bold">{title}</h1>
+                     <h1 className="text-3xl font-bold lg:text-4xl">{title}</h1>
                   </div>
                   <div className="flex items-start gap-[10px] mt-1.5">
                      <div><Icon icon={descriptionIcon} className="text-xl" /></div>
@@ -39,7 +39,7 @@ export default function HomeScreen() {
             ))}
          </Carousel>
 
-         <div className="flex flex-col md:flex-row-reverse gap-4">
+         <div className="flex flex-col gap-4 md:flex-row-reverse">
             {/* Callouts */}
             <div className="md:flex-3 grid grid-cols-2 gap-4 text-[var(--color1)] text-sm font-medium">
                <div className="bg-[var(--color2)] rounded-xl p-3 space-y-1 row-span-2 col-span-2 md:col-span-1 relative">
@@ -64,11 +64,11 @@ export default function HomeScreen() {
                   <div className="absolute top-0 right-0">
                      <Image src={questionMark} alt="recycle" className="w-[58px] h-full object-cover" />
                   </div>
-                  <p className="text-xs -mb-5 z-50">Browse all FAQs.</p>
+                  <p className="z-50 -mb-5 text-xs">Browse all FAQs.</p>
                </div>
                <div className="bg-(--color2) rounded-xl p-3">
                   <h2 className="text-[30px] font-bold leading-[25px] pb-[11px]">Powered by Purpose</h2>
-                  <p className="text-xs mt-1">
+                  <p className="mt-1 text-xs">
                      Trusted by 15,000+ users across 100+ countries. Inspired by plastic-to-utility.
                   </p>
                </div>
@@ -88,7 +88,7 @@ export default function HomeScreen() {
          </div>
 
          {/* Compare Tiers */}
-         <div className="bg-(--color1) rounded-xl p-4 text-[var(--color2)]">
+         <div className="bg-(--color1) rounded-xl p-4 mt-3 text-[var(--color2)]">
             <div className="flex items-center justify-center gap-5 space-x-2">
                <div className="flex items-center gap-2">
                   <Icon icon="fa:recycle" className="text-2xl" />
@@ -96,7 +96,7 @@ export default function HomeScreen() {
                   <Icon icon="material-symbols:factory" className="text-2xl" />
                </div>
                <div>
-                  <p className="font-bold text-lg">Compare Tiers</p>
+                  <p className="text-lg font-bold">Compare Tiers</p>
                   <p className="text-xs">Choose a plan that works best for you</p>
                </div>
             </div>

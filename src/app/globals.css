@@ -28,3 +28,26 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: var(--color2) !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+.text-outline {
+  -webkit-text-stroke: 1px white;
+  text-stroke: 1px white; /* for broader support */
+}
+
+.clickable:focus,
+.clickable:active {
+  cursor: pointer;
+  animation: clickable 1000 linear 0 1 normal both;
+}
+
+@keyframes clickable {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

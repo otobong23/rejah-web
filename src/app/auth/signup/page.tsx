@@ -1,13 +1,12 @@
 'use client'
 
 import { showToast } from '@/utils/alert'
-import { validatePhone } from '@/utils/validators'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-//import supabase from '@/config/supabase.client'
+import { validateEmail } from '@/utils/validators'
 
 export default function Signup() {
-   const [form, setForm] = useState({ phone: '', username: '', password: '', confirm_password: '', recruiter_code: '' })
+   const [form, setForm] = useState({ email: '', username: '', password: '', confirm_password: '', recruiter_code: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
 
@@ -17,7 +16,7 @@ export default function Signup() {
    }
 
    useEffect(() => {
-      if (form.phone && form.username && form.password && form.confirm_password) {
+      if (form.email && form.username && form.password && form.confirm_password) {
          setActive(true)
       } else {
          setActive(false)
@@ -35,7 +34,7 @@ export default function Signup() {
       // if (!form.confirm_password.length) newError.confirm_password = 'Confirm password is required'
 
 
-      if (!validatePhone(form.phone)) newError.phone = 'Phone number is invalid'
+      if (!validateEmail(form.email)) newError.phone = 'Email is invalid'
       if (form.username.length < 3) newError.username = 'Username too short'
       if (form.username.includes(' ')) newError.username = 'Username cannot contain spaces'
       if (form.password.length < 6) newError.password = 'Password too short'
@@ -49,21 +48,21 @@ export default function Signup() {
    }
 
    return (
-      <form onSubmit={handleSubmit} className="p-10 w-full max-w-md">
+      <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
          <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Signup</h1>
          <p className='text-center text-sm mb-10 text-[var(--color2)]'>Welcome to REJA — where<br />impact meets innovation.</p>
 
-         {['phone', 'username', 'password', 'confirm_password', 'recruiter_code'].map((field) => (
+         {['email', 'username', 'password', 'confirm_password', 'recruiter_code'].map((field) => (
             <div key={field} className="mb-[30px]">
                {field === 'confirm_password' && <label htmlFor={field} className="block mb-[10px] text-[var(--color2)] text-sm capitalize">
                   {field.split('_').join(' ')}
                </label>}
                <div className='flex gap-3.5'>
-                  {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>}
+                  {/* {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>} */}
                   <input
                      id={field}
                      name={field}
-                     type={field === 'password' || field === 'confirm_password' ? 'password' : 'text'}
+                     type={field === 'password' || field === 'confirm_password' ? 'password' : field === 'email' ? 'email' : 'text'}
                      value={form[field as keyof typeof form]}
                      onChange={handleChange}
                      className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
@@ -72,7 +71,7 @@ export default function Signup() {
                            : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
                         }`}
                      placeholder={field.split('_').join(' ') + (field === 'recruiter_code' ? ' (optional)' : '')}
-                     autoComplete={field === 'phone' ? 'tel' : field === 'username' ? 'username' : field === 'password' ? 'new-password' : field === 'confirm_password' ? 'new-password' : ''}
+                     autoComplete={field === 'email' ? 'email' : field === 'username' ? 'username' : field === 'password' ? 'new-password' : field === 'confirm_password' ? 'new-password' : ''}
                   />
                </div>
                {error[field] && (
