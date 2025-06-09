@@ -21,7 +21,7 @@ export default function HomeScreen() {
          {/* Top Card */}
          <Carousel>
             {TOP_CARD_LIST.map(({ subTitle, title, titleIcon, description, descriptionIcon, description2, descriptionIcon2, image }, index) => (
-               <SwiperSlide style={{ backgroundImage: `url(${image.src})` }} className={`bg-right bg-no-repeat bg-cover min-h-[166px] rounded-xl p-3 relative overflow-hidden`} key={index}>
+               <SwiperSlide style={{ backgroundImage: `url(${image.src})` }} className={`bg-right bg-no-repeat bg-cover min-h-[166px] lg:min-h-[calc(166px*1.5)] rounded-xl p-3 relative overflow-hidden`} key={index}>
                   <h3 className="text-(--color2) text-[10px] font-light mb-1.5">{subTitle}</h3>
                   <div className="flex items-center gap-1.5">
                      <Icon icon={titleIcon} className="text-4xl" />

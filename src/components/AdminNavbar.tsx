@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 
 const NAVBAR_LIST = [
    {
-      title: 'home',
-      icon: 'majesticons:home',
-      path: '/',
+      title: 'dashboard',
+      icon: 'tdesign:chart-ring-filled',
+      path: '/admin',
    },
    {
       title: 'tier',
@@ -16,18 +16,18 @@ const NAVBAR_LIST = [
       path: '/tier',
    },
    {
-      title: 'referrals',
-      icon: 'fluent:people-24-filled',
-      path: '/crew',
+      title: 'transactions',
+      icon: 'icon-park-solid:transaction-order',
+      path: '/admin/transactions',
    },
    {
-      title: 'vault',
-      icon: 'solar:money-bag-bold',
-      path: '/vault',
+      title: 'admin',
+      icon: 'fluent:person-12-filled',
+      path: '/admin/account',
    },
 ]
 
-const Navbar = () => {
+const AdminNavbar = () => {
    const pathname = usePathname()
    const [isActive, setIsActive] = useState('home')
    useEffect(() => {
@@ -36,7 +36,7 @@ const Navbar = () => {
       if (activeItem) {
          setIsActive(activeItem.title)
       } else {
-         setIsActive('home')
+         setIsActive('dashboard')
       }
    }, [pathname, isActive])
    return (
@@ -56,4 +56,4 @@ const Navbar = () => {
    )
 }
 
-export default Navbar
+export default AdminNavbar

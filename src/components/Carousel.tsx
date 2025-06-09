@@ -17,15 +17,15 @@ const Carousel = ({
             delay: 3000, // 3 seconds
             disableOnInteraction: false,
          }}
-         breakpoints={{
-            768: {
-               slidesPerView: 2,
-            },
-            1024: {
-               slidesPerView: 3,
-               loop: false,
-            },
-         }}
+         // breakpoints={{
+         //    768: {
+         //       slidesPerView: 2,
+         //    },
+         //    1024: {
+         //       slidesPerView: 3,
+         //       loop: false,
+         //    },
+         // }}
          // onSlideChange={() => console.log('slide change')}
          onSwiper={(swiper) => console.log(swiper)}
       >
