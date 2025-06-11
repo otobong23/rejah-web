@@ -10,7 +10,7 @@ const Tier = () => {
    const router = useRouter();
    const [activeTier, setActiveTier] = React.useState('Rebound');
    const handleBuy = (title: string) => {
-      showToast('success',`You have purchased the ${title} tier!`);
+      showToast('success', `You have purchased the ${title} tier!`);
    }
    return (
       <div>
@@ -26,7 +26,7 @@ const Tier = () => {
             <p className="mt-1 text-sm">No matter your level, every pack contributes to purpose-driven transformation.</p>
          </div>
 
-         <div className="flex items-center gap-3 mt-3">
+         <div className="flex items-center gap-3 mt-3 max-w-[570px] mx-auto">
             {BUTTON_LIST.map(({ title, icon, iconColor }, index) => (
                <button onClick={() => setActiveTier(title)} key={index} className={`text-(--color2) rounded-[20px] px-4 py-5 flex-1 flex justify-center items-center gap-5 
                ${activeTier === title ? 'bg-(--color1) drop-shadow-2xl drop-shadow-[#6B6B6B40]/25' : 'bg-[#002732]'} transition-all duration-300
@@ -40,14 +40,16 @@ const Tier = () => {
             ))}
          </div>
 
-         {activeTier === 'Rebound' && <div className={`pt-[15px] pb-7 flex flex-col gap-3 overflow-y-hidden ${activeTier === 'Rebound' ? 'h-fit' : 'h-0'}`}>
-            {REBOUND_TIER_LIST.map((item) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title} />)}
-         </div>}
-         {activeTier === 'Premium' && <div className='pt-[15px] pb-7 flex flex-col gap-3'>
-            {PREMIUM_TIER_LIST.map((item) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title} bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
-         </div>}
-         <div className='text-center bg-(--color1) py-8 px-4 rounded-[20px]'>
-            <p className='text-4xl font-black text-(--color1) text-outline'>Coming Soon!</p>
+         <div className='max-w-[570px] mx-auto'>
+            {activeTier === 'Rebound' && <div className={`pt-[15px] pb-7 flex flex-col gap-3 overflow-y-hidden ${activeTier === 'Rebound' ? 'h-fit' : 'h-0'}`}>
+               {REBOUND_TIER_LIST.map((item) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title} />)}
+            </div>}
+            {activeTier === 'Premium' && <div className='pt-[15px] pb-7 flex flex-col gap-3'>
+               {PREMIUM_TIER_LIST.map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title+i} bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
+            </div>}
+            <div className='text-center bg-(--color1) py-8 px-4 rounded-[20px]'>
+               <p className='text-4xl font-black text-(--color1) text-outline'>Coming Soon!</p>
+            </div>
          </div>
       </div>
    )

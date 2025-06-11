@@ -63,10 +63,10 @@ export const PREMIUM_TIER_LIST = [
       title: 'Vaultan',
       image: vaultan,
       details: {
-         price: '$10',
-         daily_yield: '$0.50',
-         duration: '30 Days',
-         roi: '$15',
+         price: '$300',
+         daily_yield: '$6',
+         duration: '180 Days',
+         roi: '$2,160',
          purchase_limit: '1'
       }
    },
@@ -74,10 +74,10 @@ export const PREMIUM_TIER_LIST = [
       title: 'Titane',
       image: titane,
       details: {
-         price: '$10',
-         daily_yield: '$0.50',
-         duration: '30 Days',
-         roi: '$15',
+         price: '$500',
+         daily_yield: '$8',
+         duration: '180 Days',
+         roi: '$2,160',
          purchase_limit: '1'
       }
    },
@@ -85,10 +85,21 @@ export const PREMIUM_TIER_LIST = [
       title: 'Nova',
       image: nova,
       details: {
-         price: '$10',
-         daily_yield: '$0.50',
-         duration: '30 Days',
-         roi: '$15',
+         price: '$1,000',
+         daily_yield: '$12',
+         duration: '180 Days',
+         roi: '$2,160',
+         purchase_limit: '1'
+      }
+   },
+   {
+      title: 'Nova',
+      image: nova,
+      details: {
+         price: '$5,000',
+         daily_yield: '$12',
+         duration: '180 Days',
+         roi: '$2,160',
          purchase_limit: '1'
       }
    },

@@ -26,7 +26,7 @@ const faq = () => {
       </p>
 
       {/* FAQ List */}
-      <div className="space-y-3">
+      <div className="space-y-3 max-w-[649px] mx-auto">
         {FAQ_LIST.map((faq, index) => (
           <div
             key={index}

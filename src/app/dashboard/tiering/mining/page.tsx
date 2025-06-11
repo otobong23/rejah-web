@@ -17,7 +17,7 @@ const page = () => {
    const [timer, setTimer] = useState('24hrs');
    return (
       <div>
-         <div className={`bg-white/7 text-(--color2) rounded-[15px] py-[23px] px-[25px] relative`}>
+         <div className={`bg-white/7 backdrop-blur-md text-(--color2) rounded-[15px] py-[23px] px-[25px] relative`}>
             <div className="text-[10px] font-light mb-1.5 flex items-center gap-1.5">
                <span>Current Reja plan</span>
             </div>
@@ -44,7 +44,7 @@ const page = () => {
             </div> */}
          </div>
 
-         <div className='flex flex-col items-center justify-center mt-[82px]'>
+         <div className='flex flex-col items-center justify-center mt-[82px] max-w-[647px] mx-auto'>
             <div className='flex flex-col items-center justify-center mb-9'>
                <button className='mb-[38px] clickable transform scale-100' onClick={() => setMiningActivated(!miningActivated)}>
                   <div className={`shadow-[0px_0px_119.05px_0px_#B8FF5E4D] w-[196px] h-[196px] rounded-full flex items-center justify-center relative transition-all duration-300 

@@ -28,7 +28,7 @@ export default function HelpScreen() {
       </p>
 
       {/* Help Steps */}
-      <ol className="space-y-4 text-sm">
+      <ol className="space-y-4 text-sm max-w-[649px] mx-auto">
          {HELP_STEPS.map((step, index) => (
             <li key={index} className="flex items-start space-x-2">
                <span className="font-semibold text-lg">{index + 1}.</span>

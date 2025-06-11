@@ -55,88 +55,90 @@ const page = () => {
          </button>
          <h1 className="text-[40px] font-bold mb-8">Withdraw</h1>
 
-         {stack === 1 && <div>
-            {['USDT_Account', 'Withdrawal_Password', 'Confirm_Withdrawal_Password'].map((field) => (
-               <div key={field} className="mb-3">
-                  <label htmlFor={field} className='text-sm font-light mb-2.5'>{field !== 'Confirm_Withdrawal_Password' && 'Enter'} {field.split('_').join(' ')}</label>
-                  <div className='flex gap-3.5'>
-                     <input
-                        id={field}
-                        name={field}
-                        type={field === 'Withdrawal_Password' || field === 'Confirm_Withdrawal_Password' ? 'password' : 'text'}
-                        value={form[field as keyof typeof form]}
-                        onChange={handleChange}
-                        className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
+         <div className='max-w-[396px] mx-auto'>
+            {stack === 1 && <div>
+               {['USDT_Account', 'Withdrawal_Password', 'Confirm_Withdrawal_Password'].map((field) => (
+                  <div key={field} className="mb-3">
+                     <label htmlFor={field} className='text-sm font-light mb-2.5'>{field !== 'Confirm_Withdrawal_Password' && 'Enter'} {field.split('_').join(' ')}</label>
+                     <div className='flex gap-3.5'>
+                        <input
+                           id={field}
+                           name={field}
+                           type={field === 'Withdrawal_Password' || field === 'Confirm_Withdrawal_Password' ? 'password' : 'text'}
+                           value={form[field as keyof typeof form]}
+                           onChange={handleChange}
+                           className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
                 ${error[field]
-                              ? 'border-[var(--color6)] text-[var(--color6)]'
-                              : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
-                           }`}
-                        placeholder={field.split('_').join(' ')}
-                        autoComplete={field === 'USDT_Account' ? 'number' : field === 'Withdrawal_Password' ? 'current-password' : ''}
+                                 ? 'border-[var(--color6)] text-[var(--color6)]'
+                                 : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
+                              }`}
+                           placeholder={field.split('_').join(' ')}
+                           autoComplete={field === 'USDT_Account' ? 'number' : field === 'Withdrawal_Password' ? 'current-password' : ''}
+                        />
+                     </div>
+                     {error[field] && (
+                        <p className="text-sm mt-1 text-[#D54244]">{error[field]}</p>
+                     )}
+                  </div>
+               ))}
+               <button
+                  type="submit"
+                  onClick={() => setStack(2)}
+                  className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[25px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
+               >
+                  Confirm
+               </button>
+            </div>}
+
+            {stack === 2 && (
+               <div className='flex flex-col mt-6'>
+                  <h3 className='pb-2 text-xs'>Enter Amount</h3>
+                  <div className='flex items-stretch gap-2 pb-3'>
+                     <div className='flex justify-center items-center text-lg py-3.5 px-7 rounded-[15px] border-white border'>USDT</div>
+                     <input type="text"
+                        placeholder='600,000.00'
+                        className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
                      />
                   </div>
-                  {error[field] && (
-                     <p className="text-sm mt-1 text-[#D54244]">{error[field]}</p>
-                  )}
+                  <div>
+                     <input type="text"
+                        placeholder='Account Number'
+                        className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
+                        value={account}
+                        onChange={(e) => setAccount(e.target.value)}
+                     />
+                  </div>
+                  <button
+                     onClick={() => setStack(3)}
+                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${account ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!account}
+                  >
+                     Confirm
+                  </button>
                </div>
-            ))}
-            <button
-               type="submit"
-               onClick={() => setStack(2)}
-               className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[25px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
-            >
-               Confirm
-            </button>
-         </div>}
+            )}
 
-         {stack === 2 && (
-            <div className='flex flex-col mt-6'>
-               <h3 className='pb-2 text-xs'>Enter Amount</h3>
-               <div className='flex items-stretch gap-2 pb-3'>
-                  <div className='flex justify-center items-center text-lg py-3.5 px-7 rounded-[15px] border-white border'>USDT</div>
-                  <input type="text"
-                     placeholder='600,000.00'
-                     className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
-                     value={amount}
-                     onChange={(e) => setAmount(e.target.value)}
-                  />
-               </div>
+            {stack === 3 && (
                <div>
-                  <input type="text"
-                     placeholder='Account Number'
-                     className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
-                     value={account}
-                     onChange={(e) => setAccount(e.target.value)}
-                  />
+                  <h3 className='pb-2 text-xs'>Enter withdrawal password</h3>
+                  <div>
+                     <input type="password"
+                        placeholder='*******'
+                        className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
+                        value={withdrawalPassword}
+                        onChange={(e) => setWithdrawalPassword(e.target.value)}
+                     />
+                  </div>
+                  <button
+                     onClick={() => setStack(3)}
+                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${account ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!account}
+                  >
+                     Confirm
+                  </button>
                </div>
-               <button
-                  onClick={() => setStack(3)}
-                  className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${account ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!account}
-               >
-                  Confirm
-               </button>
-            </div>
-         )}
-
-         {stack === 3 && (
-            <div>
-               <h3 className='pb-2 text-xs'>Enter withdrawal password</h3>
-               <div>
-                  <input type="password"
-                     placeholder='*******'
-                     className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
-                     value={withdrawalPassword}
-                     onChange={(e) => setWithdrawalPassword(e.target.value)}
-                  />
-               </div>
-               <button
-                  onClick={() => setStack(3)}
-                  className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${account ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!account}
-               >
-                  Confirm
-               </button>
-            </div>
-         )}
+            )}
+         </div>
       </div>
    )
 }

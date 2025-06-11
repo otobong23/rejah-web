@@ -18,7 +18,7 @@ const page = () => {
          </button>
          <h1 className="text-[40px] font-bold mb-8">Deposit</h1>
 
-         <div>
+         <div className='max-w-[396px] mx-auto'>
             <h3 className='text-xs pb-2'>Enter Amount</h3>
             <div className='flex gap-2 items-stretch'>
                <div className='flex justify-center items-center text-lg py-3.5 px-7 rounded-[15px] border-white border'>USDT</div>

@@ -25,16 +25,16 @@ export default function HomeScreen() {
                <SwiperSlide style={{ backgroundImage: `url(${image.src})` }} className={`bg-right bg-no-repeat bg-cover min-h-[166px] lg:min-h-[calc(166px*1.5)] rounded-xl p-3 relative overflow-hidden`} key={index}>
                   <h3 className="text-(--color2) text-[10px] font-light mb-1.5">{subTitle}</h3>
                   <div className="flex items-center gap-1.5">
-                     <Icon icon={titleIcon} className="text-4xl" />
-                     <h1 className="text-3xl font-bold lg:text-4xl">{title}</h1>
+                     <Icon icon={titleIcon} className="text-4xl lg:text-6xl" />
+                     <h1 className="text-3xl font-bold lg:text-6xl">{title}</h1>
                   </div>
                   <div className="flex items-start gap-[10px] mt-1.5">
-                     <div><Icon icon={descriptionIcon} className="text-xl" /></div>
-                     <p className="text-sm">{description}</p>
+                     <div><Icon icon={descriptionIcon} className="text-xl lg:text-2xl" /></div>
+                     <p className="text-sm lg:text-2xl">{description}</p>
                   </div>
                   <div className="flex items-start gap-[10px] mt-1.5">
-                     <div><Icon icon={descriptionIcon2} className="text-xl" /></div>
-                     <p className="text-sm">{description2}</p>
+                     <div><Icon icon={descriptionIcon2} className="text-xl lg:text-2xl" /></div>
+                     <p className="text-sm lg:text-2xl">{description2}</p>
                   </div>
                </SwiperSlide>
             ))}

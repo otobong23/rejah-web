@@ -3,6 +3,8 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import Image from 'next/image';
 import React, { useState } from 'react'
 import team_commission from '@/assets/team-commission.svg'
+import copy from 'copy-to-clipboard';
+import { showToast } from '@/utils/alert';
 
 const TABLEDATA = [
    ['LVL 1', '5%', '1st person Ref'],
@@ -15,23 +17,23 @@ const REFERRAL = [
       userId: '6893762',
       level: '1st',
       text: 'TreadForge | $80'
-   },{
+   }, {
       userId: '6893762',
       level: '1st',
       text: 'TreadForge | $80'
-   },{
+   }, {
       userId: '6893762',
       level: '1st',
       text: 'TreadForge | $80'
-   },{
+   }, {
       userId: '6893762',
       level: '1st',
       text: 'TreadForge | $80'
-   },{
+   }, {
       userId: '6893762',
       level: '1st',
       text: 'TreadForge | $80'
-   },{
+   }, {
       userId: '6893762',
       level: '1st',
       text: 'TreadForge | $80'
@@ -39,21 +41,32 @@ const REFERRAL = [
 ]
 const page = () => {
    const [stack, setStack] = useState(1)
+   const [referralLink, setReferralLink] = useState('https://yourplatform.com/ref')
+   const [referralCode, setReferralCode] = useState('2GR57DX')
+   const [copied, setCopied] = useState(false);
+
+   const handleCopy = (value: string) => {
+      copy(value);
+      setCopied(true);
+      showToast('success', "Copied Successfully")
+      setTimeout(() => setCopied(false), 2000);
+   };
+
    return (
       <div>
          <div className={`text-(--color2) rounded-[15px] py-[23px] px-[25px] relative bg-white/7 mb-3`}>
-            <div className="text-[10px] font-light mb-3.5 flex items-center gap-1.5">
+            <div className="text-[10px] md:text-xs font-light mb-3.5 flex items-center gap-1.5">
                <span>Your Crew, Your Power</span>
             </div>
-            <div className="flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px] mb-[5px]">
-               <h1 className="text-sm">https://yourplatform.com/ref</h1>
-               <button>
+            <div className="max-w-[652px] flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px] mb-[5px]">
+               <h1 className="text-sm">{referralLink}</h1>
+               <button className='cursor-pointer' onClick={() => handleCopy(referralLink)}>
                   <Icon icon='akar-icons:copy' className='text-[20px]' />
                </button>
             </div>
-            <div className="flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px]">
-               <h1 className="text-sm">2GR57DX</h1>
-               <button>
+            <div className="max-w-[652px] flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px]">
+               <h1 className="text-sm">{referralCode}</h1>
+               <button className='cursor-pointer' onClick={() => handleCopy(referralLink)}>
                   <Icon icon='akar-icons:copy' className='text-[20px]' />
                </button>
             </div>
@@ -62,7 +75,7 @@ const page = () => {
             <div className='flex justify-center mb-6'>
                <Image src={team_commission} alt="Team Commission" className='object-cover mt-6' width={192} />
             </div>
-            <div className='font-semibold text-white'>
+            <div className='font-semibold text-white max-w-[649px] mx-auto'>
                <div className="thead grid grid-cols-[0.8fr_0.6fr_1.2fr] justify-items-center text-sm">
                   <div>Level (LVL)</div>
                   <div>RVG (%)</div>
@@ -79,12 +92,12 @@ const page = () => {
                </div>
             </div>
          </div>
-         <div className='flex gap-2 mb-3'>
-            {new Array(3).fill("").map((a, i) => <button onClick={() => setStack(i + 1)} className={`text-center flex-1 py-3.5 rounded-[20px] shadow-[0px_0px_24px_0px_#6B6B6B/25] transition-all duration-300  ${stack === (i + 1) ? 'bg-[#003B46]' : 'bg-[#002732]'}`} key={i + 1}>Level {i + 1}</button>)}
+         <div className='flex gap-2 mb-3 lg:justify-center'>
+            {new Array(3).fill("").map((a, i) => <button onClick={() => setStack(i + 1)} className={`text-center flex-1 lg:max-w-[149px] py-3.5 rounded-[20px] shadow-[0px_0px_24px_0px_#6B6B6B/25] transition-all duration-300  ${stack === (i + 1) ? 'bg-[#003B46]' : 'bg-[#002732]'}`} key={i + 1}>Level {i + 1}</button>)}
          </div>
 
          {/* stack */}
-         <div className='max-h-[500px] overflow-scroll scrollbar-hide flex flex-col gap-3'>
+         <div className='max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3'>
             {stack === 1 && (<>
                {REFERRAL.map(({ userId, level, text }, i) => (
                   <div key={userId + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
