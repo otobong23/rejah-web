@@ -63,7 +63,7 @@ const page = () => {
                <button key={a} className='py-2 px-4 min-w-[90px] rounded-[15px] flex items-center justify-center bg-[#002732]'>{a}</button>
             ))}
          </div>
-         <div className='flex flex-col gap-3 overflow-scroll no-scrollbar'>
+         <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>
             {HISTORY.map((item, index) => (
                <div key={item.type + index} className='flex py-2.5 px-5 bg-white/7 gap-3 rounded-[15px] items-center'>
                   <div>

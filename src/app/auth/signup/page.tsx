@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { validateEmail } from '@/utils/validators'
 import api from '@/utils/axios'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { AxiosError } from 'axios'
 import Cookies from "js-cookie";
 
@@ -14,6 +14,13 @@ export default function Signup() {
    const [form, setForm] = useState({ email: '', username: '', password: '', confirm_password: '', recruiter_code: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
+   const searchParams = useSearchParams();
+   const refCode = searchParams.get('ref');
+   useEffect(() => {
+      if(refCode) setForm(prev => ({
+         ...prev, recruiter_code: refCode
+      }));
+   },[])
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setForm({ ...form, [e.target.name]: e.target.value })
@@ -89,6 +96,7 @@ export default function Signup() {
                      type={field === 'password' || field === 'confirm_password' ? 'password' : field === 'email' ? 'email' : 'text'}
                      value={form[field as keyof typeof form]}
                      onChange={handleChange}
+                     disabled={field === 'recruiter_code' && refCode ? true : false}
                      className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
                 ${error[field]
                            ? 'border-[var(--color6)] text-[var(--color6)]'

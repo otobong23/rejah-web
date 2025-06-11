@@ -56,7 +56,7 @@ const page = () => {
                 <span className='absolute bottom-5 right-3'><Icon icon="mingcute:edit-3-line" className='text-[#000914] text-xl' /></span>
               </div>
             </div>
-            <div className='mt-9'>
+            <div className='mt-9 max-w-[396px] mx-auto'>
               {['usdt_account', 'withdrawal_password', 'confirm_withdrawal_password'].map((field) => (
                 <div key={field} className="mb-[30px]">
                   <label htmlFor={field} className='text-lg font-medium text-(--color2) pb-4'>{field !== 'usdt_account' ? field.split('_').join(' ').toLowerCase() : 'USDT '+field.split('_')[1]}</label>

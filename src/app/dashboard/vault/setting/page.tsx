@@ -49,7 +49,7 @@ const page = () => {
             <span className='absolute bottom-5 right-3'><Icon icon="mingcute:edit-3-line" className='text-[#000914] text-xl' /></span>
           </div>
         </div>
-        <div className='mt-9'>
+        <div className='mt-9 max-w-[396px] mx-auto'>
           {['email', 'whatsapp_no', 'facebook', 'telegram'].map((field) => (
             <div key={field} className="mb-[30px]">
               <div className='flex gap-3.5'>
@@ -76,8 +76,8 @@ const page = () => {
           ))}
 
           <div className='my-12 flex flex-col gap-3.5 items-center text-lg font-medium text-(--color2)'>
-            <button className='opacity-100 hover:opacity-50 transition-all duration-300'>Delete Account</button>
-            <button className='opacity-100 hover:opacity-50 transition-all duration-300'>Logout</button>
+            <button className='opacity-100 cursor-pointer hover:opacity-50 transition-all duration-300'>Delete Account</button>
+            <button className='opacity-100 cursor-pointer hover:opacity-50 transition-all duration-300'>Logout</button>
           </div>
 
           <button

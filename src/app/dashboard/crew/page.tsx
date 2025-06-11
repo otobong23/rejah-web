@@ -41,7 +41,7 @@ const REFERRAL = [
 ]
 const page = () => {
    const [stack, setStack] = useState(1)
-   const [referralLink, setReferralLink] = useState('https://yourplatform.com/ref')
+   // const [referralLink, setReferralLink] = useState('https://yourplatform.com/ref')
    const [referralCode, setReferralCode] = useState('2GR57DX')
    const [copied, setCopied] = useState(false);
 
@@ -59,14 +59,14 @@ const page = () => {
                <span>Your Crew, Your Power</span>
             </div>
             <div className="max-w-[652px] flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px] mb-[5px]">
-               <h1 className="text-sm">{referralLink}</h1>
-               <button className='cursor-pointer' onClick={() => handleCopy(referralLink)}>
+               <h1 className="text-sm">{`https://rejah.net/auth/signup?ref=${referralCode}`}</h1>
+               <button className='cursor-pointer' onClick={() => handleCopy(`https://rejah.net/auth/signup?ref=${referralCode}`)}>
                   <Icon icon='akar-icons:copy' className='text-[20px]' />
                </button>
             </div>
             <div className="max-w-[652px] flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px]">
                <h1 className="text-sm">{referralCode}</h1>
-               <button className='cursor-pointer' onClick={() => handleCopy(referralLink)}>
+               <button className='cursor-pointer' onClick={() => handleCopy(referralCode)}>
                   <Icon icon='akar-icons:copy' className='text-[20px]' />
                </button>
             </div>

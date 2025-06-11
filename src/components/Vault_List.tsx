@@ -11,7 +11,7 @@ const Vault_List: FC<Vault_List_Props> = ({
    iconColor='text-(--color1)'
 }) => {
    return (
-      <div className={`text-(--color2) rounded-[15px] p-[3px] shadow-lg ${bg}`}>
+      <div className={`flex-1 text-(--color2) rounded-[15px] p-[3px] shadow-lg ${bg}`}>
          <h2 className="text-lg font-semibold px-[22px] py-[9px]">{title}</h2>
 
          <div className="flex items-center gap-6 px-[15px] py-5 bg-[#121A24] rounded-xl">
