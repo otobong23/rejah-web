@@ -56,12 +56,12 @@ export const HOME_NAV_LIST = [
    {
       title: 'Withdraw',
       icon: 'fa6-solid:sack-dollar',
-      path: '/withdraw',
+      path: '/tiering/withdraw',
    },
    {
       title: 'Deposit',
       icon: 'ion:card',
-      path: '/deposit',
+      path: '/tiering/deposit',
    },
    {
       title: 'Updates',
@@ -91,7 +91,7 @@ export const HOME_NAV_LIST = [
    {
       title: 'Crew',
       icon: 'fluent:people-24-filled',
-      path: '/home',
+      path: '/crew',
    },
 ]
 
