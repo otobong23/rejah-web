@@ -13,7 +13,7 @@ const NAVBAR_LIST = [
    {
       title: 'tier',
       icon: 'majesticons:data',
-      path: '/tier',
+      path: '/tiering/tier',
    },
    {
       title: 'referrals',
@@ -31,8 +31,8 @@ const Navbar = () => {
    const pathname = usePathname()
    const [isActive, setIsActive] = useState('home')
    useEffect(() => {
-      const currentPath = pathname.split('/')[1]
-      const activeItem = NAVBAR_LIST.find(item => item.path === `/${currentPath}`)
+      const currentPath = pathname.split('/')[2]
+      const activeItem = NAVBAR_LIST.find(item => item.path.match(`/${currentPath}`))
       if (activeItem) {
          setIsActive(activeItem.title)
       } else {
@@ -45,7 +45,7 @@ const Navbar = () => {
             <ul className='flex items-center justify-between gap-4 py-5 px-14'>
                {NAVBAR_LIST.map(({ icon, path, title }) => (
                   <li key={icon}>
-                     <Link href={path} className={isActive === title ? 'text-(--color7)' : 'text-(--color2)'} key={icon}>
+                     <Link href={'/dashboard'+path} className={isActive === title ? 'text-(--color7)' : 'text-(--color2)'} key={icon}>
                         <Icon icon={icon} className="text-2xl" />
                      </Link>
                   </li>

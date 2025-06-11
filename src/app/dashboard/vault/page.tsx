@@ -3,6 +3,7 @@ import Vault_List from '@/components/Vault_List';
 import { showToast } from '@/utils/alert';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { Nunito_Sans } from 'next/font/google';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
@@ -54,7 +55,7 @@ const page = () => {
    const [vip, setVip] = useState<'vip1' | 'vip2' | 'vip3'>('vip2')
    const handleClick = (label: string) => {
       if (label === 'Download App') showToast('warning', 'Not Available Yet')
-      else router.push(`/vault/${label}`)
+      else router.push(`/dashboard/vault/${label}`)
    }
    return (
       <div>
@@ -106,9 +107,9 @@ const page = () => {
          </div>
          <div className="flex items-center w-full gap-3 my-3">
             {BUTTON_LIST.map(title => (
-               <button key={title} className={`text-(--color2) bg-[#003B46] rounded-[20px] px-4 py-5 flex-1 flex justify-center items-center gap-5 transition-all duration-300`}>
+               <Link href={`/dashboard/tiering/${title.toLowerCase()}`} key={title} className={`text-(--color2) bg-[#003B46] rounded-[20px] px-4 py-5 flex-1 flex justify-center items-center gap-5 transition-all duration-300`}>
                   {title}
-               </button>
+               </Link>
             ))}
          </div>
       </div>

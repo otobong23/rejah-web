@@ -9,4 +9,17 @@ import axios from 'axios';
  * @export default
  */
 
-export default axios;
+// const baseURL = 'https://rejah-backend.onrender.com'
+const baseURL = 'http://localhost:5000/'
+
+
+// Create an Axios instance
+const api = axios.create({
+  baseURL,
+  timeout: 30000, // Optional: Set a timeout (in ms)
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export default api;

@@ -59,3 +59,36 @@ input:-webkit-autofill:active {
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+
+.rotateMine{
+  animation: rotateCircle 1000 linear 0 1 normal both;
+}
+
+@keyframes rotateCircle {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  /* 50% {
+    transform: scale(1.05);
+  } */
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+.-rotateMine{
+  animation: rotateCircle 1000 linear 0 infinite normal both;
+}
+
+@keyframes -rotateCircle {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  /* 50% {
+    transform: scale(1.05);
+  } */
+  100% {
+    transform: rotateZ(-360deg);
+  }
+}

@@ -1,11 +1,16 @@
 'use client'
 import { showToast } from '@/utils/alert'
+import api from '@/utils/axios'
 import { validateEmail } from '@/utils/validators'
+import { AxiosError } from 'axios'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import Cookies from "js-cookie";
 
 
 const Login = () => {
+   const router = useRouter()
    const [form, setForm] = useState({ email: '', username: '', password: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
@@ -21,9 +26,9 @@ const Login = () => {
       } else {
          setActive(false)
       }
-   },[form])
+   }, [form])
 
-   const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
       const newError: typeof error = {}
 
@@ -34,12 +39,26 @@ const Login = () => {
 
       setError(newError)
       if (Object.keys(newError).length === 0) {
-         // Perform login logic here
-         showToast('success', 'Logged In successfully!')
+         try {
+            const data = await api.post('/auth/login', {
+               email: form.email,
+               password: form.password
+            });
+            Cookies.set('userToken', data.data.access_token, { expires: 7, secure: true, sameSite: 'lax' })
+            showToast('success', 'Logged in successfully!')
+            router.replace('/dashboard')
+         } catch (err) {
+            console.error(err)
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred during signup')
+            }
+         }
       }
    }
-  return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
+   return (
+      <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
          <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Login</h1>
          <p className='text-center text-sm mb-10 text-[var(--color2)]'>Welcome back user — check in<br />& claim your daily reward.</p>
 
@@ -76,8 +95,16 @@ const Login = () => {
          </button>
          <p className='text-center text-sm mt-5 text-[var(--color2)]'>Don&apos;t have an account <Link className='text-[var(--color7)] hover:opacity-80 transition-all duration-300' href={'/auth/login/'}>Sign-up</Link></p>
          <p className='text-center text-sm mt-1 text-[var(--color2)]'><Link className='text-[var(--color7)] hover:opacity-80 transition-all duration-300' href={'/auth/password-recovery/'}>Forgotten Password</Link></p>
+
+
+         {/* Modal */}
+         {/* <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-[15px]">
+            <div className="text-(--color2) bg-[radial-gradient(96.4%_96.4%_at_7.14%_3.6%,_rgba(0, 0, 0, 0.9)_0%,_rgba(40, 63, 11, 0.2)_0.01%,_rgba(15, 15, 34, 0.5)_100%)]/50 backdrop-blur-sm rounded-2xl border-2 shadow-lg w-full max-w-md p-6 relative">
+               
+            </div>
+         </div> */}
       </form>
-  )
+   )
 }
 
 export default Login

@@ -56,37 +56,37 @@ export const HOME_NAV_LIST = [
    {
       title: 'Withdraw',
       icon: 'fa6-solid:sack-dollar',
-      path: '/home',
+      path: '/withdraw',
    },
    {
       title: 'Deposit',
       icon: 'ion:card',
-      path: '/home',
+      path: '/deposit',
    },
    {
       title: 'Updates',
       icon: 'fluent:dual-screen-update-20-filled',
-      path: '/home',
+      path: '/updates',
    },
    {
       title: 'FAQ',
       icon: 'mdi:chat-question',
-      path: '/home',
+      path: '/faq',
    },
    {
-      title: 'About Us',
+      title: 'Help',
       icon: 'ix:about-filled',
-      path: '/home',
+      path: '/help',
    },
    {
       title: 'Videos',
       icon: 'icon-park-solid:video',
-      path: '/home',
+      path: '/videos',
    },
    {
       title: 'Recycler',
       icon: 'material-symbols:factory',
-      path: '/home',
+      path: '/tiering/mining',
    },
    {
       title: 'Crew',

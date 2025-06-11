@@ -9,6 +9,7 @@ import questionMark from '@/assets/Home/question-mark.png'
 import recycle from '@/assets/Home/recycle.png'
 import Image from "next/image"
 import Link from "next/link"
+import { showToast } from "@/utils/alert"
 
 const nunito = Nunito_Sans({
    subsets: ['latin'],
@@ -77,7 +78,12 @@ export default function HomeScreen() {
             {/* Grid Menu */}
             <div className="md:flex-2 grid grid-cols-4 md:grid-cols-3 gap-4 md:grid-3 bg-[#121A24] p-4 rounded-xl text-center text-xs font-semibold text-[#E8E3D3]">
                {HOME_NAV_LIST.map(({title, icon, path}) => (
-                  <Link href={path} key={title} className="flex flex-col items-center space-y-1">
+                  <Link href={'/dashboard'+path} key={title} className="flex flex-col items-center space-y-1" onClick={(e) => {
+                     if(title === 'Updates' || title === 'Videos') {
+                        e.preventDefault()
+                        showToast("info", "Coming soon")
+                     }
+                  }}>
                      <div className="text-2xl">
                         <Icon icon={icon} className="text-[40px]" />
                      </div>

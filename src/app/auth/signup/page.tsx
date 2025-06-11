@@ -4,8 +4,13 @@ import { showToast } from '@/utils/alert'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { validateEmail } from '@/utils/validators'
+import api from '@/utils/axios'
+import { useRouter } from 'next/navigation'
+import { AxiosError } from 'axios'
+import Cookies from "js-cookie";
 
 export default function Signup() {
+   const router = useRouter()
    const [form, setForm] = useState({ email: '', username: '', password: '', confirm_password: '', recruiter_code: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
@@ -23,7 +28,7 @@ export default function Signup() {
       }
    }, [form])
 
-   const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
       const newError: typeof error = {}
 
@@ -43,7 +48,26 @@ export default function Signup() {
       setError(newError)
       if (Object.keys(newError).length === 0) {
          // Perform signup logic here
-         showToast('success','Signed up!')
+         try {
+            const data = await api.post('/auth/signup', {
+               email: form.email,
+               username: form.username,
+               password: form.password,
+               referral_code: form.recruiter_code || undefined
+            });
+            console.log(data);
+            Cookies.set('userToken', data.data.access_token, { expires: 7, secure: true, sameSite: 'lax' })
+            showToast('success', 'Signed up successfully!')
+            router.replace('/dashboard')
+         } catch (err) {
+            console.error(err)
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred during signup')
+            }
+         }
+
       }
    }
 
