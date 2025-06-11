@@ -1,6 +1,9 @@
 'use client'
 import { showToast } from '@/utils/alert'
+import api from '@/utils/axios'
+import { AxiosError } from 'axios'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const a = 'w-[48px] md:w-[69px] h-[60px] md:h-[85px] bg-none text-[var(--color2)] text-center text-lg lg:text-xl rounded-[15px] lg:rounded-[17px]'
@@ -9,6 +12,7 @@ const page = () => {
    const [error, setError] = useState<{ active: boolean, message: string }>({ active: false, message: '' })
    const [active, setActive] = useState(false)
    const [seconds, setSeconds] = useState(3 * 60); // 3 minutes countdown
+   const router = useRouter()
 
 
    const handleChange = (e: any, i: any) => {
@@ -57,22 +61,49 @@ const page = () => {
       }
       return () => clearTimeout(timer);
    }, [seconds]);
-   const handleResend = () => {
+   const handleResend = async () => {
       setSeconds(3 * 60);
       setVCode(new Array(4).fill(""));
+      const email = sessionStorage.getItem('email')
+      if (!email) {
+         showToast('error', 'Failed to resend email')
+         router.replace('/auth/password-recovery/')
+      }
+
+      try {
+         await api.patch('auth/sendVerificationCode', { email })
+         showToast('success', 'Verification Code has been sent')
+      } catch (err) {
+         console.error('Verification error:', err);
+         const message =
+            err instanceof AxiosError
+               ? err.response?.data?.message || 'Unexpected API error'
+               : 'An unexpected error occurred';
+         showToast('error', message);
+      }
    }
 
-   const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
-      
+      const email = sessionStorage.getItem('email')
+      if (!email) {
+         showToast('error', 'Failed to resend email')
+         router.replace('/auth/password-recovery/')
+      }
       const code = VCode.join('')
       try {
+         const data = await api.patch('auth/verify-code', { email, code });
          showToast('success', 'Code verified successfully!')
+         sessionStorage.removeItem("email");
+         sessionStorage.setItem("updatePasswordToken", data.data.token)
+         router.replace('/auth/password-recovery/new-password')
       } catch (err) {
-         const errorObj = err as Error;
-         const newError: typeof error = { active: true, message: errorObj.message }
-         setError(newError)
-         showToast('error', 'Code verification failed!')
+         console.error('Verification error:', err);
+         const message =
+            err instanceof AxiosError
+               ? err.response?.data?.message || 'Unexpected API error'
+               : 'An unexpected error occurred';
+         showToast('error', message);
       }
    }
    return (

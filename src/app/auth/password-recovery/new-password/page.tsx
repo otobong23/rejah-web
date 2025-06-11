@@ -1,9 +1,13 @@
 'use client'
 
 import { showToast } from '@/utils/alert'
+import api from '@/utils/axios'
+import { AxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const New_Password = () => {
+   const router = useRouter()
    const [form, setForm] = useState({ password: '', confirm_password: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
@@ -19,9 +23,9 @@ const New_Password = () => {
       } else {
          setActive(false)
       }
-   },[form])
+   }, [form])
 
-   const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
       const newError: typeof error = {}
       if (form.password.length < 6) newError.password = 'Password too short'
@@ -29,12 +33,29 @@ const New_Password = () => {
 
       setError(newError)
       if (Object.keys(newError).length === 0) {
-         // Perform login logic here
-         showToast('success', 'Logged In successfully!')
+         try {
+            const updatePasswordToken = sessionStorage.getItem('updatePasswordToken')
+            if (!updatePasswordToken) {
+               showToast('error', 'Failed to change password')
+               router.replace('/auth/password-recovery/')
+            }
+            api.defaults.headers.common["Authorization"] = `Bearer ${updatePasswordToken}`;
+            await api.patch('auth/change-password', { newPassword: form.password })
+            showToast('success', 'Password changed successfully')
+            sessionStorage.removeItem('updatePasswordToken')
+            router.replace('/auth/login')
+         } catch (err) {
+            console.error('Change-Password Error:', err);
+            const message =
+               err instanceof AxiosError
+                  ? err.response?.data?.message || 'Unexpected API error'
+                  : 'An unexpected error occurred';
+            showToast('error', message);
+         }
       }
    }
-  return (
-    <form onSubmit={handleSubmit} className="p-10 w-full max-w-md">
+   return (
+      <form onSubmit={handleSubmit} className="p-10 w-full max-w-md">
          <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Login</h1>
          <p className='text-center text-sm mb-10 text-[var(--color2)]'>Reclaim your access. Reclaim<br />your impact</p>
 
@@ -69,7 +90,7 @@ const New_Password = () => {
             Confirm
          </button>
       </form>
-  )
+   )
 }
 
 export default New_Password

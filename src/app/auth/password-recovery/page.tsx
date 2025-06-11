@@ -1,10 +1,14 @@
 'use client'
 
 import { showToast } from '@/utils/alert'
-import { validatePhone } from '@/utils/validators'
+import api from '@/utils/axios'
+import { validateEmail } from '@/utils/validators'
+import { AxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const Email = () => {
+   const router = useRouter()
    const [form, setForm] = useState({ email: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
@@ -20,28 +24,38 @@ const Email = () => {
       } else {
          setActive(false)
       }
-   },[form])
+   }, [form])
 
-   const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
       const newError: typeof error = {}
-      if (!validatePhone(form.email)) newError.phone = 'Email number is invalid'
+      if (!validateEmail(form.email)) newError.email = 'Email Address is invalid'
 
       setError(newError)
       if (Object.keys(newError).length === 0) {
-         // Perform login logic here
-         showToast('success', 'Phone number is valid')
+         try {
+            await api.patch('auth/sendVerificationCode', { email: form.email })
+            showToast('success', 'Verification Code has been sent')
+            sessionStorage.setItem('email', form.email)
+            router.replace('/auth/password-recovery/reset')
+         } catch (err) {
+            console.error('Verification error:', err);
+            const message =
+               err instanceof AxiosError
+                  ? err.response?.data?.message || 'Unexpected API error'
+                  : 'An unexpected error occurred';
+            showToast('error', message);
+         }
       }
    }
-  return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
+   return (
+      <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
          <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Your Email</h1>
          <p className='text-center text-sm mb-10 text-[var(--color2)]'>Reclaim your access. Reclaim<br />your impact</p>
 
          {['email'].map((field) => (
             <div key={field} className="mb-[30px]">
                <div className='flex gap-3.5'>
-                  {/* {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>} */}
                   <input
                      id={field}
                      name={field}
@@ -70,7 +84,7 @@ const Email = () => {
             Continue
          </button>
       </form>
-  )
+   )
 }
 
 export default Email

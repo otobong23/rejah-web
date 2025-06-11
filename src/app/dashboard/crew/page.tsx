@@ -1,10 +1,11 @@
 'use client';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import team_commission from '@/assets/team-commission.svg'
 import copy from 'copy-to-clipboard';
 import { showToast } from '@/utils/alert';
+import { useUserContext } from '@/store/userContext';
 
 const TABLEDATA = [
    ['LVL 1', '5%', '1st person Ref'],
@@ -41,9 +42,13 @@ const REFERRAL = [
 ]
 const page = () => {
    const [stack, setStack] = useState(1)
-   // const [referralLink, setReferralLink] = useState('https://yourplatform.com/ref')
    const [referralCode, setReferralCode] = useState('2GR57DX')
    const [copied, setCopied] = useState(false);
+   const userContext = useUserContext()
+
+   useEffect(() => {
+      setReferralCode(userContext.referral_code)
+   })
 
    const handleCopy = (value: string) => {
       copy(value);
@@ -54,7 +59,8 @@ const page = () => {
 
    return (
       <div>
-         <div className={`text-(--color2) rounded-[15px] py-[23px] px-[25px] relative bg-white/7 mb-3`}>
+         <div className={`text-(--color2) rounded-[15px] py-[23px] h-fit px-[25px] relative bg-white/7 mb-3`}>
+            {/* <ParticlesBackground /> */}
             <div className="text-[10px] md:text-xs font-light mb-3.5 flex items-center gap-1.5">
                <span>Your Crew, Your Power</span>
             </div>
