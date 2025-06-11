@@ -3,7 +3,8 @@ import { createContext, useContext, ReactNode } from 'react';
 type userContextType = {
    username: string;
    email: string;
-   profilePicture?: string
+   profilePicture?: string;
+   referral_code: string;
 }
 
 const userContext = createContext<userContextType | null>(null);

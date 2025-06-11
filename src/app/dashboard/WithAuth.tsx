@@ -11,6 +11,7 @@ const WithAuth = ({ children }: { children: React.ReactNode }) => {
     username: string;
     email: string;
     profilePicture?: string;
+    referral_code: string;
   } | null>(null);
 
   const router = useRouter();
@@ -27,9 +28,9 @@ const WithAuth = ({ children }: { children: React.ReactNode }) => {
       try {
         api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
         const response = await api.get("/profile/");
-        const { username, email, profilePicture } = response.data;
+        const { username, email, profilePicture, referral_code } = response.data;
 
-        setUser({ username, email, profilePicture });
+        setUser({ username, email, profilePicture, referral_code });
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -50,6 +51,7 @@ const WithAuth = ({ children }: { children: React.ReactNode }) => {
         username: user.username,
         email: user.email,
         profilePicture: user.profilePicture,
+        referral_code: user.referral_code
       }}
     >
       {children}

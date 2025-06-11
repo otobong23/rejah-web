@@ -2,7 +2,7 @@
 
 import { showToast } from '@/utils/alert'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { validateEmail } from '@/utils/validators'
 import api from '@/utils/axios'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -17,10 +17,10 @@ export default function Signup() {
    const searchParams = useSearchParams();
    const refCode = searchParams.get('ref');
    useEffect(() => {
-      if(refCode) setForm(prev => ({
+      if (refCode) setForm(prev => ({
          ...prev, recruiter_code: refCode
       }));
-   },[])
+   }, [])
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setForm({ ...form, [e.target.name]: e.target.value })
@@ -79,46 +79,48 @@ export default function Signup() {
    }
 
    return (
-      <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
-         <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Signup</h1>
-         <p className='text-center text-sm mb-10 text-[var(--color2)]'>Welcome to REJA — where<br />impact meets innovation.</p>
+      <Suspense fallback={<div>Loading signup form...</div>}>
+         <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
+            <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Signup</h1>
+            <p className='text-center text-sm mb-10 text-[var(--color2)]'>Welcome to REJA — where<br />impact meets innovation.</p>
 
-         {['email', 'username', 'password', 'confirm_password', 'recruiter_code'].map((field) => (
-            <div key={field} className="mb-[30px]">
-               {field === 'confirm_password' && <label htmlFor={field} className="block mb-[10px] text-[var(--color2)] text-sm capitalize">
-                  {field.split('_').join(' ')}
-               </label>}
-               <div className='flex gap-3.5'>
-                  {/* {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>} */}
-                  <input
-                     id={field}
-                     name={field}
-                     type={field === 'password' || field === 'confirm_password' ? 'password' : field === 'email' ? 'email' : 'text'}
-                     value={form[field as keyof typeof form]}
-                     onChange={handleChange}
-                     disabled={field === 'recruiter_code' && refCode ? true : false}
-                     className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
+            {['email', 'username', 'password', 'confirm_password', 'recruiter_code'].map((field) => (
+               <div key={field} className="mb-[30px]">
+                  {field === 'confirm_password' && <label htmlFor={field} className="block mb-[10px] text-[var(--color2)] text-sm capitalize">
+                     {field.split('_').join(' ')}
+                  </label>}
+                  <div className='flex gap-3.5'>
+                     {/* {field === 'phone' && <div className='px-3 py-[18px] rounded-[15px] border-2 border-[#424545] text-lg text-[var(--color2)]'>+234</div>} */}
+                     <input
+                        id={field}
+                        name={field}
+                        type={field === 'password' || field === 'confirm_password' ? 'password' : field === 'email' ? 'email' : 'text'}
+                        value={form[field as keyof typeof form]}
+                        onChange={handleChange}
+                        disabled={field === 'recruiter_code' && refCode ? true : false}
+                        className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
                 ${error[field]
-                           ? 'border-[var(--color6)] text-[var(--color6)]'
-                           : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
-                        }`}
-                     placeholder={field.split('_').join(' ') + (field === 'recruiter_code' ? ' (optional)' : '')}
-                     autoComplete={field === 'email' ? 'email' : field === 'username' ? 'username' : field === 'password' ? 'new-password' : field === 'confirm_password' ? 'new-password' : ''}
-                  />
+                              ? 'border-[var(--color6)] text-[var(--color6)]'
+                              : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
+                           }`}
+                        placeholder={field.split('_').join(' ') + (field === 'recruiter_code' ? ' (optional)' : '')}
+                        autoComplete={field === 'email' ? 'email' : field === 'username' ? 'username' : field === 'password' ? 'new-password' : field === 'confirm_password' ? 'new-password' : ''}
+                     />
+                  </div>
+                  {error[field] && (
+                     <p className="text-sm mt-1 text-[#D54244]">{error[field]}</p>
+                  )}
                </div>
-               {error[field] && (
-                  <p className="text-sm mt-1 text-[#D54244]">{error[field]}</p>
-               )}
-            </div>
-         ))}
+            ))}
 
-         <button
-            type="submit"
-            className={`w-full bg-[var(--color7)] text-white text-lg font-bold py-[18px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
-         >
-            Continue
-         </button>
-         <p className='text-center text-sm mt-5 text-[var(--color2)]'>Already have an account <Link className='text-[var(--color7)] hover:opacity-80 transition-all duration-300' href={'/auth/login/'}>Login</Link></p>
-      </form>
+            <button
+               type="submit"
+               className={`w-full bg-[var(--color7)] text-white text-lg font-bold py-[18px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
+            >
+               Continue
+            </button>
+            <p className='text-center text-sm mt-5 text-[var(--color2)]'>Already have an account <Link className='text-[var(--color7)] hover:opacity-80 transition-all duration-300' href={'/auth/login/'}>Login</Link></p>
+         </form>
+      </Suspense>
    )
 }
