@@ -60,7 +60,7 @@ export const HOME_NAV_LIST = [
    },
    {
       title: 'Deposit',
-      icon: 'ion:card',
+      icon: 'ph:hand-deposit-fill',
       path: '/tiering/deposit',
    },
    {
@@ -79,9 +79,9 @@ export const HOME_NAV_LIST = [
       path: '/help',
    },
    {
-      title: 'Videos',
-      icon: 'icon-park-solid:video',
-      path: '/videos',
+      title: 'My ECP',
+      icon: 'fa:recycle',
+      path: '/tiering/my-ecp',
    },
    {
       title: 'Recycler',

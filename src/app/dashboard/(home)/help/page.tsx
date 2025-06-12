@@ -1,6 +1,7 @@
 'use client';
 import { Icon } from "@iconify/react/dist/iconify.js";
 import whatsappSVG from "@/assets/whatsapp.svg";
+import telegramSVG from "@/assets/telegram.svg"
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -11,7 +12,7 @@ import { HELP_STEPS } from "@/constant/Home";
 export default function HelpScreen() {
    const router = useRouter()
   return (
-    <div className="text-(--color2) pb-20">
+    <div className="text-(--color2) pb-32 relative">
       {/* Header */}
       <button onClick={() => router.back()} className="flex items-center space-x-2 mb-4 cursor-pointer hover:opacity-80 transition-all duration-300">
         <Icon icon='fluent:ios-arrow-24-regular' className="" />
@@ -37,11 +38,18 @@ export default function HelpScreen() {
          ))}
       </ol>
 
-      {/* WhatsApp Icon (bottom-right) */}
-      <Link href='/' className="fixed bottom-24 right-4">
+      {/* social media Icon (bottom-right) */}
+      <Link href='https://wa.me/447447247209' target="_blank" className="fixed bottom-40 right-4">
         <Image
           src={whatsappSVG}
           alt="WhatsApp"
+          className="w-24 h-full object-cover rounded-full shadow-lg"
+        />
+      </Link>
+      <Link href='https://t.me/+kWTXS1QL1qlkZTQ0' target="_blank" className="fixed bottom-20 right-4">
+        <Image
+          src={telegramSVG}
+          alt="telegram"
           className="w-24 h-full object-cover rounded-full shadow-lg"
         />
       </Link>

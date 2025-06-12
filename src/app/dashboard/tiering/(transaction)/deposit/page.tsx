@@ -1,73 +1,157 @@
-'use client';
-import { Icon } from '@iconify/react/dist/iconify.js';
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+"use client";
 
-const NUMBER_LIST = [10, 30, 80, 120, 300, 500, 1000]
+import QRCodeGenerator from "@/components/QRCodeGenerator";
+import { showToast } from "@/utils/alert";
+import { Icon } from "@iconify/react";
+import copy from "copy-to-clipboard";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import cryptoLogo from "@/assets/cryptoLogo.svg";
 
-const page = () => {
-   const router = useRouter()
-   const [amount, setAmount] = useState('');
-   const [account, setAccount] = useState('');
-   const [stack, setStack] = useState(1);
-   return (
-      <div className='text-(--color2)'>
-         {/* Header */}
-         <button onClick={() => stack > 1 ? setStack(1) : router.back()} className="flex items-center space-x-2 mb-2 cursor-pointer hover:opacity-80 transition-all duration-300">
-            <Icon icon='fluent:ios-arrow-24-regular' className="" />
-         </button>
-         <h1 className="text-[40px] font-bold mb-8">Deposit</h1>
+const NUMBER_LIST = [10, 30, 80, 120, 300, 500, 1000];
 
-         <div className='max-w-[396px] mx-auto'>
-            <h3 className='text-xs pb-2'>Enter Amount</h3>
-            <div className='flex gap-2 items-stretch'>
-               <div className='flex justify-center items-center text-lg py-3.5 px-7 rounded-[15px] border-white border'>USDT</div>
-               <input type="text"
-                  placeholder='600,000.00'
-                  className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-               />
-            </div>
-            {stack === 1 && (
-               <div className='mt-6'>
-                  <div className='flex gap-3 flex-wrap'>
-                     {NUMBER_LIST.map((number, index) => (
-                        <button onClick={() => setAmount(String(number))} key={index} className='flex justify-center items-center w-[70px] text-(--color2) text-sm px-2 py-[7px] border-white border rounded-[15px] transition-all duration-300'>
-                           {number}
-                        </button>
-                     ))}
-                  </div>
+const DepositPage = () => {
+  const router = useRouter();
+  const [amount, setAmount] = useState("");
+  const [address] = useState("48394u83uc483jjds884334");
+  const [step, setStep] = useState(1);
+  const [subStep, setSubStep] = useState(1);
+  const [copied, setCopied] = useState(false);
 
-                  <button
-                     onClick={() => setStack(2)}
-                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${amount ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!amount}
-                  >
-                     Confirm
-                  </button>
-               </div>
-            )}
+  const handleCopy = (value: string) => {
+    copy(value);
+    setCopied(true);
+    showToast("success", "Copied Successfully");
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-            {stack === 2 && (
-               <div className='flex flex-col mt-6'>
-                  <div>
-                     <input type="text"
-                        placeholder='Account Number'
-                        className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
-                        value={account}
-                        onChange={(e) => setAccount(e.target.value)}
-                     />
-                  </div>
-                  <button
-                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${account ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!account}
-                  >
-                     Confirm
-                  </button>
-               </div>
-            )}
-         </div>
+  const handleProceed = () => {
+    sessionStorage.setItem("depositAmount", amount);
+    router.push("/dashboard/tiering/deposit/upload-reciept");
+  };
+
+  const renderAmountInput = () => (
+    <>
+      <h3 className="text-xs pb-2">Enter Amount</h3>
+      <div className="flex gap-2 items-stretch">
+        <div className="flex justify-center items-center text-lg py-3.5 px-7 rounded-[15px] border-white border">USDT</div>
+        <input
+          type="text"
+          placeholder="600,000.00"
+          className="py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
       </div>
-   )
-}
+      <div className="mt-6">
+        <div className="flex gap-3 flex-wrap">
+          {NUMBER_LIST.map((number, idx) => (
+            <button
+              key={idx}
+              onClick={() => setAmount(String(number))}
+              className="w-[70px] text-sm px-2 py-[7px] border-white border rounded-[15px] transition-all duration-300"
+            >
+              {number}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={() => setStep(2)}
+          disabled={!amount}
+          className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${
+            amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+          }`}
+        >
+          Confirm
+        </button>
+      </div>
+    </>
+  );
 
-export default page
+  const renderWalletDetails = () => (
+    <>
+      <div className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-[#002732] text-sm text-[#A8A79E] mb-[30px]">
+        <p>Amount to Deposit</p>
+        <h1 className="text-2xl text-(--color2) font-semibold">{Number(amount).toLocaleString()} USDT</h1>
+        <p>Transfer exact amount of plans</p>
+      </div>
+      <div className="p-4 bg-white rounded-[15px] w-fit mx-auto mb-[30px]">
+        <QRCodeGenerator address={address} />
+      </div>
+
+      {subStep === 1 ? (
+        <>
+          <div className="text-[#A8A79E] text-xs mb-14">
+            <p>Wallet Address</p>
+            <div className="flex justify-between">
+              <h2 className="text-[22px] font-semibold">{address}</h2>
+              <button onClick={() => handleCopy(address)}>
+                <Icon icon="akar-icons:copy" className="text-[25px] text-(--color2)" />
+              </button>
+            </div>
+            <div className="flex justify-between mt-[30px]">
+              <p className="font-semibold">Coin</p>
+              <div className="flex items-center gap-3">
+                <Image src={cryptoLogo} width={26} alt="crypto logo" />
+                <p className="text-[#2E3033]">USDT/TRC20</p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setSubStep(2)}
+            disabled={!amount}
+            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${
+              amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+            }`}
+          >
+            Confirm
+          </button>
+        </>
+      ) : (
+        <>
+          <div className="text-(--color2) text-sm mb-[50px]">
+            <h1 className="text-center text-[40px] font-bold mb-2.5">Confirm</h1>
+            <p className="text-center">You've Deposited to wallet address.</p>
+            <ul className="list-disc px-3">
+              <li className="flex justify-between">
+                <span>Amount:</span><span>${amount}</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Initial Balance:</span><span>$0.50</span>
+              </li>
+            </ul>
+          </div>
+
+          <button
+            onClick={handleProceed}
+            disabled={!amount}
+            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${
+              amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+            }`}
+          >
+            I have Deposited
+          </button>
+        </>
+      )}
+    </>
+  );
+
+  return (
+    <div className="text-(--color2)">
+      <button
+        onClick={() => (step > 1 ? setStep(1) : router.back())}
+        className="flex items-center space-x-2 mb-2 cursor-pointer hover:opacity-80 transition-all duration-300"
+      >
+        <Icon icon="fluent:ios-arrow-24-regular" />
+      </button>
+      <h1 className="text-[40px] font-bold mb-8">Deposit</h1>
+      <div className="max-w-[396px] mx-auto">
+        {step === 1 ? renderAmountInput() : renderWalletDetails()}
+      </div>
+    </div>
+  );
+};
+
+export default DepositPage;

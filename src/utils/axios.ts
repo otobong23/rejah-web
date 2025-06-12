@@ -12,7 +12,6 @@ import axios from 'axios';
 const baseURL = 'https://rejah-backend.onrender.com'
 // const baseURL = 'http://localhost:5000/'
 
-
 // Create an Axios instance
 const api = axios.create({
   baseURL,

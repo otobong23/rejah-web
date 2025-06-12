@@ -30,11 +30,11 @@ const Tier_List: FC<Tier_List_Props> = ({
                      ))}
                   </tbody>
                </table>
-               <div onClick={() => handleBUY(title)} className='flex justify-end mt-1.5'>
+               {handleBUY && <div onClick={() => handleBUY(details)} className='flex justify-end mt-1.5'>
                   <button className={`text-sm py-1.5 px-10 rounded-[10px] transition-all duration-300 hover:scale-90 ${btn_bg}`}>
                      Buy
                   </button>
-               </div>
+               </div>}
             </div>
          </div>
       </div>

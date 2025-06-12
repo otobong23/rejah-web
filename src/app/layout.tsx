@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Waker from "@/components/Waker";
+import { LoaderProvider } from "@/store/LoaderContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,7 +25,7 @@ export default function RootLayout({
         className={`${inter.variable} antialiased`}
       >
         <Waker>
-          {children}
+          <LoaderProvider>{children}</LoaderProvider>
         </Waker>
       </body>
     </html>

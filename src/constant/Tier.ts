@@ -13,6 +13,7 @@ export const BUTTON_LIST = [
 
 export const REBOUND_TIER_LIST = [
    {
+      type: 'rebound_tier',
       title: 'PolyCycle',
       image: poly,
       details: {
@@ -24,6 +25,7 @@ export const REBOUND_TIER_LIST = [
       }
    },
    {
+      type: 'rebound_tier',
       title: 'FlexForm',
       image: flexForm,
       details: {
@@ -35,6 +37,7 @@ export const REBOUND_TIER_LIST = [
       }
    },
    {
+      type: 'rebound_tier',
       title: 'CoreMelt',
       image: flexForm,
       details: {
@@ -46,6 +49,7 @@ export const REBOUND_TIER_LIST = [
       }
    },
    {
+      type: 'rebound_tier',
       title: 'RubberRise',
       image: rubberRise,
       details: {
@@ -60,6 +64,7 @@ export const REBOUND_TIER_LIST = [
 
 export const PREMIUM_TIER_LIST = [
    {
+      type: 'premium_tier',
       title: 'Vaultan',
       image: vaultan,
       details: {
@@ -71,6 +76,7 @@ export const PREMIUM_TIER_LIST = [
       }
    },
    {
+      type: 'premium_tier',
       title: 'Titane',
       image: titane,
       details: {
@@ -82,6 +88,7 @@ export const PREMIUM_TIER_LIST = [
       }
    },
    {
+      type: 'premium_tier',
       title: 'Nova',
       image: nova,
       details: {
@@ -93,6 +100,7 @@ export const PREMIUM_TIER_LIST = [
       }
    },
    {
+      type: 'premium_tier',
       title: 'Nova',
       image: nova,
       details: {
