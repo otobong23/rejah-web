@@ -46,7 +46,7 @@ const Tier = () => {
          }, 1000);
       } else {
          setProcessingModal(false)
-         showToast('success', 'Your pack has been successfully activated. Daily yields will now begin.')
+         // showToast('success', 'Your pack has been successfully activated. Daily yields will now begin.')
       }
       return () => clearTimeout(timer);
    }, [seconds]);
