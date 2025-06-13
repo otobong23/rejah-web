@@ -9,7 +9,7 @@ import nova from '@/assets/Tier/Nova.png'
 export const BUTTON_LIST = [
    { title: 'Rebound', icon: 'icon-park-twotone:five-star-badge', iconColor: '#10B981' },
    { title: 'Premium', icon: 'icon-park-solid:five-star-badge', iconColor: '#F59E0B' },
-]
+] 
 
 export const REBOUND_TIER_LIST = [
    {

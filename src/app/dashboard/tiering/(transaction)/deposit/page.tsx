@@ -8,13 +8,14 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import cryptoLogo from "@/assets/cryptoLogo.svg";
+import { useUserContext } from "@/store/userContext";
 
 const NUMBER_LIST = [10, 30, 80, 120, 300, 500, 1000];
 
 const DepositPage = () => {
+  const { user } = useUserContext()
   const router = useRouter();
   const [amount, setAmount] = useState("");
-  const [address] = useState("48394u83uc483jjds884334");
   const [step, setStep] = useState(1);
   const [subStep, setSubStep] = useState(1);
   const [copied, setCopied] = useState(false);
@@ -77,7 +78,7 @@ const DepositPage = () => {
         <p>Transfer exact amount of plans</p>
       </div>
       <div className="p-4 bg-white rounded-[15px] w-fit mx-auto mb-[30px]">
-        <QRCodeGenerator address={address} />
+        <QRCodeGenerator address={user.depositAddress} />
       </div>
 
       {subStep === 1 ? (
@@ -85,8 +86,8 @@ const DepositPage = () => {
           <div className="text-[#A8A79E] text-xs mb-14">
             <p>Wallet Address</p>
             <div className="flex justify-between">
-              <h2 className="text-[22px] font-semibold">{address}</h2>
-              <button onClick={() => handleCopy(address)}>
+              <h2 className="text-[22px] font-semibold whitespace-nowrap overflow-hidden overflow-ellipsis">{user.depositAddress}</h2>
+              <button onClick={() => handleCopy(user.depositAddress)}>
                 <Icon icon="akar-icons:copy" className="text-[25px] text-(--color2)" />
               </button>
             </div>

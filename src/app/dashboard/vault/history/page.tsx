@@ -52,6 +52,7 @@ const HISTORY = [
 const page = () => {
    const router = useRouter()
    const [stack, setStack] = useState(1);
+   
    return (
       <div className={`${nunitoSans.className}`}>
          <button onClick={() => stack > 1 ? setStack(prev => prev - 1) : router.back()} className="flex items-center mb-2 space-x-2 transition-all duration-300 cursor-pointer hover:opacity-80">

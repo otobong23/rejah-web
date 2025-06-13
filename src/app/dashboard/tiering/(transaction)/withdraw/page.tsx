@@ -1,10 +1,12 @@
 'use client';
+import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
+   const { user } = useUserContext()
    const router = useRouter()
    const [stack, setStack] = useState(1);
    const [amount, setAmount] = useState('');

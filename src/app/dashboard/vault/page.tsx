@@ -1,5 +1,7 @@
 'use client';
 import Vault_List from '@/components/Vault_List';
+import { PREMIUM_TIER_LIST, REBOUND_TIER_LIST } from '@/constant/Tier';
+import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { Nunito_Sans } from 'next/font/google';
@@ -22,26 +24,7 @@ const actions = [
    { icon: 'flowbite:download-solid', label: 'Download App' },
    { icon: 'material-symbols:shield', label: 'security' }
 ];
-const TOTAL_ASSET = {
-   title: 'Total Assets',
-   icon: 'tabler:chart-pie-filled',
-   details: {
-      total_invested: '$10',
-      total_yield_earned: '$15',
-      total_withdrawn: '$9',
-      CRV: '$20',
-   }
-}
-const TEAM_SUMMARY = {
-   title: 'Team Summary',
-   icon: 'tabler:chart-pie-filled',
-   details: {
-      total_investment: '$10',
-      yield_granted: '$15',
-      total_withdrawn: '$9',
-      active_members: '64',
-   }
-}
+
 
 const VIP = ({ iconColor = 'text-white', bg = 'bg-[#B8FF5E]', number = 1 }) => (
    <div className={`flex items-center gap-1 px-[10px] py-1 rounded-[20px] ${bg}`}>
@@ -51,8 +34,47 @@ const VIP = ({ iconColor = 'text-white', bg = 'bg-[#B8FF5E]', number = 1 }) => (
    </div>
 )
 const page = () => {
+   const { user } = useUserContext()
    const router = useRouter()
-   const [vip, setVip] = useState<'vip1' | 'vip2' | 'vip3'>('vip2')
+
+   const handlePlans = (param: UserType) => {
+      const plans = param.currentPlan || []; // Default to empty array if undefined
+      const Rebound: TIER_LIST_TYPE[] = REBOUND_TIER_LIST.filter(a =>
+         plans.includes(a.title)
+      );
+      const Premium: TIER_LIST_TYPE[] = PREMIUM_TIER_LIST.filter(a =>
+         plans.includes(a.title)
+      );
+      return [...Rebound, ...Premium];
+   }
+
+   const handleCRV = (plans: TIER_LIST_TYPE[]) => {
+      let CRV: number = 0
+      plans.forEach(a => {
+         const daily_yield = Number(a.details.daily_yield.split('$')[1])
+         const duration = Number(a.details.duration.split(' ')[0])
+         CRV += duration * daily_yield
+      })
+      return CRV
+   }
+
+   const CRV = () => {
+      const plans = handlePlans(user)
+      const crv = handleCRV(plans)
+      return crv
+   }
+
+   const TOTAL_ASSET = {
+      title: 'Total Assets',
+      icon: 'tabler:chart-pie-filled',
+      details: {
+         total_invested: '$' + user.totalDeposit,
+         total_yield_earned: '$' + user.totalYield,
+         total_withdrawn: '$' + user.totalWithdraw,
+         CRV: '$' + CRV(),
+      }
+   }
+
    const handleClick = (label: string) => {
       if (label === 'Download App') showToast('warning', 'Not Available Yet')
       else router.push(`/dashboard/vault/${label}`)
@@ -61,21 +83,24 @@ const page = () => {
       <div>
          <div className='py-[34px] lg:py-[52px] px-[15px] lg:px-[73px] rounded-[15px] lg:rounded-[23px] bg-(--color1) flex items-center gap-3'>
             <div>
-               <div className='w-[90px] lg:w-[151px] h-[90px] lg:h-[151px] relative rounded-full bg-[#EFEFEF] flex items-center justify-center'>
-                  <Icon icon='solar:user-bold' className='text-5xl text-[#808080]' />
+               <div className='w-[90px] lg:w-[151px] h-[90px] overflow-hidden lg:h-[151px] relative rounded-full bg-[#EFEFEF] flex items-center justify-center'>
+                  {user.profileImage
+                     ? <img src={user.profileImage} alt="Profile preview" className='w-full object-cover' />
+                     : <Icon icon="solar:user-bold" className='text-[#808080]' width={48} />}
                </div>
             </div>
             <div className={`${nunitoSans.className} w-full text-(--color2)`}>
                <div className={`flex justify-between`}>
-                  <h1 className='text-xl lg:text-4xl font-semibold'>User_694882</h1>
+                  <h1 className='text-xl lg:text-4xl font-semibold'>User_<span className='uppercase'>{user.userID}</span></h1>
                   <div>
-                     {vip === 'vip1' && <VIP iconColor='text-[#295F4B]' />}
-                     {vip === 'vip2' && <VIP bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' number={2} />}
-                     {vip === 'vip3' && <VIP bg='bg-[linear-gradient(180deg,_#FFD700_0%,_#A56409_128.07%)]' number={3} />}
+                     {user.vip === 0 && ''}
+                     {user.vip === 1 && <VIP iconColor='text-[#295F4B]' />}
+                     {user.vip === 2 && <VIP bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' number={2} />}
+                     {user.vip === 3 && <VIP bg='bg-[linear-gradient(180deg,_#FFD700_0%,_#A56409_128.07%)]' number={3} />}
                   </div>
                </div>
-               <p className='text-sm lg:text-lg opacity-50'>ID: 4R890B0S</p>
-               <p className='text-sm lg:text-lg opacity-50'>Phone No: 09028729282</p>
+               <p className='text-sm lg:text-lg opacity-50'>ID: <span className='uppercase'>{user.userID}</span></p>
+               <p className='text-sm lg:text-lg opacity-50'>Phone No: {user.whatsappNo ? user.whatsappNo : 'Unknown'}</p>
                <div className='w-full relative h-[2px] bg-white/30 mt-[5px]'>
                   <span className='w-2.5 h-2.5 block bg-white/50 rounded-full absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'></span>
                   <p className='z-[99] text-[8px] text-[#003B46] px-2 py-1 rounded-[20px] bg-white leading-tight absolute left-3/12 top-1/2 transform -translate-x-1/2 -translate-y-1/2'>10/1,000</p>
@@ -89,7 +114,6 @@ const page = () => {
          </div>
          <div className={`pt-[15px] pb-7 flex flex-col lg:flex-row gap-3 overflow-y-hidden`}>
             <Vault_List VAULT_LIST={TOTAL_ASSET} />
-            <Vault_List VAULT_LIST={TEAM_SUMMARY} bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' iconColor='text-[#F97316]' />
          </div>
          <div className="flex items-center justify-between bg-[#121A24] py-6 lg:py-[52px] px-4 lg:px-32 rounded-[15px] gap-3">
             {actions.map(({ icon, label }, index) => (

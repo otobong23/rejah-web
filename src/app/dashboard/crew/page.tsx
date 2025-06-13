@@ -6,6 +6,10 @@ import team_commission from '@/assets/team-commission.svg'
 import copy from 'copy-to-clipboard';
 import { showToast } from '@/utils/alert';
 import { useUserContext } from '@/store/userContext';
+import { useLoader } from '@/store/LoaderContext';
+import { useRouter } from 'next/navigation';
+import Cookies from "js-cookie";
+import api from '@/utils/axios';
 
 const TABLEDATA = [
    ['LVL 1', '5%', '1st person Ref'],
@@ -44,11 +48,32 @@ const page = () => {
    const [stack, setStack] = useState(1)
    const [referralCode, setReferralCode] = useState('2GR57DX')
    const [copied, setCopied] = useState(false);
-   const userContext = useUserContext()
+   const { user } = useUserContext()
+   const { showPageLoader, hidePageLoader } = useLoader()
+   const router = useRouter()
+   const [crew, setCrew] = useState<CrewType>()
 
    useEffect(() => {
-      setReferralCode(userContext.referral_code)
-   })
+      setReferralCode(user.referral_code)
+      const getUser = async () => {
+         const userToken = Cookies.get("userToken");
+
+         if (!userToken) {
+            router.replace("/auth/login");
+            return;
+         }
+
+         try {
+            api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+            const response = await api.get<CrewType>("/crew/");
+            setCrew(response.data)
+         } catch (error) {
+            hidePageLoader()
+            console.error("Error fetching user crew:", error);
+         }
+      }
+      getUser()
+   }, [])
 
    const handleCopy = (value: string) => {
       copy(value);
@@ -105,46 +130,46 @@ const page = () => {
          {/* stack */}
          <div className='max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3'>
             {stack === 1 && (<>
-               {REFERRAL.map(({ userId, level, text }, i) => (
-                  <div key={userId + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
+               {Array.isArray(crew?.level_1) && crew.level_1.length ? crew?.level_1.map(({ userID, level, currentPlan }, i) => (
+                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
                         <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
                      </div>
                      <div>
-                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userId}</h2>
+                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userID}</h2>
                         <p className='text-(--color2)/50 text-xs'>{level}</p>
-                        <p className='text-(--color2)/50 text-xs'>{text}</p>
+                        <p className='text-(--color2)/50 text-xs'>{currentPlan}</p>
                      </div>
                   </div>
-               ))}
+               )) : <p className="text-center text-sm text-white/60">No referrals at this level yet.</p>}
             </>)}
             {stack === 2 && (<>
-               {REFERRAL.map(({ userId, level, text }, i) => (
-                  <div key={userId + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
+               {Array.isArray(crew?.level_2) && crew.level_2.length ? crew?.level_2.map(({ userID, level, currentPlan }, i) => (
+                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
                         <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
                      </div>
                      <div>
-                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userId}</h2>
+                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userID}</h2>
                         <p className='text-(--color2)/50 text-xs'>{level}</p>
-                        <p className='text-(--color2)/50 text-xs'>{text}</p>
+                        <p className='text-(--color2)/50 text-xs'>{currentPlan}</p>
                      </div>
                   </div>
-               ))}
+               )) : <p className="text-center text-sm text-white/60">No referrals at this level yet.</p>}
             </>)}
             {stack === 3 && (<>
-               {REFERRAL.map(({ userId, level, text }, i) => (
-                  <div key={userId + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
+               {Array.isArray(crew?.level_2) && crew.level_2.length ? crew?.level_2.map(({ userID, level, currentPlan }, i) => (
+                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
                         <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
                      </div>
                      <div>
-                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userId}</h2>
+                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userID}</h2>
                         <p className='text-(--color2)/50 text-xs'>{level}</p>
-                        <p className='text-(--color2)/50 text-xs'>{text}</p>
+                        <p className='text-(--color2)/50 text-xs'>{currentPlan}</p>
                      </div>
                   </div>
-               ))}
+               )) : <p className="text-center text-sm text-white/60">No referrals at this level yet.</p>}
             </>)}
          </div>
       </div>

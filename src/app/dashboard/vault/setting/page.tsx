@@ -1,39 +1,89 @@
 'use client';
+import { useLoader } from '@/store/LoaderContext';
+import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
+import api from '@/utils/axios';
+import toBase64 from '@/utils/file';
 import { validateEmail } from '@/utils/validators';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import imageCompression from 'browser-image-compression';
 
 const page = () => {
+  const { showPageLoader, hidePageLoader } = useLoader()
+  const { user, setUser } = useUserContext()
   const router = useRouter()
-  const [form, setForm] = useState({ email: '', whatsapp_no: '', facebook: '', telegram: '' })
+  const [form, setForm] = useState({ email: user.email, whatsapp_no: user.whatsappNo || '', facebook: user.facebook || '', telegram: user.telegram || '' })
+  const [profileImage, setProfileImage] = useState<File | undefined>()
   const [error, setError] = useState<{ [key: string]: string }>({})
   const [active, setActive] = useState(false)
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
     setError({ ...error, [e.target.name]: '' })
   }
+  const MAX_FILE_SIZE_MB = 5;
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+    if (selected && selected.size / (1024 * 1024) > MAX_FILE_SIZE_MB) {
+      alert('File too large. Max size is 5MB.');
+      return;
+    }
+    try {
+      const options = {
+        maxSizeMB: MAX_FILE_SIZE_MB,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(selected, options);
+      setProfileImage(compressedFile);
+      const objectUrl = URL.createObjectURL(compressedFile);
+      setPreviewImage(objectUrl);
+    } catch (error) {
+      console.error('Image compression error:', error);
+      showToast('error','Failed to compress image.');
+    }
+  }
 
   useEffect(() => {
-    if (form.email || form.whatsapp_no || form.facebook || form.telegram) {
-      setActive(true)
-    } else {
-      setActive(false)
-    }
-  }, [form])
+    setActive(!!(form.whatsapp_no || form.facebook || form.telegram || profileImage));
+  }, [form, profileImage])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const newError: typeof error = {}
 
-    if (!validateEmail(form.email)) newError.phone = 'Email is invalid'
+    if (!validateEmail(form.email)) newError.email = 'Email is invalid'
 
     setError(newError)
     if (Object.keys(newError).length === 0) {
-      // Perform login logic here
-      showToast('success', 'Saved successfully!')
+      showPageLoader()
+      let imageBase64 = ''
+      if (profileImage) imageBase64 = await toBase64(profileImage);
+      try {
+        const response = await api.patch<UserType>('/profile/update', {
+          whatsappNo: form.whatsapp_no.trim(),
+          facebook: form.facebook.trim(),
+          telegram: form.telegram.trim(),
+          profileImage: imageBase64
+        })
+        setUser(response.data)
+        hidePageLoader()
+        showToast('success', 'Saved successfully!')
+      } catch (err) {
+        hidePageLoader()
+        if (err instanceof AxiosError) {
+          showToast('error', err.response?.data.message)
+        } else {
+          showToast('error', 'An error occurred during signup')
+        }
+      }
     }
   }
   return (
@@ -44,10 +94,17 @@ const page = () => {
       <h1 className="text-[40px] font-bold mb-8">Settings</h1>
       <div className='mt-[35px]'>
         <div className='flex items-center justify-center'>
-          <div className='w-[98px] h-[98px] rounded-full flex justify-center items-center relative bg-[#EFEFEF]'>
-            <Icon icon="solar:user-bold" className='text-[#808080]' width={48} />
+          <input type="file" name="profileImage" className='hidden' id="profileImage" accept="image/*" onChange={handleFileChange} />
+          <label htmlFor='profileImage' className='w-[98px] h-[98px] overflow-hidden rounded-full flex justify-center items-center relative bg-[#EFEFEF]'>
+            {
+              previewImage
+                ? <img src={previewImage} alt="Profile preview" className='w-full object-cover' />
+                : user.profileImage
+                  ? <img src={user.profileImage} alt="Profile preview" className='w-full object-cover' />
+                  : <Icon icon="solar:user-bold" className='text-[#808080]' width={48} />
+            }
             <span className='absolute bottom-5 right-3'><Icon icon="mingcute:edit-3-line" className='text-[#000914] text-xl' /></span>
-          </div>
+          </label>
         </div>
         <div className='mt-9 max-w-[396px] mx-auto'>
           {['email', 'whatsapp_no', 'facebook', 'telegram'].map((field) => (
@@ -57,6 +114,7 @@ const page = () => {
                 <input
                   id={field}
                   name={field}
+                  disabled={field === 'email'}
                   type={field === 'password' ? 'password' : field === 'email' ? 'email' : 'text'}
                   value={form[field as keyof typeof form]}
                   onChange={handleChange}
@@ -82,6 +140,7 @@ const page = () => {
 
           <button
             type="submit"
+            onClick={handleSubmit}
             className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
           >
             Continue

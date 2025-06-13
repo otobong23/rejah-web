@@ -91,7 +91,7 @@ const Tier = () => {
                </div>
                <div className='flex gap-2.5'>
                   {['proceed', 'cancel'].map(item => (
-                     <button onClick={() => handleModalButton(item)} className={`flex-1 flex justify-center py-[17px] rounded-[15px] text-lg tracking-wide font-bold text-white ${item === 'proceed' ? 'bg-[#6EBA0E]' : 'bg-[#C0C0C063]'}`}>{item}</button>
+                     <button key={item} onClick={() => handleModalButton(item)} className={`flex-1 flex justify-center py-[17px] rounded-[15px] text-lg tracking-wide font-bold text-white ${item === 'proceed' ? 'bg-[#6EBA0E]' : 'bg-[#C0C0C063]'}`}>{item}</button>
                   ))}
                </div>
             </div>

@@ -1,18 +1,15 @@
-import { createContext, useContext, ReactNode } from 'react';
+'use client';
+import { createContext, useContext, ReactNode, useState } from 'react';
 
-type userContextType = {
-   username: string;
-   email: string;
-   profilePicture?: string;
-   referral_code: string;
-}
 
-const userContext = createContext<userContextType | null>(null);
 
-export const UserProvider = ({ children, value }: { children: ReactNode, value: userContextType }) => {
+const userContext = createContext<UserContextType>({} as UserContextType);
+
+export const UserProvider = ({ children }: { children: ReactNode }) => {
+   const [user, setUser] = useState<UserType>({} as UserType)
    return (
-      <userContext.Provider value={value}>
-         {children}
+      <userContext.Provider value={{user, setUser}}>
+         {children} 
       </userContext.Provider>
    )
 }

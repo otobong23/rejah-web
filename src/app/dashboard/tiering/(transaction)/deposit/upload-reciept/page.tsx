@@ -5,8 +5,8 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import Cookies from "js-cookie";
-import Image from 'next/image';
 import { showToast } from '@/utils/alert';
+import imageCompression from 'browser-image-compression';
 
 const page = () => {
    const { showPageLoader, hidePageLoader } = useLoader()
@@ -15,13 +15,26 @@ const page = () => {
 
    const MAX_FILE_SIZE_MB = 5;
 
-   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const selected = e.target.files?.[0];
+      if (!selected) return;
       if (selected && selected.size / (1024 * 1024) > MAX_FILE_SIZE_MB) {
          alert('File too large. Max size is 5MB.');
          return;
       }
-      setFile(selected ?? null);
+      try {
+         const options = {
+            maxSizeMB: MAX_FILE_SIZE_MB,
+            maxWidthOrHeight: 800,
+            useWebWorker: true,
+         };
+
+         const compressedFile = await imageCompression(selected, options);
+         setFile(compressedFile);
+      } catch (error) {
+         console.error('Image compression error:', error);
+         showToast('error', 'Failed to compress image.');
+      }
    };
 
 
