@@ -54,7 +54,7 @@ const page = () => {
 
    useEffect(() => {
       setReferralCode(user.referral_code)
-      const getUser = async () => {
+      const getCrew = async () => {
          const userToken = Cookies.get("userToken");
 
          if (!userToken) {
@@ -65,6 +65,7 @@ const page = () => {
          try {
             api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
             const response = await api.get<CrewType>("/crew/");
+            console.log(response.data)
             setCrew(response.data)
          } catch (err) {
             if (err instanceof AxiosError) {
@@ -74,7 +75,7 @@ const page = () => {
             }
          }
       }
-      getUser()
+      getCrew()
    }, [])
 
    const handleCopy = (value: string) => {
@@ -132,7 +133,7 @@ const page = () => {
          {/* stack */}
          <div className='max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3'>
             {stack === 1 && (<>
-               {Array.isArray(crew?.level_1) && crew.level_1.length ? crew?.level_1.map(({ userID, level, currentPlan }, i) => (
+               {Array.isArray(crew?.members.level_1) && crew.members.level_1.length ? crew?.members.level_1.map(({ userID, level, currentPlan }, i) => (
                   <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
                         <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
@@ -146,7 +147,7 @@ const page = () => {
                )) : <p className="text-center text-sm text-white/60">No referrals at this level yet.</p>}
             </>)}
             {stack === 2 && (<>
-               {Array.isArray(crew?.level_2) && crew.level_2.length ? crew?.level_2.map(({ userID, level, currentPlan }, i) => (
+               {Array.isArray(crew?.members.level_2) && crew.members.level_2.length ? crew?.members.level_2.map(({ userID, level, currentPlan }, i) => (
                   <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
                         <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
@@ -160,7 +161,7 @@ const page = () => {
                )) : <p className="text-center text-sm text-white/60">No referrals at this level yet.</p>}
             </>)}
             {stack === 3 && (<>
-               {Array.isArray(crew?.level_2) && crew.level_2.length ? crew?.level_2.map(({ userID, level, currentPlan }, i) => (
+               {Array.isArray(crew?.members.level_3) && crew.members.level_3.length ? crew?.members.level_3.map(({ userID, level, currentPlan }, i) => (
                   <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
                         <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />

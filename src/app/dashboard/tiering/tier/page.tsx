@@ -5,15 +5,16 @@ import Tier_List from '@/components/Tier_List';
 import { BUTTON_LIST, PREMIUM_TIER_LIST, REBOUND_TIER_LIST } from '@/constant/Tier';
 import { showToast } from '@/utils/alert';
 import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/store/userContext';
 
 const Tier = () => {
+   const { user, setUser } = useUserContext()
    const router = useRouter();
    const [activeTier, setActiveTier] = useState('Rebound');
    const [purchaseDetails, setPurchaseDetails] = useState<detailsType | null>(null)
    const [confirmModal, setConfirmModal] = useState(false)
    const [processingModal, setProcessingModal] = useState(false)
    const [seconds, setSeconds] = useState(0); // countdown
-   const [balance, setBalance] = useState(0)
    const handleBuy = (details: detailsType) => {
       setConfirmModal(true)
       setPurchaseDetails(details)
@@ -24,7 +25,7 @@ const Tier = () => {
          setSeconds(30); // 30 minutes countdown
          try {
             //backend logic
-            if(!balance) {
+            if (!user.balance) {
                showToast('warning', 'You do not have sufficient deposit balance to proceed with this purchase. Please fund your account first.')
                return
             }
@@ -141,10 +142,10 @@ const Tier = () => {
 
          <div className='max-w-[570px] mx-auto'>
             {activeTier === 'Rebound' && <div className={`pt-[15px] pb-7 flex flex-col gap-3 overflow-y-hidden ${activeTier === 'Rebound' ? 'h-fit' : 'h-0'}`}>
-               {REBOUND_TIER_LIST.map((item) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title} />)}
+               {REBOUND_TIER_LIST.map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title + i} />)}
             </div>}
             {activeTier === 'Premium' && <div className='pt-[15px] pb-7 flex flex-col gap-3'>
-               {PREMIUM_TIER_LIST.map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title + i} bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
+               {PREMIUM_TIER_LIST.map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title + i} btn_bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F94E4E_100%)]' bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
             </div>}
             <div className='text-center bg-(--color1) py-8 px-4 rounded-[20px]'>
                <p className='text-4xl font-black text-(--color1) text-outline'>Coming Soon!</p>

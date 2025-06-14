@@ -71,7 +71,7 @@ const page = () => {
          });
          console.log(response);
          showToast('success', 'Deposit Made Successfully')
-         router.push('/dashboard/');
+         router.replace('/dashboard/vault/history/')
       } catch (err) {
          showToast('error', 'Deposit Failed')
       }

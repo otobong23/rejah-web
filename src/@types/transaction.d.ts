@@ -12,3 +12,4 @@ interface UserTransaction {
   createdAt?: string | Date;
   updatedAt?: string | Date;
 }
+

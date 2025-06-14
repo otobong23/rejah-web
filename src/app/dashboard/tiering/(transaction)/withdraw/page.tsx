@@ -13,9 +13,9 @@ const page = () => {
    const router = useRouter()
    const [stack, setStack] = useState(1);
    const [amount, setAmount] = useState('');
-   const [address, setAddress] = useState('');
+   const [address, setAddress] = useState(user.usdtWallet || '');
    const [isWithdrawalPassword] = useState(Boolean(user.walletPassword));
-   const [form, setForm] = useState({ USDT_Account: '', Withdrawal_Password: '', Confirm_Withdrawal_Password: '' })
+   const [form, setForm] = useState({ USDT_Wallet: '', Withdrawal_Password: '', Confirm_Withdrawal_Password: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
    const [withdrawalPassword, setWithdrawalPassword] = useState('');
@@ -31,7 +31,7 @@ const page = () => {
       else setStack(1);
    }, [isWithdrawalPassword])
    useEffect(() => {
-      if (form.USDT_Account && form.Withdrawal_Password && form.Confirm_Withdrawal_Password) {
+      if (form.USDT_Wallet && form.Withdrawal_Password && form.Confirm_Withdrawal_Password) {
          setActive(true)
       } else {
          setActive(false)
@@ -42,7 +42,7 @@ const page = () => {
       e.preventDefault()
       const newError: typeof error = {}
 
-      if (!form.USDT_Account) newError.USDT_Account = 'USDT account is required'
+      if (!form.USDT_Wallet) newError.USDT_Wallet = 'USDT account is required'
       if (!form.Withdrawal_Password) newError.Withdrawal_Password = 'Withdrawal password is required'
       if (form.Withdrawal_Password !== form.Confirm_Withdrawal_Password) {
          newError.confirm_withdrawal_password = 'Passwords do not match'
@@ -56,7 +56,7 @@ const page = () => {
          showPageLoader()
          try {
             const response = await api.patch<UserType>('/profile/update', {
-               usdtWallet: form.USDT_Account.trim(),
+               usdtWallet: form.USDT_Wallet.trim(),
                walletPassword: form.Withdrawal_Password.trim(),
             })
             setUser(response.data)
@@ -77,7 +77,7 @@ const page = () => {
       e.preventDefault()
       const newError: typeof error = {}
 
-      if (withdrawalPassword) newError.withdrawalPassword = 'Withdrawal password is required'
+      if (!withdrawalPassword) newError.withdrawalPassword = 'Withdrawal password is required'
       if (withdrawalPassword !== user.walletPassword) newError.withdrawalPassword = 'Passwords do not match'
 
       setWithdrawError(newError)
@@ -85,12 +85,13 @@ const page = () => {
          showPageLoader()
          try {
             const response = await api.post<UserType>('/transaction/withdraw', {
-               amount,
+               amount: Number(amount),
                walletAddress: address,
             })
             setUser(response.data)
             hidePageLoader()
             showToast('success', 'Withdrawal Processed!')
+            router.replace('/dashboard/vault/history/')
          } catch (err) {
             hidePageLoader()
             if (err instanceof AxiosError) {
@@ -111,7 +112,7 @@ const page = () => {
 
          <div className='max-w-[396px] mx-auto'>
             {stack === 1 && <div>
-               {['USDT_Account', 'Withdrawal_Password', 'Confirm_Withdrawal_Password'].map((field) => (
+               {['USDT_Wallet', 'Withdrawal_Password', 'Confirm_Withdrawal_Password'].map((field) => (
                   <div key={field} className="mb-3">
                      <label htmlFor={field} className='text-sm font-light mb-2.5'>{field !== 'Confirm_Withdrawal_Password' && 'Enter'} {field.split('_').join(' ')}</label>
                      <div className='flex gap-3.5'>

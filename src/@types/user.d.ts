@@ -29,6 +29,7 @@ type UserType = {
   withdrawStatus?: 'pending' | 'completed' | 'failed';
   ActivateBot?: boolean;
   vip: number;
+  meter: number;
   joinDate?: Date;
 };
 

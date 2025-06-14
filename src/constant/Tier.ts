@@ -29,34 +29,45 @@ export const REBOUND_TIER_LIST = [
       title: 'FlexForm',
       image: flexForm,
       details: {
-         price: '$10',
-         daily_yield: '$0.50',
-         duration: '30 Days',
-         roi: '$15',
+         price: '$30',
+         daily_yield: '$1.20',
+         duration: '60 Days',
+         roi: '$72',
+         purchase_limit: '1'
+      }
+   },
+   {
+      type: 'rebound_tier',
+      title: 'GridForm',
+      image: flexForm,
+      details: {
+         price: '$50',
+         daily_yield: '$2',
+         duration: '60 Days',
+         roi: '$120',
          purchase_limit: '1'
       }
    },
    {
       type: 'rebound_tier',
       title: 'CoreMelt',
-      image: flexForm,
+      image: rubberRise,
       details: {
-         price: '$10',
-         daily_yield: '$0.50',
-         duration: '30 Days',
-         roi: '$15',
+         price: '$80',
+         daily_yield: '$2.50',
+         duration: '60 Days',
+         roi: '$180',
          purchase_limit: '1'
       }
-   },
-   {
+   },{
       type: 'rebound_tier',
       title: 'RubberRise',
       image: rubberRise,
       details: {
-         price: '$10',
-         daily_yield: '$0.50',
-         duration: '30 Days',
-         roi: '$15',
+         price: '$120',
+         daily_yield: '$3.00',
+         duration: '90 Days',
+         roi: '$270',
          purchase_limit: '1'
       }
    },
@@ -70,8 +81,8 @@ export const PREMIUM_TIER_LIST = [
       details: {
          price: '$300',
          daily_yield: '$6',
-         duration: '180 Days',
-         roi: '$2,160',
+         duration: '120 Days',
+         roi: '$720',
          purchase_limit: '1'
       }
    },
@@ -83,7 +94,7 @@ export const PREMIUM_TIER_LIST = [
          price: '$500',
          daily_yield: '$8',
          duration: '180 Days',
-         roi: '$2,160',
+         roi: '$1,200',
          purchase_limit: '1'
       }
    },
@@ -98,19 +109,7 @@ export const PREMIUM_TIER_LIST = [
          roi: '$2,160',
          purchase_limit: '1'
       }
-   },
-   {
-      type: 'premium_tier',
-      title: 'Nova',
-      image: nova,
-      details: {
-         price: '$5,000',
-         daily_yield: '$12',
-         duration: '180 Days',
-         roi: '$2,160',
-         purchase_limit: '1'
-      }
-   },
+   }
 ]
 
 export const TRANSACTION_RULES = [

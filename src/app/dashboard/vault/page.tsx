@@ -3,11 +3,14 @@ import Vault_List from '@/components/Vault_List';
 import { PREMIUM_TIER_LIST, REBOUND_TIER_LIST } from '@/constant/Tier';
 import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
+import api from '@/utils/axios';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { AxiosError } from 'axios';
 import { Nunito_Sans } from 'next/font/google';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Cookies from "js-cookie";
 
 const nunitoSans = Nunito_Sans({
    variable: "--font-nunito_sans",
@@ -74,6 +77,45 @@ const page = () => {
          CRV: '$' + CRV(),
       }
    }
+   const [crew, setCrew] = useState<CrewType>()
+
+   useEffect(() => {
+      const getCrew = async () => {
+         const userToken = Cookies.get("userToken");
+
+         if (!userToken) {
+            router.replace("/auth/login");
+            return;
+         }
+
+         try {
+            api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+            const response = await api.get<CrewType>("/crew/");
+            console.log(response.data)
+            setCrew(response.data)
+         } catch (err) {
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred during signup')
+            }
+         }
+      }
+      getCrew()
+   }, [])
+   const handleText = () => {
+      const tc = crew?.totalCrewDeposits ?? 0;
+      let level = 0;
+
+      if (tc < 3000) {
+         level = 3000
+      } else if (tc >= 3000 && tc < 5000) {
+         level = 5000
+      }else {
+         level = 1000;
+      }
+      return level
+   }
 
    const handleClick = (label: string) => {
       if (label === 'Download App') showToast('warning', 'Not Available Yet')
@@ -103,12 +145,28 @@ const page = () => {
                <p className='text-sm lg:text-lg opacity-50'>Phone No: {user.whatsappNo ? user.whatsappNo : 'Unknown'}</p>
                <div className='w-full relative h-[2px] bg-white/30 mt-[5px]'>
                   <span className='w-2.5 h-2.5 block bg-white/50 rounded-full absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'></span>
-                  <p className='z-[99] text-[8px] text-[#003B46] px-2 py-1 rounded-[20px] bg-white leading-tight absolute left-3/12 top-1/2 transform -translate-x-1/2 -translate-y-1/2'>10/1,000</p>
+                  <p className='z-[99] text-[8px] text-[#003B46] px-2 py-1 rounded-[20px] bg-white leading-tight absolute top-1/2 transform -translate-y-1/2' style={{
+                     left: user.meter + '%'
+                  }}>{crew?.totalCrewDeposits}/{handleText()}</p>
                   <span className='w-2.5 h-2.5 block bg-white/50 rounded-full absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 z-50'></span>
                </div>
                <div className='flex justify-between text-[#4C767D] text-[10px] lg:text-lg mt-2'>
-                  <span>VIP 1</span>
-                  <span>VIP 3</span>
+                  {user.vip === 0 && <>
+                     <span></span>
+                     <span>VIP 1</span>
+                  </>}
+                  {user.vip === 1 && <>
+                     <span>VIP 1</span>
+                     <span>VIP 2</span>
+                  </>}
+                  {user.vip === 2 && <>
+                     <span>VIP 2</span>
+                     <span>VIP 3</span>
+                  </>}
+                  {user.vip === 3 && <>
+                     <span>VIP 2</span>
+                     <span>VIP 3</span>
+                  </>}
                </div>
             </div>
          </div>

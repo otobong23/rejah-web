@@ -57,8 +57,8 @@ const page = () => {
 
          try {
             api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
-            const response = await api.get<UserTransaction[]>("/transaction/");
-            setTransaction(response.data)
+            const response = await api.get<{transactions: UserTransaction[]}>("/transaction/");
+            setTransaction(response.data.transactions)
             console.log(response.data)
          } catch (err) {
             if (err instanceof AxiosError) {
@@ -86,7 +86,7 @@ const page = () => {
          <h1 className="text-[40px] font-bold mb-8">Account History</h1>
          <div className="flex gap-2 my-3 overflow-scroll lg:overflow-auto no-scrollbar">
             {FILTER.map(({ title, type, stack }) => (
-               <button key={title} onClick={() => setStack(stack)} className='py-2 px-4 min-w-[90px] rounded-[15px] flex items-center justify-center bg-[#002732]'>{title}</button>
+               <button key={title} onClick={() => setStack(stack)} className='py-2 px-6 rounded-[15px] flex items-center justify-center bg-[#002732]'>{title}</button>
             ))}
          </div>
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>

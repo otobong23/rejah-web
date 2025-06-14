@@ -13,9 +13,11 @@ interface CrewType {
   userID: string;
   ownerUsername: string;
   ownerReferralCode: string;
-  level_1: CrewMemberType[];
-  level_2: CrewMemberType[];
-  level_3: CrewMemberType[];
+  members: {
+    level_1: CrewMemberType[];
+    level_2: CrewMemberType[];
+    level_3: CrewMemberType[];
+  }
   totalMembers: number;
   totalCrewDeposits: number;
   totalCrewWithdrawals: number;
