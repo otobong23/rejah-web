@@ -71,7 +71,7 @@ const page = () => {
             image: imageBase64,
          });
          console.log(response);
-         showToast('success', 'Deposit Made Successfully')
+         showToast('success', 'Deposit request submitted successfully')
          router.replace('/dashboard/vault/history/')
       } catch (err) {
          console.log(err)

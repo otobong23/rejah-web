@@ -120,7 +120,7 @@ const DepositPage = () => {
                 <span>Amount:</span><span>${amount}</span>
               </li>
               <li className="flex justify-between">
-                <span>Initial Balance:</span><span>$0.50</span>
+                <span>Initial Balance:</span><span>${user.balance}</span>
               </li>
             </ul>
           </div>

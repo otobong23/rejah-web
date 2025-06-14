@@ -90,7 +90,7 @@ const page = () => {
             })
             setUser(response.data)
             hidePageLoader()
-            showToast('success', 'Withdrawal Processed!')
+            showToast('success', 'Withdrawal request submitted successfully!')
             router.replace('/dashboard/vault/history/')
          } catch (err) {
             hidePageLoader()

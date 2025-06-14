@@ -57,7 +57,7 @@ const page = () => {
 
          try {
             api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
-            const response = await api.get<{transactions: UserTransaction[]}>("/transaction/");
+            const response = await api.get<{ transactions: UserTransaction[] }>("/transaction/");
             setTransaction(response.data.transactions)
             console.log(response.data)
          } catch (err) {
@@ -92,41 +92,85 @@ const page = () => {
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>
             {filteredTransactions.length ? filteredTransactions.map((item, index) => (
                <div key={item.type + index} className='flex py-2.5 px-5 bg-white/7 gap-3 rounded-[15px] items-center'>
-                  {/* ...existing transaction item code... */}
                   <div>
-                     <span><Icon icon={
-                        item.type === 'deposit' ? 'ant-design:dollar-circle-filled'
-                           : item.type === 'withdrawal' ? 'streamline:payment-10-solid'
-                              : item.type === 'tier' ? 'fa6-solid:money-bill-trend-up'
-                                 : item.type === 'bonus' ? 'solar:hand-money-bold'
-                                    : 'mingcute:notification-fill'
-                     } className={`text-4xl ${item.type === 'deposit' ? 'text-[#3B82F6]'
-                        : item.type === 'withdrawal' ? 'text-[#10B981]'
-                           : item.type === 'tier' ? 'text-[#8B5CF6]'
-                              : item.type === 'bonus' ? 'text-[#F59E0B]'
-                                 : 'text-[#F94E4E]'}`} />
-                     </span>
+                     <Icon
+                        icon={
+                           item.type === 'deposit' ? 'ant-design:dollar-circle-filled'
+                              : item.type === 'withdrawal' ? 'streamline:payment-10-solid'
+                                 : item.type === 'tier' ? 'fa6-solid:money-bill-trend-up'
+                                    : item.type === 'bonus' ? 'solar:hand-money-bold'
+                                       : 'mingcute:notification-fill'
+                        }
+                        className={`text-4xl ${item.type === 'deposit' ? 'text-[#3B82F6]'
+                           : item.type === 'withdrawal' ? 'text-[#10B981]'
+                              : item.type === 'tier' ? 'text-[#8B5CF6]'
+                                 : item.type === 'bonus' ? 'text-[#F59E0B]'
+                                    : 'text-[#F94E4E]'}`}
+                     />
                   </div>
-                  <div className='text-(--color2)'>
-                     <h1 className='text-sm font-semibold mb-1'>
-                        {item.type === 'deposit' ? `Deposit Successful!`
-                           : item.type === 'withdrawal' ? ` Withdrawal Processed`
-                              : item.type === 'tier' ? `Tier Upgrade Confirmed`
-                                 : item.type === 'bonus' ? `Auto-Payout Received`
-                                    : `New Yield Alert`}
-                     </h1>
+
+                  <div className='flex-1 text-(--color2)'>
+                     <div className='flex items-center justify-between'>
+                        <h1 className='text-sm font-semibold mb-1 capitalize'>
+                           {/* Dynamic heading using type and status */}
+                           {item.type} - {item.status}
+                        </h1>
+                        <span className={`text-xs font-bold uppercase px-2 py-1 rounded-full 
+          ${item.status === 'pending' ? 'bg-yellow-400/20 text-yellow-400'
+                              : item.status === 'completed' ? 'bg-green-400/20 text-green-400'
+                                 : 'bg-red-400/20 text-red-400'}
+        `}>
+                           {item.status}
+                        </span>
+                     </div>
+
                      <p className='text-xs font-normal text-(--color2)/50'>
-                        {item.type === 'deposit' ? `You just added $${item.amount} to your wallet. Your balance is now growing stronger!`
-                           : item.type === 'withdrawal' ? `$${item.amount ?? '0.00'} has been successfully withdrawn to your linked account. Track it in your history.`
-                              : item.type === 'tier' ? `Congrats! You’ve moved from ${item.plan?.includes('-')
-                                 ? `Congrats! You’ve moved from ${item.plan.split('-')[0]} to ${item.plan.split('-')[1]}. New returns unlocked.`
-                                 : `Tier upgrade confirmed for $${item.amount}.`} to ${item.plan?.split('-')[1]}. New returns unlocked.`
-                                 : item.type === 'bonus' ? `You just earned $${item.amount} from your daily yield. Keep building your streak!`
-                                    : `Your PolyCycle pack just matured. You earned $${item.amount} in total!`}
+                        {(() => {
+                           const amt = `$${item.amount}`;
+                           const status = item.status;
+                           const plan = item.plan ?? '';
+
+                           switch (item.type) {
+                              case 'deposit':
+                                 return status === 'pending'
+                                    ? `You initiated a deposit of ${amt}. Awaiting confirmation.`
+                                    : status === 'completed'
+                                       ? `You successfully deposited ${amt} into your account.`
+                                       : `Deposit of ${amt} failed. Please try again.`;
+
+                              case 'withdrawal':
+                                 return status === 'pending'
+                                    ? `You requested a withdrawal of ${amt}. Processing...`
+                                    : status === 'completed'
+                                       ? `${amt} has been successfully withdrawn.`
+                                       : `Withdrawal of ${amt} failed. Contact support if unresolved.`;
+
+                              case 'tier':
+                                 if (plan.includes('-')) {
+                                    const [from, to] = plan.split('-');
+                                    return status === 'completed'
+                                       ? `Your plan was upgraded from ${from} to ${to}.`
+                                       : `Tier upgrade (${from} → ${to}) is ${status}.`;
+                                 }
+                                 return `Tier change of ${amt} is ${status}.`;
+
+                              case 'bonus':
+                                 return status === 'completed'
+                                    ? `You received a bonus of ${amt}.`
+                                    : `Bonus payout of ${amt} is ${status}.`;
+
+                              case 'yield':
+                                 return `Yield reward of ${amt} is currently ${status}.`;
+
+                              default:
+                                 return `Transaction of ${amt} is currently ${status}.`;
+                           }
+                        })()}
                      </p>
                   </div>
                </div>
             )) : <p className="text-center text-sm text-white/60">No Transaction Found yet.</p>}
+
          </div>
 
       </div>
