@@ -7,6 +7,7 @@ import React, { useState } from 'react'
 import Cookies from "js-cookie";
 import { showToast } from '@/utils/alert';
 import imageCompression from 'browser-image-compression';
+import { AxiosError } from 'axios';
 
 const page = () => {
    const { showPageLoader, hidePageLoader } = useLoader()
@@ -73,7 +74,12 @@ const page = () => {
          showToast('success', 'Deposit Made Successfully')
          router.replace('/dashboard/vault/history/')
       } catch (err) {
-         showToast('error', 'Deposit Failed')
+         console.log(err)
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message)
+         } else {
+            showToast('error', 'An error occurred during signup')
+         }
       }
 
       hidePageLoader(2000);
