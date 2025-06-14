@@ -1,21 +1,25 @@
 'use client';
+import { useLoader } from '@/store/LoaderContext';
 import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
+import api from '@/utils/axios';
 import { Icon } from '@iconify/react/dist/iconify.js'
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
-   const { user } = useUserContext()
+   const { user, setUser } = useUserContext()
    const router = useRouter()
    const [stack, setStack] = useState(1);
    const [amount, setAmount] = useState('');
-   const [account, setAccount] = useState('');
-   const [isWithdrawalPassword, setIsWithdrawalPassword] = useState(false);
+   const [address, setAddress] = useState('');
+   const [isWithdrawalPassword] = useState(Boolean(user.walletPassword));
    const [form, setForm] = useState({ USDT_Account: '', Withdrawal_Password: '', Confirm_Withdrawal_Password: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
    const [withdrawalPassword, setWithdrawalPassword] = useState('');
+   const { showPageLoader, hidePageLoader } = useLoader()
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setForm({ ...form, [e.target.name]: e.target.value })
@@ -34,21 +38,69 @@ const page = () => {
       }
    }, [form])
 
-   // const handleSubmit = (e: React.FormEvent) => {
-   //    e.preventDefault()
-   //    const newError: typeof error = {}
+   const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault()
+      const newError: typeof error = {}
 
-   //    if (!validatePhone(form.phone)) newError.phone = 'Phone number is invalid'
-   //    if (form.username.length < 3) newError.username = 'Username too short'
-   //    if (form.username.includes(' ')) newError.username = 'Username cannot contain spaces'
-   //    if (form.password.length < 6) newError.password = 'Password too short'
+      if (!form.USDT_Account) newError.USDT_Account = 'USDT account is required'
+      if (!form.Withdrawal_Password) newError.Withdrawal_Password = 'Withdrawal password is required'
+      if (form.Withdrawal_Password !== form.Confirm_Withdrawal_Password) {
+         newError.confirm_withdrawal_password = 'Passwords do not match'
+      }
+      if (form.Withdrawal_Password.length < 6) {
+         newError.Withdrawal_Password = 'Withdrawal password must be at least 6 characters'
+      }
 
-   //    setError(newError)
-   //    if (Object.keys(newError).length === 0) {
-   //       // Perform login logic here
-   //       showToast('success', 'Logged In successfully!')
-   //    }
-   // }
+      setError(newError)
+      if (Object.keys(newError).length === 0) {
+         showPageLoader()
+         try {
+            const response = await api.patch<UserType>('/profile/update', {
+               usdtWallet: form.USDT_Account.trim(),
+               walletPassword: form.Withdrawal_Password.trim(),
+            })
+            setUser(response.data)
+            hidePageLoader()
+            showToast('success', 'Password Changed successfully!')
+         } catch (err) {
+            hidePageLoader()
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred')
+            }
+         }
+      }
+   }
+   const [withdrawError, setWithdrawError] = useState<{ [key: string]: string }>()
+   const handleWithdraw = async (e: React.FormEvent) => {
+      e.preventDefault()
+      const newError: typeof error = {}
+
+      if (withdrawalPassword) newError.withdrawalPassword = 'Withdrawal password is required'
+      if (withdrawalPassword !== user.walletPassword) newError.withdrawalPassword = 'Passwords do not match'
+
+      setWithdrawError(newError)
+      if (Object.keys(newError).length === 0) {
+         showPageLoader()
+         try {
+            const response = await api.post<UserType>('/transaction/withdraw', {
+               amount,
+               walletAddress: address,
+            })
+            setUser(response.data)
+            hidePageLoader()
+            showToast('success', 'Withdrawal Processed!')
+         } catch (err) {
+            hidePageLoader()
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred during Processing')
+            }
+         }
+      }
+   }
    return (
       <div className='text-(--color2)'>
          {/* Header */}
@@ -85,7 +137,7 @@ const page = () => {
                ))}
                <button
                   type="submit"
-                  onClick={() => setStack(2)}
+                  onClick={e => { handleSubmit(e), setStack(2) }}
                   className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[25px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
                >
                   Confirm
@@ -106,15 +158,15 @@ const page = () => {
                   </div>
                   <div>
                      <input type="text"
-                        placeholder='Account Number'
+                        placeholder='Wallet Address'
                         className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
-                        value={account}
-                        onChange={(e) => setAccount(e.target.value)}
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
                      />
                   </div>
                   <button
                      onClick={() => setStack(3)}
-                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${account ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!account}
+                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${address ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!address}
                   >
                      Confirm
                   </button>
@@ -125,16 +177,21 @@ const page = () => {
                <div>
                   <h3 className='pb-2 text-xs'>Enter withdrawal password</h3>
                   <div>
-                     <input type="password"
-                        placeholder='*******'
-                        className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
-                        value={withdrawalPassword}
-                        onChange={(e) => setWithdrawalPassword(e.target.value)}
-                     />
+                     <div>
+                        <input type="password"
+                           placeholder='*******'
+                           className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
+                           value={withdrawalPassword}
+                           onChange={(e) => setWithdrawalPassword(e.target.value)}
+                        />
+                     </div>
+                     {(withdrawError?.['withdrawalPassword']) && (
+                        <p className="text-sm mt-1 text-[#D54244]">{withdrawError?.['withdrawalPassword']}</p>
+                     )}
                   </div>
                   <button
-                     onClick={() => setStack(3)}
-                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${account ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!account}
+                     onClick={handleWithdraw}
+                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${withdrawalPassword ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!withdrawalPassword}
                   >
                      Confirm
                   </button>

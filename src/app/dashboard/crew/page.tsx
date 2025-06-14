@@ -6,10 +6,10 @@ import team_commission from '@/assets/team-commission.svg'
 import copy from 'copy-to-clipboard';
 import { showToast } from '@/utils/alert';
 import { useUserContext } from '@/store/userContext';
-import { useLoader } from '@/store/LoaderContext';
 import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
 import api from '@/utils/axios';
+import { AxiosError } from 'axios';
 
 const TABLEDATA = [
    ['LVL 1', '5%', '1st person Ref'],
@@ -49,7 +49,6 @@ const page = () => {
    const [referralCode, setReferralCode] = useState('2GR57DX')
    const [copied, setCopied] = useState(false);
    const { user } = useUserContext()
-   const { showPageLoader, hidePageLoader } = useLoader()
    const router = useRouter()
    const [crew, setCrew] = useState<CrewType>()
 
@@ -67,9 +66,12 @@ const page = () => {
             api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
             const response = await api.get<CrewType>("/crew/");
             setCrew(response.data)
-         } catch (error) {
-            hidePageLoader()
-            console.error("Error fetching user crew:", error);
+         } catch (err) {
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred during signup')
+            }
          }
       }
       getUser()

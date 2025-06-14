@@ -8,6 +8,7 @@ import api from '@/utils/axios'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { AxiosError } from 'axios'
 import Cookies from "js-cookie";
+import { useLoader } from '@/store/LoaderContext'
 
 export default function Signup() {
    const router = useRouter()
@@ -17,6 +18,7 @@ export default function Signup() {
    const searchParams = useSearchParams();
    const refCode = searchParams.get('code');
    const filter = searchParams.get('filter')
+   const {showPageLoader, hidePageLoader} = useLoader()
    useEffect(() => {
       console.log(filter)
       if(refCode) setForm(prev => ({
@@ -57,6 +59,7 @@ export default function Signup() {
       setError(newError)
       if (Object.keys(newError).length === 0) {
          // Perform signup logic here
+         showPageLoader()
          try {
             const data = await api.post('/auth/signup', {
                email: form.email,
@@ -66,10 +69,11 @@ export default function Signup() {
             });
             console.log(data);
             Cookies.set('userToken', data.data.access_token, { expires: 7, secure: true, sameSite: 'lax' })
-            showToast('success', 'Signed up successfully!')
+            hidePageLoader()
             router.replace('/dashboard')
          } catch (err) {
             console.error(err)
+            hidePageLoader()
             if (err instanceof AxiosError) {
                showToast('error', err.response?.data.message)
             } else {
