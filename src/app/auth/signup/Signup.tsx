@@ -15,8 +15,10 @@ export default function Signup() {
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
    const searchParams = useSearchParams();
-   const refCode = searchParams.get('ref');
+   const refCode = searchParams.get('code');
+   const filter = searchParams.get('filter')
    useEffect(() => {
+      console.log(filter)
       if(refCode) setForm(prev => ({
          ...prev, recruiter_code: refCode
       }));

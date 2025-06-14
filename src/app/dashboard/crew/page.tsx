@@ -90,8 +90,8 @@ const page = () => {
                <span>Your Crew, Your Power</span>
             </div>
             <div className="max-w-[652px] flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px] mb-[5px]">
-               <h1 className="text-sm">{`https://rejah.net/auth/signup?ref=${referralCode}`}</h1>
-               <button className='cursor-pointer' onClick={() => handleCopy(`https://rejah.net/auth/signup?ref=${referralCode}`)}>
+               <h1 className="text-sm">{`https://rejah.net/auth/signup?code=${referralCode}`}</h1>
+               <button className='cursor-pointer' onClick={() => handleCopy(`https://rejah.net/auth/signup?code=${referralCode}`)}>
                   <Icon icon='akar-icons:copy' className='text-[20px]' />
                </button>
             </div>
