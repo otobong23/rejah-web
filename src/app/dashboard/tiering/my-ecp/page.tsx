@@ -1,46 +1,19 @@
 "use client";
 import Tier_List from '@/components/Tier_List';
-import { REBOUND_TIER_LIST } from '@/constant/Tier';
+import { REBOUND_TIER_LIST, PREMIUM_TIER_LIST } from '@/constant/Tier';
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import nova from '@/assets/Tier/Nova.png'
-import poly from '@/assets/Tier/PolyCycle.png'
-
-const active_tier: TIER_LIST_TYPE[] = [
-  {
-    type: 'rebound_tier',
-    title: 'PolyCycle',
-    image: poly,
-    details: {
-      price: '$10',
-      daily_yield: '$0.50',
-      duration: '30 Days',
-      roi: '$15',
-      purchase_limit: '1'
-    },
-    expiring_date: ''
-  },
-  {
-    type: 'premium_tier',
-    title: 'Nova',
-    image: nova,
-    details: {
-      price: '$5,000',
-      daily_yield: '$12',
-      duration: '180 Days',
-      roi: '$2,160',
-      purchase_limit: '1'
-    },
-    expiring_date: ''
-  },
-];
-const expired_tier: TIER_LIST_TYPE[] = [];
+import React, { useEffect, useState } from 'react'
+import { useUserContext } from '@/store/userContext';
 
 const page = () => {
+  const { user } = useUserContext()
   const router = useRouter()
   const [option, setOption] = React.useState('active');
   const No_data_yet = <h2 className='mt-28 text-center'>no data yet</h2>
+  const plans = [...REBOUND_TIER_LIST, ...PREMIUM_TIER_LIST]
+  const currentPlans = plans.filter(a => user.currentPlan?.includes(a.title));
+  const previousPlans = plans.filter(a => user.previousPlan?.includes(a.title));
   return (
     <div>
       {/* Header */}
@@ -64,10 +37,10 @@ const page = () => {
 
       <div className='max-w-[570px] mx-auto'>
         {option === 'active' && <div className={`pt-[15px] pb-7 flex flex-col gap-3 overflow-y-hidden ${option === 'active' ? 'h-fit' : 'h-0'}`}>
-          {active_tier.length ? active_tier.map((item) => <Tier_List TIER_LIST={item} key={item.title} bg={item.type === 'premium_tier' ? 'bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' : 'bg-(--color1)'} />) : No_data_yet}
+          {currentPlans.length ? currentPlans.map((item) => <Tier_List TIER_LIST={item} key={item.title} bg={item.type === 'premium_tier' ? 'bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' : 'bg-(--color1)'} />) : No_data_yet}
         </div>}
         {option === 'expired' && <div className='pt-[15px] pb-7 flex flex-col gap-3'>
-          {expired_tier.length ? expired_tier.map((item) => <div className='opacity-40'><Tier_List TIER_LIST={item} key={item.title} bg={item.type === 'premium_tier' ? 'bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' : 'bg-(--color1)'} /></div>) : No_data_yet}
+          {previousPlans.length ? previousPlans.map((item) => <div className='opacity-40'><Tier_List TIER_LIST={item} key={item.title} bg={item.type === 'premium_tier' ? 'bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' : 'bg-(--color1)'} /></div>) : No_data_yet}
         </div>}
       </div>
     </div>
