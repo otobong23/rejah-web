@@ -60,6 +60,15 @@ const page = () => {
       })
       return CRV
    }
+   const handleTotalInvested = (param: TIER_LIST_TYPE[]) => {
+      const plans = param || [];
+      let totalInvested = 0
+      plans.forEach(a => {
+         const price = Number(a.details.price.split('$')[1])
+         totalInvested += price
+      })
+      return totalInvested
+   }
 
    const CRV = () => {
       const plans = handlePlans(user)
@@ -71,7 +80,7 @@ const page = () => {
       title: 'Total Assets',
       icon: 'tabler:chart-pie-filled',
       details: {
-         total_invested: '$' + user.totalDeposit,
+         total_invested: '$' + handleTotalInvested(user.currentPlan),
          total_yield_earned: '$' + user.totalYield,
          total_withdrawn: '$' + user.totalWithdraw,
          CRV: '$' + CRV(),
