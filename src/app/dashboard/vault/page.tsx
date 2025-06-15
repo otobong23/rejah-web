@@ -43,11 +43,11 @@ const page = () => {
    const handlePlans = (param: UserType) => {
       const plans = param.currentPlan || []; // Default to empty array if undefined
       const Rebound: TIER_LIST_TYPE[] = REBOUND_TIER_LIST.filter(a =>
-         plans.includes(a.title)
+         plans?.some(b => b.title === a.title)
       );
       const Premium: TIER_LIST_TYPE[] = PREMIUM_TIER_LIST.filter(a =>
-         plans.includes(a.title)
-      );
+         plans?.some(b => b.title === a.title)
+      ); 
       return [...Rebound, ...Premium];
    }
 
