@@ -3,6 +3,7 @@ import { FC } from 'react'
 
 const Tier_List: FC<Tier_List_Props> = ({
    TIER_LIST: {
+      type,
       title,
       image,
       details
@@ -30,7 +31,7 @@ const Tier_List: FC<Tier_List_Props> = ({
                      ))}
                   </tbody>
                </table>
-               {handleBUY && <div onClick={() => handleBUY(details)} className='flex justify-end mt-1.5'>
+               {handleBUY && <div onClick={() => handleBUY({title, type, details})} className='flex justify-end mt-1.5'>
                   <button className={`text-sm py-1.5 px-10 rounded-[10px] transition-all duration-300 hover:scale-90 ${btn_bg}`}>
                      Buy
                   </button>

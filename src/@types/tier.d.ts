@@ -23,7 +23,7 @@ type detailsType = {
 
 type Tier_List_Props = {
    TIER_LIST: TIER_LIST_TYPE
-   handleBUY?: (title: detailsType) => void
+   handleBUY?: (title: TIER_LIST_TYPE) => void
    bg?: string
    btn_bg?: string
    iconColor?: string

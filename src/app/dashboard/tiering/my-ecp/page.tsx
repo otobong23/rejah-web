@@ -12,8 +12,12 @@ const page = () => {
   const [option, setOption] = React.useState('active');
   const No_data_yet = <h2 className='mt-28 text-center'>no data yet</h2>
   const plans = [...REBOUND_TIER_LIST, ...PREMIUM_TIER_LIST]
-  const currentPlans = plans.filter(a => user.currentPlan?.includes(a.title));
-  const previousPlans = plans.filter(a => user.previousPlan?.includes(a.title));
+  const currentPlans = plans.filter(a =>
+    user.currentPlan?.some(b => b.title === a.title)
+  );
+  const previousPlans = plans.filter(a =>
+    user.previousPlan?.some(b => b.title === a.title)
+  );
   return (
     <div>
       {/* Header */}

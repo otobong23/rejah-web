@@ -13,8 +13,8 @@ type UserType = {
   totalWithdraw: number;
   totalDeposit: number;
   transactionCount: number;
-  currentPlan: string[];
-  previousPlan: string[];
+  currentPlan: TIER_LIST_TYPE[];
+  previousPlan: TIER_LIST_TYPE[];
   whatsappNo?: string;
   facebook?: string;
   telegram?: string;

@@ -1,57 +1,123 @@
 'use client';
 import { Icon } from '@iconify/react/dist/iconify.js'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Tier_List from '@/components/Tier_List';
 import { BUTTON_LIST, PREMIUM_TIER_LIST, REBOUND_TIER_LIST } from '@/constant/Tier';
 import { showToast } from '@/utils/alert';
 import { useRouter } from 'next/navigation';
 import { useUserContext } from '@/store/userContext';
+import { useLoader } from '@/store/LoaderContext';
+import api from '@/utils/axios';
+import { AxiosError } from 'axios';
 
 const Tier = () => {
+   const { showPageLoader, hidePageLoader } = useLoader()
    const { user, setUser } = useUserContext()
    const router = useRouter();
    const [activeTier, setActiveTier] = useState('Rebound');
-   const [purchaseDetails, setPurchaseDetails] = useState<detailsType | null>(null)
+   const [purchaseDetails, setPurchaseDetails] = useState<TIER_LIST_TYPE | null>(null)
    const [confirmModal, setConfirmModal] = useState(false)
    const [processingModal, setProcessingModal] = useState(false)
    const [seconds, setSeconds] = useState(0); // countdown
-   const handleBuy = (details: detailsType) => {
+
+   const plans = [...REBOUND_TIER_LIST, ...PREMIUM_TIER_LIST]
+   const currentPlans = plans.filter(a =>
+      user.currentPlan?.some(b => b.title === a.title)
+   );
+   const previousPlans = plans.filter(a =>
+      user.previousPlan?.some(b => b.title === a.title)
+   );
+   const handleClick = (TIER: TIER_LIST_TYPE) => {
       setConfirmModal(true)
-      setPurchaseDetails(details)
+      setPurchaseDetails(TIER)
    }
-   const handleModalButton = (param: string) => {
-      if (param === 'proceed') {
-         setConfirmModal(false)
-         setSeconds(30); // 30 minutes countdown
+   const handleModalButton = async (action: 'proceed' | 'cancel') => {
+      if (action === 'cancel') {
+         return setConfirmModal(false);
+      }
+
+      if (action === 'proceed') {
+         setConfirmModal(false);
+
          try {
-            //backend logic
-            if (!user.balance) {
-               showToast('warning', 'You do not have sufficient deposit balance to proceed with this purchase. Please fund your account first.')
-               return
-            }
-            setProcessingModal(true)
-         } catch (error) {
-            console.log(error)
+            await validateUserBalance();
+            await beginProcessing();
+
+            await startCountdown(10); // 30 seconds for demo
+
+            await finalizePurchase();
+         } catch (error: any) {
+            showToast('error', error.message || 'Something went wrong.');
+            setProcessingModal(false);
          }
       }
-      if (param === 'cancel') {
-         setConfirmModal(false)
-      }
-   }
+   };
 
-   useEffect(() => {
-      let timer: NodeJS.Timeout;
-      if (seconds > 0) {
-         timer = setTimeout(() => {
-            setSeconds(prev => prev - 1);
+   // ──────────────────────────────
+   // Promise-based helper functions
+   // ──────────────────────────────
+
+   const validateUserBalance = (): Promise<void> => {
+      return new Promise((resolve, reject) => {
+         if (!user.balance || user.balance < (Number(purchaseDetails?.details.price.split('$')[1]) || 0)) {
+            reject(new Error('Insufficient deposit balance. Please fund your account.'));
+         } else {
+            resolve();
+         }
+      });
+   };
+
+   const beginProcessing = (): Promise<void> => {
+      return new Promise((resolve) => {
+         setProcessingModal(true);
+         resolve();
+      });
+   };
+
+   const startCountdown = (duration: number): Promise<void> => {
+      return new Promise((resolve) => {
+         setSeconds(duration);
+         const countdown = setInterval(() => {
+            setSeconds((prev) => {
+               if (prev <= 1) {
+                  clearInterval(countdown);
+                  resolve();
+                  return 0;
+               }
+               return prev - 1;
+            });
          }, 1000);
-      } else {
-         setProcessingModal(false)
-         // showToast('success', 'Your pack has been successfully activated. Daily yields will now begin.')
-      }
-      return () => clearTimeout(timer);
-   }, [seconds]);
+      });
+   };
 
+   const finalizePurchase = (): Promise<void> => {
+      return new Promise(async (resolve) => {
+         // TODO: replace with actual API call if needed
+         showPageLoader()
+         try {
+            const useBalance = await api.post<number>('/transaction/useBalance',{ amount: Number(purchaseDetails?.details.price.split('$')[1])})
+            console.log(useBalance.status)
+            const today = new Date();
+            const expiringDate = new Date(today);
+            expiringDate.setDate(today.getDate() + Number(purchaseDetails?.details.duration.split(' ')[0]));
+            const response = await api.patch<UserType>('/profile/update-plan', {
+               type: purchaseDetails?.type || '', title: purchaseDetails?.title || '', details: purchaseDetails?.details || '', expiring_date: expiringDate || '' 
+            })
+            setUser(response.data)
+            hidePageLoader()
+            showToast('success', 'Your pack has been successfully activated. Daily yields will now begin.');
+         } catch (err) {
+            hidePageLoader()
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred during signup')
+            }
+         }
+         setProcessingModal(false);
+         resolve();
+      });
+   };
    return (
       <div>
          <div className={`fixed top-0 left-0 min-w-screen h-screen bg-black/70 z-[99] items-end ${confirmModal ? 'flex' : 'hidden'}`}>
@@ -63,35 +129,35 @@ const Tier = () => {
                      <li>
                         <div className='flex justify-between'>
                            <span>Price:</span>
-                           <span>{purchaseDetails?.price}</span>
+                           <span>{purchaseDetails?.details.price}</span>
                         </div>
                      </li>
                      <li>
                         <div className='flex justify-between'>
                            <span>Daily Yield:</span>
-                           <span>{purchaseDetails?.daily_yield}</span>
+                           <span>{purchaseDetails?.details.daily_yield}</span>
                         </div>
                      </li>
                      <li>
                         <div className='flex justify-between'>
                            <span>Duration:</span>
-                           <span>{purchaseDetails?.duration}</span>
+                           <span>{purchaseDetails?.details.duration}</span>
                         </div>
                      </li>
                      <li>
                         <div className='flex justify-between'>
                            <span>Total (MM) Yield:</span>
-                           <span>{purchaseDetails?.roi}</span>
+                           <span>{purchaseDetails?.details.roi}</span>
                         </div>
                      </li>
                   </ul>
                   <div className='flex gap-2 items-center'>
-                     <h1 className='text-[40px] font-bold'>$10</h1>
+                     <h1 className='text-[40px] font-bold'>{purchaseDetails?.details.price}</h1>
                      <span className='px-2.5 text-[#000914] bg-[#B8FF5E] py-1 rounded-[20px] leading-tight'>Launch Tier | Ascend</span>
                   </div>
                </div>
                <div className='flex gap-2.5'>
-                  {['proceed', 'cancel'].map(item => (
+                  {(['proceed', 'cancel'] as ('proceed' | 'cancel')[]).map(item => (
                      <button key={item} onClick={() => handleModalButton(item)} className={`flex-1 flex justify-center py-[17px] rounded-[15px] text-lg tracking-wide font-bold text-white ${item === 'proceed' ? 'bg-[#6EBA0E]' : 'bg-[#C0C0C063]'}`}>{item}</button>
                   ))}
                </div>
@@ -142,10 +208,10 @@ const Tier = () => {
 
          <div className='max-w-[570px] mx-auto'>
             {activeTier === 'Rebound' && <div className={`pt-[15px] pb-7 flex flex-col gap-3 overflow-y-hidden ${activeTier === 'Rebound' ? 'h-fit' : 'h-0'}`}>
-               {REBOUND_TIER_LIST.map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title + i} />)}
+               {REBOUND_TIER_LIST.filter(item => ![...previousPlans, ...currentPlans].includes(item)).map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleClick} key={item.title + i} />)}
             </div>}
             {activeTier === 'Premium' && <div className='pt-[15px] pb-7 flex flex-col gap-3'>
-               {PREMIUM_TIER_LIST.map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleBuy} key={item.title + i} btn_bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F94E4E_100%)]' bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
+               {PREMIUM_TIER_LIST.filter(item => ![...previousPlans, ...currentPlans].includes(item)).map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleClick} key={item.title + i} btn_bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F94E4E_100%)]' bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
             </div>}
             <div className='text-center bg-(--color1) py-8 px-4 rounded-[20px]'>
                <p className='text-4xl font-black text-(--color1) text-outline'>Coming Soon!</p>
