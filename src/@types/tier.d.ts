@@ -11,6 +11,7 @@ type TIER_LIST_TYPE = {
       purchase_limit: string
    }
    expiring_date?: string
+   createdAt?: string
 }
 
 type detailsType = {

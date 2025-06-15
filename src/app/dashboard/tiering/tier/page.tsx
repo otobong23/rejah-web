@@ -95,7 +95,7 @@ const Tier = () => {
          // TODO: replace with actual API call if needed
          showPageLoader()
          try {
-            const useBalance = await api.post<number>('/transaction/useBalance',{ amount: Number(purchaseDetails?.details.price.split('$')[1])})
+            const useBalance = await api.post<number>('/transaction/useBalance',{ amount: Number(purchaseDetails?.details.price.split('$')[1]), action: 'minus'})
             console.log(useBalance.status)
             const today = new Date();
             const expiringDate = new Date(today);

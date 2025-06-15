@@ -7,9 +7,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
+import { useLoader } from '@/store/LoaderContext'
 
 
 const Login = () => {
+   const {showPageLoader, hidePageLoader} = useLoader()
    const router = useRouter()
    const [form, setForm] = useState({ email: '', username: '', password: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
@@ -39,6 +41,7 @@ const Login = () => {
 
       setError(newError)
       if (Object.keys(newError).length === 0) {
+         showPageLoader()
          try {
             const data = await api.post('/auth/login', {
                email: form.email,
@@ -55,6 +58,7 @@ const Login = () => {
                showToast('error', 'An error occurred during signup')
             }
          }
+         hidePageLoader()
       }
    }
    return (

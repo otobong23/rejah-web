@@ -73,12 +73,12 @@ export default function Signup() {
             router.replace('/dashboard')
          } catch (err) {
             console.error(err)
-            hidePageLoader()
             if (err instanceof AxiosError) {
                showToast('error', err.response?.data.message)
             } else {
                showToast('error', 'An error occurred during signup')
             }
+            hidePageLoader()
          }
 
       }
