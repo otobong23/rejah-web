@@ -1,7 +1,6 @@
 'use client';
 import { Icon } from '@iconify/react/dist/iconify.js'
 import React, { useCallback, useEffect, useState } from 'react'
-// import Rectangle1 from '@/assets/Rectangle1.svg'
 import Rectangle2 from '@/assets/Rectangle2.svg'
 import reja_icon from '@/assets/Mining/Reja_Icon.svg'
 import Image from 'next/image'
@@ -9,7 +8,6 @@ import Link from 'next/link';
 import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
 import api from '@/utils/axios';
-// import { use24HourTimer } from '@/app/hooks/use24HourTimer';
 
 const BUTTON_LIST = [
    'Deposit',
