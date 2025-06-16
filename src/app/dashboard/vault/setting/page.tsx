@@ -21,7 +21,7 @@ const page = () => {
   const [error, setError] = useState<{ [key: string]: string }>({})
   const [active, setActive] = useState(false)
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [confirmModal, setConfirmModal] = useState(true)
+  const [confirmModal, setConfirmModal] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -118,11 +118,11 @@ const page = () => {
     <div>
       <div className={`fixed top-0 left-0 min-w-screen h-screen p-8 bg-black/70 z-[99] items-center  ${confirmModal ? 'flex' : 'hidden'}`}>
         <div className='w-full py-[75px] text-(--color2) text-sm rounded-[32px] border-2 border-[#F5F5F552]/50 bg-white/5 backdrop-blur-sm flex flex-col item-center px-[50px]'>
-          <h1 className='text-center text-[40px] font-bold'>Cycle complete</h1>
+          <h1 className='text-center text-[40px] font-bold'>Confirm</h1>
           <p className='text-center flex flex-col items-center'>
-            <span>You can now withdraw your earnings or reinvest to start a new cycle.</span>
+            <span>Please are you sure you want to delete your account? Your progress will be lost!!!</span>
           </p>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-1'>
             <button onClick={handleConfirm}
               className={`w-full bg-[#6EBA0E] flex-1 text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition opacity-100 hover:scale-90`}>
               confirm
