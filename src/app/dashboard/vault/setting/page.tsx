@@ -95,7 +95,7 @@ const page = () => {
       const startTime = localStorage.getItem(TIMER_KEY);
       if(startTime) localStorage.removeItem(TIMER_KEY);
       showToast('info', response.data.message)
-      router.replace('auth/login')
+      router.replace('/auth/login')
     } catch (err) {
       if (err instanceof AxiosError) {
         showToast('error', err.response?.data.message)
