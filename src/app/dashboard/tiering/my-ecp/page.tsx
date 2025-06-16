@@ -6,18 +6,45 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useUserContext } from '@/store/userContext';
 
+const getRemainingDays = (created_at: string, expiring_date: string) => {
+  const createdAt = new Date(created_at).getTime();
+  const expiringDate = new Date(expiring_date).getTime();
+
+  const diffInMs = expiringDate - createdAt;
+  const remainingDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+  return remainingDays > 0 ? remainingDays : 0; // Return 0 if already expired
+};
+
 const page = () => {
   const { user } = useUserContext()
   const router = useRouter()
   const [option, setOption] = React.useState('active');
   const No_data_yet = <h2 className='mt-28 text-center'>no data yet</h2>
   const plans = [...REBOUND_TIER_LIST, ...PREMIUM_TIER_LIST]
-  const currentPlans = plans.filter(a =>
+  let currentPlans = plans.filter(a =>
     user.currentPlan?.some(b => b.title === a.title)
   );
-  const previousPlans = plans.filter(a =>
+  let previousPlans = plans.filter(a =>
     user.previousPlan?.some(b => b.title === a.title)
   );
+
+  currentPlans = currentPlans.map(item => {
+    const userItem = user.currentPlan?.find(b => b.title === item.title)
+    return ({
+      ...item, details: {
+        ...item.details, duration: getRemainingDays(userItem?.createdAt ?? '', userItem?.expiring_date ?? '') + ' days'
+      }
+    })
+  })
+  previousPlans = previousPlans.map(item => {
+    const userItem = user.previousPlan?.find(b => b.title === item.title)
+    return ({
+      ...item, details: {
+        ...item.details, duration: getRemainingDays(userItem?.createdAt ?? '', userItem?.expiring_date ?? '') + ' days'
+      }
+    })
+  })
   return (
     <div>
       {/* Header */}

@@ -11,7 +11,7 @@ export const BUTTON_LIST = [
    { title: 'Premium', icon: 'icon-park-solid:five-star-badge', iconColor: '#F59E0B' },
 ] 
 
-export const REBOUND_TIER_LIST = [
+export const REBOUND_TIER_LIST:TIER_LIST_TYPE[] = [
    {
       type: 'rebound_tier',
       title: 'PolyCycle',
@@ -73,7 +73,7 @@ export const REBOUND_TIER_LIST = [
    },
 ]
 
-export const PREMIUM_TIER_LIST = [
+export const PREMIUM_TIER_LIST:TIER_LIST_TYPE[] = [
    {
       type: 'premium_tier',
       title: 'Vaultan',

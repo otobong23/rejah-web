@@ -18,6 +18,18 @@ const BUTTON_LIST = [
 
 const DURATION = 24 * 60 * 60 * 1000
 
+const formatTime = (ms: number | null) => {
+   if (ms === null) return '--:--:--';
+   const totalSeconds = Math.floor(ms / 1000);
+   const hours = Math.floor(totalSeconds / 3600);
+   const minutes = Math.floor((totalSeconds % 3600) / 60);
+   const seconds = totalSeconds % 60;
+   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
+      2,
+      '0'
+   )}:${String(seconds).padStart(2, '0')}`;
+};
+
 const page = () => {
    const { user } = useUserContext()
    const [miningActivated, setMiningActivated] = useState(false);
@@ -61,18 +73,6 @@ const page = () => {
    }, [active]);
 
 
-   const formatTime = (ms: number | null) => {
-      if (ms === null) return '--:--:--';
-      const totalSeconds = Math.floor(ms / 1000);
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
-         2,
-         '0'
-      )}:${String(seconds).padStart(2, '0')}`;
-   };
-
    function roundUpTo3Decimals(num: number) {
       return Math.ceil(num * 1000) / 1000;
    }
@@ -102,7 +102,7 @@ const page = () => {
    }
 
    const handleUseBalance = async () => {
-      await api.post<number>('/transaction/useBalance', { amount: handleDailyYield(user.currentPlan), action: 'add' });
+      await api.post<number>('/transaction/mine', { amount: handleDailyYield(user.currentPlan) });
       setConfirmModal(false)
       showToast('success', 'Daily Yields Claimed successfully')
    };
