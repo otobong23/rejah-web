@@ -83,16 +83,26 @@ const page = () => {
         if (err instanceof AxiosError) {
           showToast('error', err.response?.data.message)
         } else {
-          showToast('error', 'An error occurred during signup')
+          showToast('error', 'An error occurred')
         }
       }
     }
   }
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    try {
+      const response = await api.delete<{ message: string }>('/profile/')
+      showToast('info', response.data.message)
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        showToast('error', err.response?.data.message)
+      } else {
+        showToast('error', 'An error occurred during signup')
+      }
+    }
     setConfirmModal(false)
   }
-  const handleCancel = () => {setConfirmModal(false)}
-  const handleDelete = () => {setConfirmModal(true)}
+  const handleCancel = () => { setConfirmModal(false) }
+  const handleDelete = () => { setConfirmModal(true) }
 
   const handleLogout = () => {
     const userToken = Cookies.get("userToken");
