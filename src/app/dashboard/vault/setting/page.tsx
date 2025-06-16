@@ -91,6 +91,9 @@ const page = () => {
   const handleConfirm = async () => {
     try {
       const response = await api.delete<{ message: string }>('/profile/')
+      const TIMER_KEY = 'twentyFourHourTimerStart';
+      const startTime = localStorage.getItem(TIMER_KEY);
+      if(startTime) localStorage.removeItem(TIMER_KEY);
       showToast('info', response.data.message)
       router.replace('auth/login')
     } catch (err) {
