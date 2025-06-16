@@ -33,7 +33,7 @@ const page = () => {
    const [miningActivated, setMiningActivated] = useState(false);
    const [timeLeft, setTimeLeft] = useState<number | null>(null);
    const [wasActive, setWasActive] = useState(false)
-   const [confirmModal, setConfirmModal] = useState(true)
+   const [confirmModal, setConfirmModal] = useState(false)
 
 
    const TIMER_KEY = 'twentyFourHourTimerStart';

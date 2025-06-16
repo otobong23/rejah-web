@@ -10,6 +10,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import imageCompression from 'browser-image-compression';
+import Cookies from "js-cookie";
 
 const page = () => {
   const { showPageLoader, hidePageLoader } = useLoader()
@@ -20,6 +21,7 @@ const page = () => {
   const [error, setError] = useState<{ [key: string]: string }>({})
   const [active, setActive] = useState(false)
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [confirmModal, setConfirmModal] = useState(true)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -47,7 +49,7 @@ const page = () => {
       setPreviewImage(objectUrl);
     } catch (error) {
       console.error('Image compression error:', error);
-      showToast('error','Failed to compress image.');
+      showToast('error', 'Failed to compress image.');
     }
   }
 
@@ -86,8 +88,41 @@ const page = () => {
       }
     }
   }
+  const handleConfirm = () => {
+    setConfirmModal(false)
+  }
+  const handleCancel = () => {setConfirmModal(false)}
+  const handleDelete = () => {setConfirmModal(true)}
+
+  const handleLogout = () => {
+    const userToken = Cookies.get("userToken");
+    if (!userToken) {
+      router.replace("/auth/login");
+      return;
+    }
+    Cookies.remove("userToken");
+    router.replace("/auth/login");
+  }
   return (
     <div>
+      <div className={`fixed top-0 left-0 min-w-screen h-screen p-8 bg-black/70 z-[99] items-center  ${confirmModal ? 'flex' : 'hidden'}`}>
+        <div className='w-full py-[75px] text-(--color2) text-sm rounded-[32px] border-2 border-[#F5F5F552]/50 bg-white/5 backdrop-blur-sm flex flex-col item-center px-[50px]'>
+          <h1 className='text-center text-[40px] font-bold'>Cycle complete</h1>
+          <p className='text-center flex flex-col items-center'>
+            <span>You can now withdraw your earnings or reinvest to start a new cycle.</span>
+          </p>
+          <div className='flex flex-col gap-2'>
+            <button onClick={handleConfirm}
+              className={`w-full bg-[#6EBA0E] flex-1 text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition opacity-100 hover:scale-90`}>
+              confirm
+            </button>
+            <button onClick={handleCancel}
+              className={`w-full bg-[#C0C0C063] flex-1 text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition opacity-100 hover:scale-90`}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
       <button onClick={() => router.back()} className="flex items-center mb-2 space-x-2 transition-all duration-300 cursor-pointer hover:opacity-80">
         <Icon icon='fluent:ios-arrow-24-regular' className="" />
       </button>
@@ -134,8 +169,8 @@ const page = () => {
           ))}
 
           <div className='my-12 flex flex-col gap-3.5 items-center text-lg font-medium text-(--color2)'>
-            <button className='opacity-100 cursor-pointer hover:opacity-50 transition-all duration-300'>Delete Account</button>
-            <button className='opacity-100 cursor-pointer hover:opacity-50 transition-all duration-300'>Logout</button>
+            <button onClick={handleDelete} className='opacity-100 cursor-pointer hover:opacity-50 transition-all duration-300'>Delete Account</button>
+            <button onClick={handleLogout} className='opacity-100 cursor-pointer hover:opacity-50 transition-all duration-300'>Logout</button>
           </div>
 
           <button
