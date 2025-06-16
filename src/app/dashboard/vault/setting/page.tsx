@@ -92,6 +92,7 @@ const page = () => {
     try {
       const response = await api.delete<{ message: string }>('/profile/')
       showToast('info', response.data.message)
+      router.replace('auth/login')
     } catch (err) {
       if (err instanceof AxiosError) {
         showToast('error', err.response?.data.message)
