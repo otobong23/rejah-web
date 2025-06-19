@@ -36,10 +36,6 @@ const WithAuth = ({ children }: { children: React.ReactNode }) => {
     getUser();
   }, [router]);
 
-  useEffect(() => {
-    console.dir(user)
-  }, [user])
-
   if (PageLoader || !user) {
     return null; // or return a spinner/loading UI
   }

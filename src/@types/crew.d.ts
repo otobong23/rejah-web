@@ -24,3 +24,11 @@ interface CrewType {
   totalCrewTransactions: number;
   lastUpdated: string; // ISO date string
 }
+
+type CrewResponse = {
+  crews: CrewType[],
+  limit: number
+  page: 1
+  total: number
+  totalPages: 1
+}

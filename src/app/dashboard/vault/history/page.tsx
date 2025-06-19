@@ -18,27 +18,27 @@ const FILTER = [
    {
       title: 'All',
       type: 'all',
-      stack: 1
+      stackValue: 1
    }, {
       title: 'Income',
       type: 'withdrawal',
-      stack: 2
+      stackValue: 2
    }, {
       title: 'Deposit',
       type: 'deposit',
-      stack: 3
+      stackValue: 3
    }, {
       title: 'Plans',
       type: 'tier',
-      stack: 4
+      stackValue: 4
    }, {
       title: 'Commission',
       type: 'bonus',
-      stack: 5
+      stackValue: 5
    }
 ]
 const getFilterType = (stack: number) => {
-   const found = FILTER.find(f => f.stack === stack);
+   const found = FILTER.find(f => f.stackValue === stack);
    return found?.type ?? 'all';
 };
 
@@ -85,8 +85,8 @@ const page = () => {
          </button>
          <h1 className="text-[40px] font-bold mb-8">Account History</h1>
          <div className="flex gap-2 my-3 overflow-scroll lg:overflow-auto no-scrollbar">
-            {FILTER.map(({ title, type, stack }) => (
-               <button key={title} onClick={() => setStack(stack)} className='py-2 px-6 rounded-[15px] flex items-center justify-center bg-[#002732]'>{title}</button>
+            {FILTER.map(({ title, type, stackValue }) => (
+               <button key={title} onClick={() => setStack(stackValue)} className={`py-2 px-6 rounded-[15px] flex items-center justify-center  ${stack === stackValue ? 'bg-[#00273298]' : 'bg-[#002732]'}`}>{title}</button>
             ))}
          </div>
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>

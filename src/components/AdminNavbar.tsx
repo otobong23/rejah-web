@@ -8,12 +8,12 @@ const NAVBAR_LIST = [
    {
       title: 'dashboard',
       icon: 'tdesign:chart-ring-filled',
-      path: '/admin',
+      path: '/admin/dashboard',
    },
    {
-      title: 'tier',
+      title: 'crew',
       icon: 'majesticons:data',
-      path: '/tier',
+      path: '/admin/crew',
    },
    {
       title: 'transactions',
@@ -21,7 +21,7 @@ const NAVBAR_LIST = [
       path: '/admin/transactions',
    },
    {
-      title: 'admin',
+      title: 'account',
       icon: 'fluent:person-12-filled',
       path: '/admin/account',
    },
@@ -29,10 +29,10 @@ const NAVBAR_LIST = [
 
 const AdminNavbar = () => {
    const pathname = usePathname()
-   const [isActive, setIsActive] = useState('home')
+   const [isActive, setIsActive] = useState('dashboard')
    useEffect(() => {
-      const currentPath = pathname.split('/')[1]
-      const activeItem = NAVBAR_LIST.find(item => item.path === `/${currentPath}`)
+      const currentPath = pathname.split('/')[2]
+      const activeItem = NAVBAR_LIST.find(item => item.path.split('/')[2] === currentPath)
       if (activeItem) {
          setIsActive(activeItem.title)
       } else {
