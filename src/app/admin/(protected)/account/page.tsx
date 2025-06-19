@@ -17,6 +17,10 @@ const page = () => {
       router.push('/admin/transactions')
       return
     }
+    if (label === 'Data summary'){
+      router.push('/admin/dashboard')
+      return
+    }
     router.push(`/admin/account/${label}`)
   }
 
