@@ -123,7 +123,7 @@ const page = () => {
             <div className='w-full relative h-[2px] bg-white/30 mt-[5px]'>
                <span className='w-2.5 h-2.5 block bg-white/50 rounded-full absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'></span>
                <p className='z-[99] text-[8px] text-[#003B46] px-2 py-1 rounded-[20px] bg-white leading-tight absolute top-1/2 transform -translate-y-1/2' style={{
-                  left: 50 + '%'
+                  left: (user?.meter ?? 0) + '%'
                }}>{crew?.totalCrewDeposits}/{handleText()}</p>
                <span className='w-2.5 h-2.5 block bg-white/50 rounded-full absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 z-50'></span>
                <div className='flex justify-between text-[#4C767D] text-xs lg:text-lg mt-3'>
