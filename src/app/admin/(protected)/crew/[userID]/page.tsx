@@ -1,5 +1,4 @@
 'use client';
-import { VIP } from '@/app/dashboard/vault/page';
 import { showToast } from '@/utils/alert';
 import api from '@/utils/axios';
 import { Icon } from '@iconify/react/dist/iconify.js';
@@ -8,6 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import { PREMIUM_TIER_LIST, REBOUND_TIER_LIST } from '@/constant/Tier';
+import { VIP } from '@/components/VIP';
 
 const page = () => {
    const router = useRouter()

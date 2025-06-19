@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
+import { VIP } from '@/components/VIP';
 
 const nunitoSans = Nunito_Sans({
    variable: "--font-nunito_sans",
@@ -27,15 +28,6 @@ const actions = [
    { icon: 'flowbite:download-solid', label: 'Download App' },
    { icon: 'material-symbols:shield', label: 'security' }
 ];
-
-
-export const VIP = ({ iconColor = 'text-white', bg = 'bg-[#B8FF5E]', number = 1 }) => (
-   <div className={`flex items-center gap-1 px-[10px] py-1 rounded-[20px] ${bg}`}>
-      <span><Icon icon='streamline:star-badge-solid' className={`text-sm ${iconColor}`} /></span>
-      <div className='h-[20px] w-[1px] bg-white block self-stretch'></div>
-      <p className='text-sm font-extrabold text-white'>VIP {number}</p>
-   </div>
-)
 const page = () => {
    const { user } = useUserContext()
    const router = useRouter()
