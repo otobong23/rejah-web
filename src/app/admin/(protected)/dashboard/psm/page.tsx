@@ -1,12 +1,33 @@
 'use client'
+import { useAdminContext } from '@/store/adminContext'
+import { showToast } from '@/utils/alert'
+import api from '@/utils/axios'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 const page = () => {
    const router = useRouter()
+   const { admin, setAdmin } = useAdminContext()
    const [amount, setAmount] = useState('')
-   const handleSubmit = () => { }
+
+   const handleSubmit = async () => {
+      try {
+         const response = await api.patch<adminType>("/admin/updateAdmin", {
+            ProfitStop: Number(amount),
+         });
+         const res = await api.get<adminType>("/admin/getAdmin/");
+         setAdmin(res.data);
+         showToast('info', 'Changes Made successfully')
+      } catch (err) {
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message)
+         } else {
+            showToast('error', 'An error occurred')
+         }
+      }
+   }
    return (
       <div>
          <button
@@ -26,7 +47,7 @@ const page = () => {
 
          <div className={`px-5 py-4 rounded-[15px] bg-[#0A1D28]`}>
             <h1 className={`text-base font-medium mb-1`}>Profit Stop</h1>
-            <h2 className={`text-4xl font-extrabold pb-11`}>$25,000</h2>
+            <h2 className={`text-4xl font-extrabold pb-11`}>{"$" + (admin.ProfitStop ?? 0)}</h2>
             <div className='text-xs font-medium flex justify-between items-center'>
                <span>0%</span>
                <span>100%</span>

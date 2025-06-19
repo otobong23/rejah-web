@@ -6,7 +6,6 @@ import React from 'react'
 import { useAdminContext } from '@/store/adminContext'
 
 
-
 const page = () => {
    const { admin } = useAdminContext()
 
@@ -48,7 +47,7 @@ const page = () => {
             {LIST.map(({ title, value, progress }, i) => (
                <div key={title} className={`px-5 py-4 rounded-[15px] ${i === 0 ? 'bg-(--color2) text-[#000914]' : 'bg-[#0A1D28]'}`}>
                   <h1 className={`text-sm font-medium mb-1`}>{title}</h1>
-                  <h2 className={`text-xl font-extrabold pb-11`}>{Number(value).toLocaleString()}</h2>
+                  <h2 className={`text-xl font-extrabold pb-11`}>{Number(value).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h2>
                   <div className='text-xs font-medium flex justify-between items-center'>
                      <span>0%</span>
                      <span>100%</span>
@@ -60,10 +59,8 @@ const page = () => {
             ))}
          </div>
          <div className='flex justify-end py-3'>
-            <div className='bg-cover bg-center bg-no-repeat px-[10px] py-[9px] pl-5' style={{
-               backgroundImage: `url(${Rectangle2.src})`,
-            }}>
-               <Link href='dashboard/psm' className='text-[#F68A3F]'>Profit Stop Management</Link>
+            <div className='bg-(--color1) rounded-[20px] px-5 py-[9px]'>
+               <Link href='dashboard/psm' className='text-[#F68A3F]'>Profit Stop Management</Link> 
             </div>
          </div>
       </div>

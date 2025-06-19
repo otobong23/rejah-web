@@ -70,6 +70,7 @@ const page = () => {
          <div className='mt-9 max-w-[396px] mx-auto'>
             {['wallet_address', 'whatsapp_link', 'telegram_link'].map((field) => (
                <div key={field} className="mb-[30px]">
+                  <label htmlFor={field} className='text-sm font-light mb-2.5 capitalize'>{field.split('_').join(' ')}</label>
                   <div className='flex gap-3.5'>
                      <input
                         id={field}

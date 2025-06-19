@@ -13,7 +13,10 @@ const actions = [
 const page = () => {
   const router = useRouter()
   const handleClick = (label: string) => {
-    if (label === 'history') router.push('/admin/transactions')
+    if (label === 'history'){
+      router.push('/admin/transactions')
+      return
+    }
     router.push(`/admin/account/${label}`)
   }
 
