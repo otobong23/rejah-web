@@ -156,7 +156,7 @@ const page = () => {
    return (
       <div className={`text-(--color2) ${nunitoSans.className}`}>
          <div className={`fixed top-0 left-0 min-w-screen h-screen p-8 bg-black/70 z-[99] items-center  ${confirmModal ? 'flex' : 'hidden'}`}>
-            <div className='w-full py-[75px] text-(--color2) text-sm rounded-[32px] border-2 border-[#F5F5F552]/50 bg-white/5 backdrop-blur-sm flex flex-col items-center px-[50px]'>
+            <div className='w-full py-[75px] text-(--color2) text-sm rounded-[32px] border-2 border-[#F5F5F552]/50 bg-white/5 backdrop-blur-sm flex flex-col px-[50px]'>
                <h1 className='text-center text-[40px] font-bold'>Confirm</h1>
                <p className='text-center flex flex-col items-center'>
                   <span>Please are you sure you want to {status} this transaction? Please Confirm</span>
