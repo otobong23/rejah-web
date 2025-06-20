@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import cryptoLogo from "@/assets/cryptoLogo.svg";
 import { useUserContext } from "@/store/userContext";
+import Link from "next/link";
 
 const NUMBER_LIST = [10, 30, 80, 120, 300, 500, 1000];
 
@@ -147,7 +148,12 @@ const DepositPage = () => {
       >
         <Icon icon="fluent:ios-arrow-24-regular" />
       </button>
-      <h1 className="text-[40px] font-bold mb-8">Deposit</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-[40px] font-bold mb-8">Deposit</h1>
+        <Link href='/dashboard/vault/history'>
+          <Icon icon='icon-park-outline:history-query' className="text-(--color2) text-3xl" />
+        </Link>
+      </div>
       <div className="max-w-[396px] mx-auto">
         {step === 1 ? renderAmountInput() : renderWalletDetails()}
       </div>

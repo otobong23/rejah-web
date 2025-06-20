@@ -6,6 +6,7 @@ import { showToast } from '@/utils/alert';
 import api from '@/utils/axios';
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { AxiosError } from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
@@ -109,7 +110,12 @@ const page = () => {
          <button onClick={() => stack > 1 ? setStack(prev => prev - 1) : router.back()} className="flex items-center mb-2 space-x-2 transition-all duration-300 cursor-pointer hover:opacity-80">
             <Icon icon='fluent:ios-arrow-24-regular' className="" />
          </button>
-         <h1 className="text-[40px] font-bold mb-8">Withdraw</h1>
+         <div className="flex justify-between items-center">
+            <h1 className="text-[40px] font-bold mb-8">Withdraw</h1>
+            <Link href='/dashboard/vault/history'>
+               <Icon icon='icon-park-outline:history-query' className="text-(--color2) text-3xl" />
+            </Link>
+         </div>
 
          <div className='max-w-[396px] mx-auto'>
             {stack === 1 && <div>
