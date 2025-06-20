@@ -122,8 +122,6 @@ export const TRANSACTION_RULES_WITHDRAWAL = [
   "Minimum withdrawal: $5",
   "Percentage Withdrawal Charge: 10%",
   "USDT withdrawal time: Withdrawals can be made at any time from Monday to Sunday.",
-  "USDT withdrawal limit: Your withdrawal limit is set to $5 which can be withdrawn immediately.",
   "Arrival time: Determined based on the arrival time of international bank transfers, usually 24-48 hours.",
-  "Withdrawal account: Ensure that your USDT account or wallet address is correct, if not your withdrawal funds may be lost.",
-  "Charges: Your withdrawal funds will be charged 5%."
+  "Withdrawal account: Ensure that your USDT account or wallet address is correct, if not your withdrawal funds may be lost."
 ];
