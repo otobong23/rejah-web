@@ -41,7 +41,7 @@ const page = () => {
           <button
             onClick={() => handleClick(label)}
             key={index}
-            className="flex flex-col items-center p-3"
+            className="flex flex-col items-center p-3 cursor-pointer"
           >
             <div>
               <Icon icon={icon} className='text-[40px] lg:text-[52px] text-(--color2)' />
