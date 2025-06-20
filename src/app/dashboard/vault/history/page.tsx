@@ -20,7 +20,7 @@ const FILTER = [
       type: 'all',
       stackValue: 1
    }, {
-      title: 'Income',
+      title: 'Withdraw',
       type: 'withdrawal',
       stackValue: 2
    }, {
@@ -32,7 +32,7 @@ const FILTER = [
       type: 'tier',
       stackValue: 4
    }, {
-      title: 'Commission',
+      title: 'Income',
       type: 'bonus',
       stackValue: 5
    }
@@ -74,7 +74,8 @@ const page = () => {
    const filteredTransactions = React.useMemo(() => {
       if (!transaction?.length) return [];
       const type = getFilterType(stack);
-      if (type === 'all') return transaction;
+      if (type === 'all') return transaction; 
+      if (type === 'bonus') return transaction.filter(item => item.type === 'bonus' || item.type === 'yield');
       return transaction.filter(item => item.type === type);
    }, [transaction, stack]);
 
