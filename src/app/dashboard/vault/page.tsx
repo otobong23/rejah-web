@@ -39,7 +39,7 @@ const page = () => {
       );
       const Premium: TIER_LIST_TYPE[] = PREMIUM_TIER_LIST.filter(a =>
          plans?.some(b => b.title === a.title)
-      ); 
+      );
       return [...Rebound, ...Premium];
    }
 
@@ -72,11 +72,12 @@ const page = () => {
       title: 'Total Assets',
       icon: 'tabler:chart-pie-filled',
       details: {
-         total_invested: '$' + (handleTotalInvested(user.currentPlan).toLocaleString() ?? 0),
-         total_yield_earned: '$' + (user.totalYield.toLocaleString() ?? 0),
-         total_withdrawn: '$' + (user.totalWithdraw.toLocaleString() ?? 0),
-         CRV: '$' + (CRV().toLocaleString() ?? 0),
-         balance: '$' + (user.balance.toLocaleString() ?? 0)
+         total_invested: '$' + ((handleTotalInvested(user?.currentPlan ?? []) || 0).toLocaleString()),
+         total_yield_earned: '$' + ((user?.totalYield || 0).toLocaleString()),
+         total_withdrawn: '$' + ((user?.totalWithdraw || 0).toLocaleString()),
+         CRV: '$' + ((CRV() || 0).toLocaleString()),
+         balance: '$' + ((user?.balance || 0).toLocaleString()),
+
       }
    }
    const [crew, setCrew] = useState<CrewType>()
@@ -113,7 +114,7 @@ const page = () => {
          level = 3000
       } else if (tc >= 3000 && tc < 5000) {
          level = 5000
-      }else {
+      } else {
          level = 1000;
       }
       return level
