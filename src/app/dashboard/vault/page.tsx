@@ -72,12 +72,11 @@ const page = () => {
       title: 'Total Assets',
       icon: 'tabler:chart-pie-filled',
       details: {
+         balance: '$' + ((user?.balance || 0).toLocaleString()),
          total_invested: '$' + ((handleTotalInvested(user?.currentPlan ?? []) || 0).toLocaleString()),
          total_yield_earned: '$' + ((user?.totalYield || 0).toLocaleString()),
          total_withdrawn: '$' + ((user?.totalWithdraw || 0).toLocaleString()),
          CRV: '$' + ((CRV() || 0).toLocaleString()),
-         balance: '$' + ((user?.balance || 0).toLocaleString()),
-
       }
    }
    const [crew, setCrew] = useState<CrewType>()
