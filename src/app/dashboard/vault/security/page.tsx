@@ -5,6 +5,7 @@ import { showToast } from '@/utils/alert';
 import api from '@/utils/axios';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { AxiosError } from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
@@ -104,7 +105,7 @@ const page = () => {
           ))}
 
           <div className='my-12 flex flex-col gap-3.5 items-center text-lg font-medium text-(--color2)'>
-            <button className='opacity-100 hover:opacity-50 transition-all duration-300'>Forget Password</button>
+            <Link href='/auth/password-recovery/' className='opacity-100 hover:opacity-50 transition-all duration-300'>Forget Password</Link>
           </div>
 
           <button

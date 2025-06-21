@@ -10,6 +10,8 @@ import { AxiosError } from 'axios'
 import Cookies from "js-cookie";
 import { useLoader } from '@/store/LoaderContext'
 
+const TIMER_KEY = 'twentyFourHourTimerStart';
+
 export default function Signup() {
    const router = useRouter()
    const [form, setForm] = useState({ email: '', username: '', password: '', confirm_password: '', recruiter_code: '' })
@@ -18,13 +20,18 @@ export default function Signup() {
    const searchParams = useSearchParams();
    const refCode = searchParams.get('code');
    const filter = searchParams.get('filter')
-   const {showPageLoader, hidePageLoader} = useLoader()
+   const { showPageLoader, hidePageLoader } = useLoader()
    useEffect(() => {
       console.log(filter)
-      if(refCode) setForm(prev => ({
+      if (refCode) setForm(prev => ({
          ...prev, recruiter_code: refCode
       }));
-   },[])
+   }, [])
+
+   useEffect(() => {
+      const startTime = localStorage.getItem(TIMER_KEY);
+      if (startTime) localStorage.removeItem(TIMER_KEY);
+   }, [])
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setForm({ ...form, [e.target.name]: e.target.value })

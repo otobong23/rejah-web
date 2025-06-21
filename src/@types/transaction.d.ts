@@ -12,6 +12,7 @@ interface UserTransaction {
   plan?: string
   Coin?: string; // Optional because not marked as required in schema
   date?: string | Date; // Could be a string from API or Date if parsed
+  withdrawWalletAddress?: string;
   createdAt?: string;
   updatedAt?: string;
 }

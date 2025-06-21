@@ -9,6 +9,7 @@ import api from '@/utils/axios';
 import Cookies from "js-cookie";
 import Link from 'next/link';
 import { useLoader } from '@/store/LoaderContext';
+import copy from 'copy-to-clipboard';
 
 const nunitoSans = Nunito_Sans({
    variable: "--font-nunito_sans",
@@ -54,7 +55,7 @@ const getFilterType = (stack: number) => {
 
 const page = () => {
    const router = useRouter()
-   const {showPageLoader, hidePageLoader} = useLoader()
+   const { showPageLoader, hidePageLoader } = useLoader()
    const [stack, setStack] = useState(1);
    const [status, setStatus] = useState<'approve' | 'decline' | null>(null)
    const [amount, setAmount] = useState(0)
@@ -63,6 +64,8 @@ const page = () => {
    const [transactionId, setTransactionId] = useState('')
    const [confirmModal, setConfirmModal] = useState(false)
    const [transaction, setTransaction] = useState<UserTransaction[]>([])
+   const [copied, setCopied] = useState(false);
+
 
    useEffect(() => {
       const getTransaction = async () => {
@@ -88,31 +91,31 @@ const page = () => {
    }, [])
 
    const filteredTransactions = React.useMemo(() => {
-   if (!transaction?.length) return [];
+      if (!transaction?.length) return [];
 
-   const type = getFilterType(stack);
-   let filtered = [];
+      const type = getFilterType(stack);
+      let filtered = [];
 
-   if (type === 'all') {
-      filtered = transaction;
-   } else if (type === 'new') {
-      const now = Date.now();
-      const oneDay = 24 * 60 * 60 * 1000;
-      filtered = transaction.filter(item => {
-         const createdAt = new Date(item.createdAt ?? '').getTime();
-         return now - createdAt <= oneDay;
+      if (type === 'all') {
+         filtered = transaction;
+      } else if (type === 'new') {
+         const now = Date.now();
+         const oneDay = 24 * 60 * 60 * 1000;
+         filtered = transaction.filter(item => {
+            const createdAt = new Date(item.createdAt ?? '').getTime();
+            return now - createdAt <= oneDay;
+         });
+      } else {
+         filtered = transaction.filter(item => item.status === type);
+      }
+
+      // Sort pending first
+      return filtered.sort((a, b) => {
+         if (a.status === 'pending' && b.status !== 'pending') return -1;
+         if (a.status !== 'pending' && b.status === 'pending') return 1;
+         return 0; // keep original order otherwise
       });
-   } else {
-      filtered = transaction.filter(item => item.status === type);
-   }
-
-   // Sort pending first
-   return filtered.sort((a, b) => {
-      if (a.status === 'pending' && b.status !== 'pending') return -1;
-      if (a.status !== 'pending' && b.status === 'pending') return 1;
-      return 0; // keep original order otherwise
-   });
-}, [transaction, stack]);
+   }, [transaction, stack]);
 
 
    const handlebutton = (params: 'approve' | 'decline', _id: string, amount: number, email: string, action: 'add' | 'minus') => {
@@ -153,6 +156,13 @@ const page = () => {
       setEmail('')
       setAction('')
    }
+
+   const handleCopy = (value: string) => {
+      copy(value);
+      setCopied(true);
+      showToast('success', "Copied Successfully")
+      setTimeout(() => setCopied(false), 2000);
+   };
    return (
       <div className={`text-(--color2) ${nunitoSans.className}`}>
          <div className={`fixed top-0 left-0 min-w-screen h-screen p-8 bg-black/70 z-[99] items-center  ${confirmModal ? 'flex' : 'hidden'}`}>
@@ -189,7 +199,7 @@ const page = () => {
          </div>
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>
             {filteredTransactions.length ? filteredTransactions.map((a, i) => {
-               if (a.status === 'pending') return <Pending image={a.image ?? ''} _id={a._id} handleClick={handlebutton} key={a.email + i} email={a.email} type={a.type} amount={a.amount} updatedAt={a.updatedAt ?? ''} />
+               if (a.status === 'pending') return <Pending image={a.image ?? ''} _id={a._id} handleClick={handlebutton} key={a.email + i} email={a.email} type={a.type} amount={a.amount} updatedAt={a.updatedAt ?? ''} walletAddress={a.withdrawWalletAddress} oncopy={handleCopy} />
                else return <Done key={a.email + i} email={a.email} type={a.type} amount={a.amount} updatedAt={a.updatedAt ?? ''} status={a.status} />
             }) : <p className="text-center text-sm text-white/60">No Transaction Found yet.</p>}
          </div>
@@ -215,7 +225,7 @@ const Done = ({ email, type, amount, updatedAt, status }: { email: string, type:
       </div>
    </div>
 )
-const Pending = ({ email, image, type, amount, updatedAt, handleClick, _id }: { email: string, image: string, type: string, amount: number, updatedAt: string, handleClick: (params: 'approve' | 'decline', _id: string, amount: number, email: string, action: 'add' | 'minus') => void, _id: string }) => {
+const Pending = ({ email, image, type, amount, updatedAt, handleClick, _id, walletAddress = '', oncopy }: { email: string, image: string, type: string, amount: number, updatedAt: string, handleClick: (params: 'approve' | 'decline', _id: string, amount: number, email: string, action: 'add' | 'minus') => void, _id: string, walletAddress?: string, oncopy: (text: string) => void }) => {
    const [toggle, setToggle] = useState(false)
    return (
       <div className='px-[25px] py-[10px] rounded-[15px] bg-white/7 flex items-center gap-3 transition-all duration-300'>
@@ -232,9 +242,17 @@ const Pending = ({ email, image, type, amount, updatedAt, handleClick, _id }: { 
                <p>{type} | ${amount} <span className='text-[#F59E0B] ml-3'>Pending</span></p>
                <p>{formatTime(updatedAt)}</p>
             </div>
-            <div className={`flex gap-[16px] mt-5 justify-end overflow-hidden transition-all duration-300 ${toggle ? 'max-h-10' : 'max-h-0'}`}>
-               {image && <Link href={ImageDownload(image)} download={`${email}_${_id}_receipt.png`} target="_blank" rel="noopener noreferrer" className='capitalize px-[15px] py-[5px] rounded-[10px] font-semibold text-sm text-white bg-[#F59E0B]'>reciept</Link>}
-               {['approve', 'decline'].map(a => (<button key={a} onClick={() => handleClick(a as 'approve' | 'decline', _id, amount, email, type === 'deposit' ? 'add' : 'minus')} className={`capitalize px-[15px] py-[5px] rounded-[10px] font-semibold text-sm text-white ${a === 'approve' ? 'bg-(--color7)' : 'bg-[#C0C0C063]'}`}>{a}</button>))}
+            <div className={`flex flex-col gap-2 mt-5 justify-end max-w-full overflow-hidden transition-all duration-300 ${toggle ? 'max-h-20' : 'max-h-0'}`}>
+               {walletAddress && (<div className='flex text-(--color2) overflow-hidden'>
+                  <p className='w-[250px] relative truncate'>Addr: <span>{walletAddress}</span></p>
+                  <button className='cursor-pointer' onClick={() => oncopy(walletAddress)}>
+                     <Icon icon='akar-icons:copy' className='text-[20px]' />
+                  </button>
+               </div>)}
+               <div className='flex gap-[16px] justify-end'>
+                  {image && <Link href={ImageDownload(image)} download={`${email}_${_id}_receipt.png`} target="_blank" rel="noopener noreferrer" className='capitalize px-[15px] py-[5px] rounded-[10px] font-semibold text-sm text-white bg-[#F59E0B]'>reciept</Link>}
+                  {['approve', 'decline'].map(a => (<button key={a} onClick={() => handleClick(a as 'approve' | 'decline', _id, amount, email, type === 'deposit' ? 'add' : 'minus')} className={`capitalize px-[15px] py-[5px] rounded-[10px] font-semibold text-sm text-white ${a === 'approve' ? 'bg-(--color7)' : 'bg-[#C0C0C063]'}`}>{a}</button>))}
+               </div>
             </div>
          </div>
       </div>
