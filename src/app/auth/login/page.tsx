@@ -53,7 +53,7 @@ const Login = () => {
                email: form.email,
                password: form.password
             });
-            Cookies.set('userToken', data.data.access_token, { expires: 7, secure: true, sameSite: 'lax' })
+            Cookies.set('userToken', data.data.access_token, { expires: 30, secure: true, sameSite: 'lax' })
             console.log('success', 'Logged in successfully!')
             router.replace('/dashboard')
          } catch (err) {

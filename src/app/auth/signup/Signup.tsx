@@ -75,7 +75,7 @@ export default function Signup() {
                referral_code: form.recruiter_code || undefined
             });
             console.log(data);
-            Cookies.set('userToken', data.data.access_token, { expires: 7, secure: true, sameSite: 'lax' })
+            Cookies.set('userToken', data.data.access_token, { expires: 30, secure: true, sameSite: 'lax' })
             hidePageLoader()
             router.replace('/dashboard')
          } catch (err) {
