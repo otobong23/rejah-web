@@ -8,8 +8,13 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import { useLoader } from '@/store/LoaderContext'
+import { Metadata } from 'next'
 
 const TIMER_KEY = 'twentyFourHourTimerStart';
+
+export const metadata:Metadata = {
+   title: "Login",
+}
 
 const Login = () => {
    const {showPageLoader, hidePageLoader} = useLoader()

@@ -2,9 +2,14 @@
 import { showToast } from '@/utils/alert'
 import api from '@/utils/axios'
 import { AxiosError } from 'axios'
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+export const metadata:Metadata = {
+   title: "Code",
+}
 
 const a = 'w-[48px] md:w-[69px] h-[60px] md:h-[85px] bg-none text-[var(--color2)] text-center text-lg lg:text-xl rounded-[15px] lg:rounded-[17px]'
 const page = () => {

@@ -9,6 +9,11 @@ import { useUserContext } from '@/store/userContext';
 import { useLoader } from '@/store/LoaderContext';
 import api from '@/utils/axios';
 import { AxiosError } from 'axios';
+import { Metadata } from 'next';
+
+export const metadata:Metadata = {
+   title: "Tier",
+}
 
 const Tier = () => {
    const { showPageLoader, hidePageLoader } = useLoader()

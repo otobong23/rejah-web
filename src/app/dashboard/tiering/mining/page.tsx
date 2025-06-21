@@ -8,6 +8,11 @@ import Link from 'next/link';
 import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
 import api from '@/utils/axios';
+import { Metadata } from 'next';
+
+export const metadata:Metadata = {
+   title: "Mining",
+}
 
 const BUTTON_LIST = [
    'Deposit',

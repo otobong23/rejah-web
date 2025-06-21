@@ -1,8 +1,13 @@
 'use client';
 import { FAQ_LIST } from "@/constant/Home";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+export const metadata:Metadata = {
+   title: "Frequently Answered Question",
+}
 
 const faq = () => {
   const router = useRouter()

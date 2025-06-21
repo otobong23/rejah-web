@@ -6,9 +6,14 @@ import { showToast } from '@/utils/alert';
 import api from '@/utils/axios';
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { AxiosError } from 'axios';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+
+export const metadata:Metadata = {
+   title: "Wihdraw",
+}
 
 const page = () => {
    const { user, setUser } = useUserContext()

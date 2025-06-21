@@ -7,7 +7,11 @@ import { Nunito_Sans } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
+import { Metadata } from 'next';
 
+export const metadata:Metadata = {
+   title: "History",
+}
 
 const nunitoSans = Nunito_Sans({
    variable: "--font-nunito_sans",

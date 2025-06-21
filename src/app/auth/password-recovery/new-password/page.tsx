@@ -3,8 +3,13 @@
 import { showToast } from '@/utils/alert'
 import api from '@/utils/axios'
 import { AxiosError } from 'axios'
+import { Metadata } from 'next'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+export const metadata:Metadata = {
+   title: "New Password",
+}
 
 const New_Password = () => {
    const router = useRouter()

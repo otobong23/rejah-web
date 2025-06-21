@@ -2,6 +2,11 @@ import AdminNavbar from '@/components/AdminNavbar';
 import { AdminProvider } from '@/store/adminContext';
 import React from 'react'
 import AdminAuth from './AdminAuth';
+import { Metadata } from 'next';
+
+export const metadata:Metadata = {
+   title: "Admin",
+}
 
 const layout = ({
    children,

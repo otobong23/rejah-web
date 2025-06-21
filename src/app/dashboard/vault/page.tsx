@@ -12,6 +12,11 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import { VIP } from '@/components/VIP';
+import { Metadata } from 'next';
+
+export const metadata:Metadata = {
+   title: "Vault",
+}
 
 const nunitoSans = Nunito_Sans({
    variable: "--font-nunito_sans",

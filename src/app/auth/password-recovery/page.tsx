@@ -4,8 +4,13 @@ import { showToast } from '@/utils/alert'
 import api from '@/utils/axios'
 import { validateEmail } from '@/utils/validators'
 import { AxiosError } from 'axios'
+import { Metadata } from 'next'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+export const metadata:Metadata = {
+   title: "Password Recovery",
+}
 
 const Email = () => {
    const router = useRouter()

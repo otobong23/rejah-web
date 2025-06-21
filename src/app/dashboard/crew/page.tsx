@@ -10,6 +10,11 @@ import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
 import api from '@/utils/axios';
 import { AxiosError } from 'axios';
+import { Metadata } from 'next';
+
+export const metadata:Metadata = {
+   title: "Crew",
+}
 
 const TABLEDATA = [
    ['LVL 1', '5%', '1st person Ref'],

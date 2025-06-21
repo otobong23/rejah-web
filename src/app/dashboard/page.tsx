@@ -10,11 +10,16 @@ import recycle from '@/assets/Home/recycle.png'
 import Image from "next/image"
 import Link from "next/link"
 import { showToast } from "@/utils/alert"
+import { Metadata } from "next"
 
 const nunito = Nunito_Sans({
    subsets: ['latin'],
    variable: '--font-nunito',
 })
+
+export const metadata:Metadata = {
+   title: "Dashboard",
+}
 
 export default function HomeScreen() {
    return (

@@ -11,6 +11,11 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import imageCompression from 'browser-image-compression';
 import Cookies from "js-cookie";
+import { Metadata } from 'next';
+
+export const metadata:Metadata = {
+   title: "Settings",
+}
 
 const page = () => {
   const { showPageLoader, hidePageLoader } = useLoader()

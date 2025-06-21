@@ -5,6 +5,11 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useUserContext } from '@/store/userContext';
+import { Metadata } from 'next';
+
+export const metadata:Metadata = {
+   title: "My ECP",
+}
 
 const getRemainingDays = (created_at: string, expiring_date: string) => {
   const createdAt = new Date(created_at).getTime();
