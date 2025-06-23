@@ -1,5 +1,4 @@
 'use client'
-import { useLoader } from '@/store/LoaderContext'
 import { showToast } from '@/utils/alert'
 import api from '@/utils/axios'
 import { Icon } from '@iconify/react/dist/iconify.js'

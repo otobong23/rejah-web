@@ -37,3 +37,11 @@ type UserContextType = {
    user: UserType;
    setUser: React.Dispatch<React.SetStateAction<UserContextType['user']>>
 }
+
+type UserResponse = {
+  users: UserType[],
+  limit: number
+  page: number
+  total: number
+  totalPages: number
+}

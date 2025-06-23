@@ -28,7 +28,7 @@ interface CrewType {
 type CrewResponse = {
   crews: CrewType[],
   limit: number
-  page: 1
+  page: number
   total: number
-  totalPages: 1
+  totalPages: number
 }
