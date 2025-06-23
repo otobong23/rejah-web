@@ -12,72 +12,72 @@ import { VIP } from '@/components/VIP';
 const page = () => {
    const router = useRouter()
    const { userID } = useParams()
-   const [ crew, setCrew ] = useState<CrewType>()
+   const [crew, setCrew] = useState<CrewType>()
    const [user, setUser] = useState<UserType>()
 
    useEffect(() => {
-    const getCrews = async () => {
-      const adminToken = Cookies.get("adminToken");
+      const getCrews = async () => {
+         const adminToken = Cookies.get("adminToken");
 
-      if (!adminToken) {
-        router.replace("/admin/auth/login");
-        return;
-      }
-      try {
-        api.defaults.headers.common["Authorization"] = `Bearer ${adminToken}`;
-        const response = await api.get<CrewType>(`/admin/crew?userID=${userID}`);
-        const userResponse = await api.get<UserType>(`/admin/user?userID=${userID}`);
-        setCrew(response.data);
-        setUser(userResponse.data)
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          showToast('error', err.response?.data.message)
-        } else {
-          showToast('error', 'An error occurred')
-        }
-      }
-    };
-    getCrews()
-  }, [])
+         if (!adminToken) {
+            router.replace("/admin/auth/login");
+            return;
+         }
+         try {
+            api.defaults.headers.common["Authorization"] = `Bearer ${adminToken}`;
+            const response = await api.get<CrewType>(`/admin/crew?userID=${userID}`);
+            const userResponse = await api.get<UserType>(`/admin/user?userID=${userID}`);
+            setCrew(response.data);
+            setUser(userResponse.data)
+         } catch (err) {
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred')
+            }
+         }
+      };
+      getCrews()
+   }, [])
 
-  const handlePlans = (param: UserType) => {
-        const plans = param.currentPlan || []; // Default to empty array if undefined
-        const Rebound: TIER_LIST_TYPE[] = REBOUND_TIER_LIST.filter(a =>
-           plans?.some(b => b.title === a.title)
-        );
-        const Premium: TIER_LIST_TYPE[] = PREMIUM_TIER_LIST.filter(a =>
-           plans?.some(b => b.title === a.title)
-        ); 
-        return [...Rebound, ...Premium];
-     }
-  
-     const handleCRV = (plans: TIER_LIST_TYPE[]) => {
-        let CRV: number = 0
-        plans.forEach(a => {
-           const daily_yield = Number(a.details.daily_yield.split('$')[1])
-           const duration = Number(a.details.duration.split(' ')[0])
-           CRV += duration * daily_yield
-        })
-        return CRV
-     }
-     const handleTotalInvested = (param: TIER_LIST_TYPE[]) => {
-        const plans = param || [];
-        let totalInvested = 0
-        plans.forEach(a => {
-           const price = Number(a.details.price.split('$')[1])
-           totalInvested += price
-        })
-        return totalInvested
-     }
-  
-     const CRV = () => {
-        if (!user) return 0;
-        const plans = handlePlans(user)
-        const crv = handleCRV(plans)
-        return crv
-     }
+   const handlePlans = (param: UserType) => {
+      const plans = param.currentPlan || []; // Default to empty array if undefined
+      const Rebound: TIER_LIST_TYPE[] = REBOUND_TIER_LIST.filter(a =>
+         plans?.some(b => b.title === a.title)
+      );
+      const Premium: TIER_LIST_TYPE[] = PREMIUM_TIER_LIST.filter(a =>
+         plans?.some(b => b.title === a.title)
+      );
+      return [...Rebound, ...Premium];
+   }
 
-     const handleText = () => {
+   const handleCRV = (plans: TIER_LIST_TYPE[]) => {
+      let CRV: number = 0
+      plans.forEach(a => {
+         const daily_yield = Number(a.details.daily_yield.split('$')[1])
+         const duration = Number(a.details.duration.split(' ')[0])
+         CRV += duration * daily_yield
+      })
+      return CRV
+   }
+   const handleTotalInvested = (param: TIER_LIST_TYPE[]) => {
+      const plans = param || [];
+      let totalInvested = 0
+      plans.forEach(a => {
+         const price = Number(a.details.price.split('$')[1])
+         totalInvested += price
+      })
+      return totalInvested
+   }
+
+   const CRV = () => {
+      if (!user) return 0;
+      const plans = handlePlans(user)
+      const crv = handleCRV(plans)
+      return crv
+   }
+
+   const handleText = () => {
       const tc = crew?.totalCrewDeposits ?? 0;
       let level = 0;
 
@@ -85,7 +85,7 @@ const page = () => {
          level = 3000
       } else if (tc >= 3000 && tc < 5000) {
          level = 5000
-      }else {
+      } else {
          level = 1000;
       }
       return level
