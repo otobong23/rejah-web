@@ -11,9 +11,9 @@ const NAVBAR_LIST = [
       path: '/admin/dashboard',
    },
    {
-      title: 'crew',
+      title: 'TRC',
       icon: 'majesticons:data',
-      path: '/admin/crew',
+      path: '/admin/trc',
    },
    {
       title: 'transactions',
