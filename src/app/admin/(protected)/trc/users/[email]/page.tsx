@@ -154,6 +154,7 @@ const page = () => {
             const response = await api.patch(`/admin/user/${email}`, {
                ActivateBot: params
             })
+            showToast('success', 'User Account has been updated successfully')
          } catch (err) {
             if (err instanceof AxiosError) {
                showToast('error', err.response?.data.message)
@@ -242,7 +243,9 @@ const page = () => {
 
          <div className="flex items-center lg:not-visited:justify-center w-full gap-3 my-3">
             {BUTTON_LIST.map(title => (
-               <button key={title} onClick={() => handleActivation(title)} className={`text-(--color2) bg-[#003B46] rounded-[20px] px-4 py-5 flex-1 max-w-[316px] flex justify-center items-center gap-5 transition-all duration-300`}>
+               <button key={title} onClick={() => handleActivation(title)} className={`text-(--color2) rounded-[20px] px-4 py-5 flex-1 max-w-[316px] flex justify-center items-center gap-5 transition-all duration-300 ${
+                  user.ActivateBot && title === 'Activate account' ? 'bg-[#003B46]' : !user.ActivateBot && title === 'Suspend account account' ? 'bg-[#003B46]' : 'bg-[#101924]'
+               }`}>
                   {title}
                </button>
             ))}
