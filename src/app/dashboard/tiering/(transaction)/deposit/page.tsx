@@ -29,8 +29,12 @@ const DepositPage = () => {
   };
 
   const handleProceed = () => {
-    sessionStorage.setItem("depositAmount", amount);
-    router.push("/dashboard/tiering/deposit/upload-reciept");
+    if (user.ActivateBot) {
+      sessionStorage.setItem("depositAmount", amount);
+      router.push("/dashboard/tiering/deposit/upload-reciept");
+    } else {
+      showToast('warning', 'Your account has been suspended. Please Vist Customer Care')
+    }
   };
 
   const renderAmountInput = () => (
@@ -61,9 +65,8 @@ const DepositPage = () => {
         <button
           onClick={() => setStep(2)}
           disabled={!amount}
-          className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${
-            amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
-          }`}
+          className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+            }`}
         >
           Confirm
         </button>
@@ -104,9 +107,8 @@ const DepositPage = () => {
           <button
             onClick={() => setSubStep(2)}
             disabled={!amount}
-            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${
-              amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
-            }`}
+            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+              }`}
           >
             Confirm
           </button>
@@ -129,9 +131,8 @@ const DepositPage = () => {
           <button
             onClick={handleProceed}
             disabled={!amount}
-            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${
-              amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
-            }`}
+            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+              }`}
           >
             I have Deposited
           </button>

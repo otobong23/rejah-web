@@ -148,6 +148,27 @@ const page = () => {
       router.push(`/admin/account/${label}`)
    }
 
+   const handleActivation = (params: string) => {
+      const activateAccount = async (params: boolean) => {
+         try {
+            const response = await api.patch(`/admin/user/${email}`, {
+               ActivateBot: params
+            })
+         } catch (err) {
+            if (err instanceof AxiosError) {
+               showToast('error', err.response?.data.message)
+            } else {
+               showToast('error', 'An error occurred')
+            }
+         }
+      }
+      if (params === 'Activate account') {
+         activateAccount(true)
+      } else {
+         activateAccount(false)
+      }
+   }
+
    return (
       <div>
          <div className='py-[34px] lg:py-[52px] px-[15px] lg:px-[73px] rounded-[15px] lg:rounded-[23px] bg-(--color1) flex items-center gap-3'>
@@ -221,7 +242,7 @@ const page = () => {
 
          <div className="flex items-center lg:not-visited:justify-center w-full gap-3 my-3">
             {BUTTON_LIST.map(title => (
-               <button key={title} className={`text-(--color2) bg-[#003B46] rounded-[20px] px-4 py-5 flex-1 max-w-[316px] flex justify-center items-center gap-5 transition-all duration-300`}>
+               <button key={title} onClick={() => handleActivation(title)} className={`text-(--color2) bg-[#003B46] rounded-[20px] px-4 py-5 flex-1 max-w-[316px] flex justify-center items-center gap-5 transition-all duration-300`}>
                   {title}
                </button>
             ))}

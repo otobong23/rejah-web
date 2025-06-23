@@ -40,12 +40,16 @@ const TierPage = () => {
          setConfirmModal(false);
 
          try {
-            await validateUserBalance();
-            await beginProcessing();
+            if (user.ActivateBot) {
+               await validateUserBalance();
+               await beginProcessing();
 
-            await startCountdown(10); // 30 seconds for demo
+               await startCountdown(10); // 30 seconds for demo
 
-            await finalizePurchase();
+               await finalizePurchase();
+            } else {
+               showToast('warning', 'Your account has been suspended. Please Vist Customer Care')
+            }
          } catch (error: any) {
             showToast('error', error.message || 'Something went wrong.');
             setProcessingModal(false);
@@ -92,16 +96,15 @@ const TierPage = () => {
 
    const finalizePurchase = (): Promise<void> => {
       return new Promise(async (resolve) => {
-         // TODO: replace with actual API call if needed
          showPageLoader()
          try {
-            const useBalance = await api.post<number>('/transaction/getPlan',{ amount: Number(purchaseDetails?.details.price.split('$')[1]), plan: purchaseDetails?.title })
+            const useBalance = await api.post<number>('/transaction/getPlan', { amount: Number(purchaseDetails?.details.price.split('$')[1]), plan: purchaseDetails?.title })
             console.log(useBalance.status)
             const today = new Date();
             const expiringDate = new Date(today);
             expiringDate.setDate(today.getDate() + Number(purchaseDetails?.details.duration.split(' ')[0]));
             const response = await api.patch<UserType>('/profile/update-plan', {
-               type: purchaseDetails?.type || '', title: purchaseDetails?.title || '', details: purchaseDetails?.details || '', expiring_date: expiringDate || '' 
+               type: purchaseDetails?.type || '', title: purchaseDetails?.title || '', details: purchaseDetails?.details || '', expiring_date: expiringDate || ''
             })
             setUser(response.data)
             hidePageLoader()

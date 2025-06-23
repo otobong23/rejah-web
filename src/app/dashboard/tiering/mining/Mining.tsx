@@ -91,13 +91,17 @@ const MiningPage = () => {
    }, 0);
 
    const handleMine = () => {
-      if (!user.currentPlan.length) {
-         showToast('info', 'you do not have an active plan')
-         return
-      }
-      if (timeLeft) return
+      if (user.ActivateBot) {
+         if (!user.currentPlan.length) {
+            showToast('info', 'you do not have an active plan')
+            return
+         }
+         if (timeLeft) return
 
-      startTimer()
+         startTimer()
+      } else {
+         showToast('warning', 'Your account has been suspended. Please Vist Customer Care')
+      }
    }
 
    const handleUseBalance = async () => {
