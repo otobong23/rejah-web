@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation'
 const page = () => {
    const router = useRouter()
    const [users, setUsers] = useState<UserType[]>()
+   const [originalUsers, setOriginalUsers] = useState<UserType[]>([]);
+   const [searching, setSearching] = useState(false);
+   const [keyword, setKeyword] = useState('');
    useEffect(() => {
       const getUsers = async () => {
          const adminToken = Cookies.get("adminToken");
@@ -23,6 +26,7 @@ const page = () => {
             api.defaults.headers.common["Authorization"] = `Bearer ${adminToken}`;
             const response = await api.get<UserResponse>("/admin/users?limit=50&page=1");
             setUsers(response.data.users);
+            setOriginalUsers(response.data.users);
          } catch (err) {
             if (err instanceof AxiosError) {
                showToast('error', err.response?.data.message)
@@ -33,6 +37,26 @@ const page = () => {
       };
       getUsers()
    }, [])
+   const handleSearch = async () => {
+      if (!keyword.trim()) return;
+      setSearching(true);
+
+      try {
+         const res = await api.get<UserResponse>(`/admin/search/users?keyword=${keyword}`);
+         setUsers(res.data.users);
+      } catch (err) {
+         setUsers([]);
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message);
+         }
+      }
+   };
+
+   const resetSearch = () => {
+      setKeyword('');
+      setUsers(originalUsers);
+      setSearching(false);
+   };
    return (
       <div className='text-(--color2)'>
          <div className='flex justify-between items-center pb-10'>
@@ -45,10 +69,15 @@ const page = () => {
          </div>
 
          <div className='max-w-[652px] flex p-[13px] gap-5 items-center border border-(--color2) rounded-[15px]'>
-            <button>
+            {!searching && <button onClick={handleSearch}>
                <Icon icon="material-symbols:search" className='text-xl text-(--color2)' />
-            </button>
-            <input type="text" placeholder='Search' className='text-lg w-full' />
+            </button>}
+            {searching && (
+               <button onClick={resetSearch} className='text-sm text-red-400 font-medium'>
+                  <Icon icon="humbleicons:times" className='text-xl text-(--color2)' />
+               </button>
+            )}
+            <input type="text" placeholder='Search' className='text-lg w-full outline-none border-0' value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} />
          </div>
 
          <div className='max-w-[652px] mx-auto max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3 mt-4'>
@@ -59,11 +88,11 @@ const page = () => {
                   </div>
                   <div>
                      <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userID}</h2>
-                     <p className='text-(--color2)/50 text-xs'>VIP 
-                     {vip === 0 && '0'}
-                     {vip === 1 && '1st'}
-                     {vip === 2 && '2nd'}
-                     {vip === 3 && '3rd'}
+                     <p className='text-(--color2)/50 text-xs'>VIP
+                        {vip === 0 && '0'}
+                        {vip === 1 && '1st'}
+                        {vip === 2 && '2nd'}
+                        {vip === 3 && '3rd'}
                      </p>
                      <p className='text-(--color2)/50 text-xs'>Total Deposit | {totalDeposit}</p>
                   </div>
