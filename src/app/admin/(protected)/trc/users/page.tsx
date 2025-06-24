@@ -42,8 +42,8 @@ const page = () => {
       setSearching(true);
 
       try {
-         const res = await api.get<UserResponse>(`/admin/search/users?keyword=${keyword}`);
-         setUsers(res.data.users);
+         const res = await api.get<UserType[]>(`/admin/search/users?keyword=${keyword}`);
+         setUsers(res.data);
       } catch (err) {
          setUsers([]);
          if (err instanceof AxiosError) {

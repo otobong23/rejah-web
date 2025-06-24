@@ -11,6 +11,10 @@ import { useRouter } from 'next/navigation'
 const page = () => {
   const router = useRouter()
   const [crews, setCrews] = useState<CrewType[]>()
+  const [originalCrews, setOriginalCrews] = useState<CrewType[]>([])
+  const [keyword, setKeyword] = useState('')
+  const [searching, setSearching] = useState(false)
+
   useEffect(() => {
     const getCrews = async () => {
       const adminToken = Cookies.get("adminToken");
@@ -23,6 +27,7 @@ const page = () => {
         api.defaults.headers.common["Authorization"] = `Bearer ${adminToken}`;
         const response = await api.get<CrewResponse>("/admin/crews?limit=50&page=1");
         setCrews(response.data.crews);
+        setOriginalCrews(response.data.crews);
       } catch (err) {
         if (err instanceof AxiosError) {
           showToast('error', err.response?.data.message)
