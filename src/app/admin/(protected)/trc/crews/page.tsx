@@ -79,7 +79,7 @@ const page = () => {
             <Icon icon="humbleicons:times" className='text-xl text-(--color2)' />
           </button>
         )}
-        <input type="text" placeholder='Search' className='text-lg w-full' value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} />
+        <input type="text" placeholder='Search' className='text-lg w-full outline-none border-0' value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} />
       </div>
 
       <div className='max-w-[652px] mx-auto max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3 mt-4'>
