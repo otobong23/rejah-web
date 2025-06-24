@@ -38,6 +38,27 @@ const page = () => {
     };
     getCrews()
   }, [])
+
+  const handleSearch = async () => {
+    if (!keyword.trim()) return;
+    setSearching(true);
+
+    try {
+      const res = await api.get<CrewType[]>(`/admin/search/crews?keyword=${keyword}`);
+      setCrews(res.data);
+    } catch (err) {
+      setCrews([]);
+      if (err instanceof AxiosError) {
+        showToast('error', err.response?.data.message);
+      }
+    }
+  };
+
+  const resetSearch = () => {
+    setKeyword('');
+    setCrews(originalCrews);
+    setSearching(false);
+  };
   return (
     <div className='text-(--color2)'>
       <div className='flex justify-between items-center pb-10'>
@@ -50,10 +71,15 @@ const page = () => {
       </div>
 
       <div className='max-w-[652px] flex p-[13px] gap-5 items-center border border-(--color2) rounded-[15px]'>
-        <button>
+        {!searching && <button onClick={handleSearch}>
           <Icon icon="material-symbols:search" className='text-xl text-(--color2)' />
-        </button>
-        <input type="text" placeholder='Search' className='text-lg w-full' />
+        </button>}
+        {searching && (
+          <button onClick={resetSearch} className='text-sm text-red-400 font-medium'>
+            <Icon icon="humbleicons:times" className='text-xl text-(--color2)' />
+          </button>
+        )}
+        <input type="text" placeholder='Search' className='text-lg w-full' value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} />
       </div>
 
       <div className='max-w-[652px] mx-auto max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3 mt-4'>
