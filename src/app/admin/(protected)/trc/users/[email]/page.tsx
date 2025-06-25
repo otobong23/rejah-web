@@ -10,6 +10,7 @@ import Vault_List from '@/components/Vault_List';
 import { PREMIUM_TIER_LIST, REBOUND_TIER_LIST } from '@/constant/Tier';
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { Nunito_Sans } from 'next/font/google'
+import { useLoader } from '@/store/LoaderContext'
 
 const nunitoSans = Nunito_Sans({
    variable: "--font-nunito_sans",
@@ -33,6 +34,8 @@ const page = () => {
    const { email } = useParams()
    const [user, setUser] = useState<UserType>({} as UserType)
    const [crew, setCrew] = useState<CrewType>({} as CrewType)
+   const [confirmModal, setConfirmModal] = useState(false)
+   const {showPageLoader, hidePageLoader} = useLoader()
 
    useEffect(() => {
       const getCrews = async () => {
@@ -56,6 +59,25 @@ const page = () => {
       };
       getCrews()
    }, [])
+
+   const handleConfirm = async () => {
+      showPageLoader()
+      try {
+         const response = await api.patch('/admin/detachUser/', { userID: user.userID })
+         showToast('info', response.data.message)
+         router.replace('/admin/trc/users')
+      } catch (err) {
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message)
+         } else {
+            showToast('error', 'An error occurred during signup')
+         }
+      }
+      hidePageLoader()
+      setConfirmModal(false)
+   }
+   const handleCancel = () => { setConfirmModal(false) }
+   const handleDelete = () => { setConfirmModal(true) }
 
    const handlePlans = (param: UserType) => {
       const plans = param.currentPlan || []; // Default to empty array if undefined
@@ -172,6 +194,24 @@ const page = () => {
 
    return (
       <div>
+         <div className={`fixed top-0 left-0 min-w-screen h-screen p-8 bg-black/70 z-[99] items-center  ${confirmModal ? 'flex' : 'hidden'}`}>
+            <div className='w-full py-[75px] text-(--color2) text-sm rounded-[32px] border-2 border-[#F5F5F552]/50 bg-white/5 backdrop-blur-sm flex flex-col item-center px-[50px]'>
+               <h1 className='text-center text-[40px] font-bold'>Confirm</h1>
+               <p className='text-center flex flex-col items-center'>
+                  <span>Please are you sure you want to delete this account and it&apos;s crew? The User&apos;s progress will be lost!!!</span>
+               </p>
+               <div className='flex flex-col gap-1'>
+                  <button onClick={handleConfirm}
+                     className={`w-full bg-[#6EBA0E] flex-1 text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition opacity-100 hover:scale-90`}>
+                     confirm
+                  </button>
+                  <button onClick={handleCancel}
+                     className={`w-full bg-[#C0C0C063] flex-1 text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition opacity-100 hover:scale-90`}>
+                     Cancel
+                  </button>
+               </div>
+            </div>
+         </div>
          <div className='py-[34px] lg:py-[52px] px-[15px] lg:px-[73px] rounded-[15px] lg:rounded-[23px] bg-(--color1) flex items-center gap-3'>
             <div>
                <div className='w-[90px] lg:w-[151px] h-[90px] overflow-hidden lg:h-[151px] relative rounded-full bg-[#EFEFEF] flex items-center justify-center'>
@@ -243,13 +283,13 @@ const page = () => {
 
          <div className="flex items-center lg:not-visited:justify-center w-full gap-3 my-3">
             {BUTTON_LIST.map(title => (
-               <button key={title} onClick={() => handleActivation(title)} className={`text-(--color2) rounded-[20px] px-4 py-5 flex-1 max-w-[316px] flex justify-center items-center gap-5 transition-all duration-300 ${
-                  user.ActivateBot && title === 'Activate account' ? 'bg-[#003B46]' : !user.ActivateBot && title === 'Suspend account' ? 'bg-[#003B46]' : 'bg-[#101924]'
-               }`}>
+               <button key={title} onClick={() => handleActivation(title)} className={`text-(--color2) rounded-[20px] px-4 py-5 flex-1 max-w-[316px] flex justify-center items-center gap-5 transition-all duration-300 ${user.ActivateBot && title === 'Activate account' ? 'bg-[#003B46]' : !user.ActivateBot && title === 'Suspend account' ? 'bg-[#003B46]' : 'bg-[#101924]'
+                  }`}>
                   {title}
                </button>
             ))}
          </div>
+         <button onClick={handleDelete} className='w-full flex justify-center items-center bg-[#003B46] text-(--color2) font-semibold text-2xl py-6 rounded-[20px] transition-all duration-300 transform scale-100 hover:scale-90 focus:scale-90'>Delete Team Leader</button>
       </div>
    )
 }
