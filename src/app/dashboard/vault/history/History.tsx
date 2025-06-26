@@ -7,6 +7,7 @@ import { Nunito_Sans } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
+import { formatInTimeZone } from 'date-fns-tz';
 
 
 const nunitoSans = Nunito_Sans({
@@ -74,7 +75,7 @@ const History = () => {
    const filteredTransactions = React.useMemo(() => {
       if (!transaction?.length) return [];
       const type = getFilterType(stack);
-      if (type === 'all') return transaction; 
+      if (type === 'all') return transaction;
       if (type === 'bonus') return transaction.filter(item => item.type === 'bonus' || item.type === 'yield');
       return transaction.filter(item => item.type === type);
    }, [transaction, stack]);
@@ -114,7 +115,7 @@ const History = () => {
                      <div className='flex items-center justify-between'>
                         <h1 className='text-sm font-semibold mb-1 capitalize'>
                            {/* Dynamic heading using type and status */}
-                           {item.type} - {item.status}
+                           {item.type} - {item.amount}
                         </h1>
                         <span className={`text-xs font-bold uppercase px-2 py-1 rounded-full 
           ${item.status === 'pending' ? 'bg-yellow-400/20 text-yellow-400'
@@ -168,6 +169,7 @@ const History = () => {
                            }
                         })()}
                      </p>
+                     <p className='text-xs font-normal text-(--color2)/50'>{formatInTimeZone(item.updatedAt ?? Date.now(), 'UTC', 'dd/MM/yy, HH:mm')}</p>
                   </div>
                </div>
             )) : <p className="text-center text-sm text-white/60">No Transaction Found yet.</p>}
