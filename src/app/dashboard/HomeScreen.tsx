@@ -43,7 +43,7 @@ export default function HomeScreen() {
          <div className="flex flex-col gap-4 md:flex-row-reverse">
             {/* Callouts */}
             <div className="md:flex-3 grid grid-cols-2 gap-4 text-[var(--color1)] text-sm font-medium">
-               <div className="bg-[var(--color2)] rounded-xl p-3 space-y-1 row-span-2 col-span-2 md:col-span-1 relative">
+               <div className="bg-[var(--color2)] rounded-xl p-3 space-y-1 row-span-2 relative">
                   <h2 className="text-[40px] font-bold leading-[35px] pb-[11px] z-50">Start.<br />Grow.<br />Earn</h2>
                   <div className="absolute top-0 right-0">
                      <Image src={recycle} alt="recycle" className="w-[150px] md:w-[110px] lg:w-[150px] h-full object-cover" />
@@ -60,6 +60,10 @@ export default function HomeScreen() {
                      ))}
                   </ul>
                </div>
+               <div className="rounded-xl row-span-2 relative overflow-hidden">
+                  <img src='/document.png' alt="cac" className="object-cotain h-full" />
+               </div>
+               
                <div className="bg-(--color2) rounded-xl p-3 space-y-1 relative flex items-center">
                   <h2 className="text-[30px] font-bold leading-[25px] pb-[11px]">We’ve<br />Got<br />Clarity.</h2>
                   <div className="absolute top-0 right-0">

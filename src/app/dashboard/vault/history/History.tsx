@@ -93,89 +93,20 @@ const History = () => {
          </div>
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>
             {filteredTransactions.length ? filteredTransactions.map((item, index) => (
-               <div key={item.type + index} className='flex py-2.5 px-5 bg-white/7 gap-3 rounded-[15px] items-center'>
-                  <div>
-                     <Icon
-                        icon={
-                           item.type === 'deposit' ? 'ant-design:dollar-circle-filled'
-                              : item.type === 'withdrawal' ? 'streamline:payment-10-solid'
-                                 : item.type === 'tier' ? 'fa6-solid:money-bill-trend-up'
-                                    : item.type === 'bonus' ? 'solar:hand-money-bold'
-                                       : 'mingcute:notification-fill'
-                        }
-                        className={`text-4xl ${item.type === 'deposit' ? 'text-[#3B82F6]'
-                           : item.type === 'withdrawal' ? 'text-[#10B981]'
-                              : item.type === 'tier' ? 'text-[#8B5CF6]'
-                                 : item.type === 'bonus' ? 'text-[#F59E0B]'
-                                    : 'text-[#F94E4E]'}`}
-                     />
+               <div key={item.type + index} className='flex flex-col py-2.5 px-5 bg-white/7 gap-3 rounded-[15px]'>
+                  <div className='flex justify-between'>
+                     <h1 className='text-sm font-semibold mb-1 capitalize'>
+                        {item.type} {item.status === 'pending' ? 'pending' : item.status === 'completed' ? 'successful' : 'failed'}
+                     </h1>
+                     <p>${item.amount.toLocaleString()}</p>
                   </div>
-
-                  <div className='flex-1 text-(--color2)'>
-                     <div className='flex items-center justify-between'>
-                        <h1 className='text-sm font-semibold mb-1 capitalize'>
-                           {/* Dynamic heading using type and status */}
-                           {item.type} - ${item.amount.toLocaleString()}
-                        </h1>
-                        <span className={`text-xs font-bold uppercase px-2 py-1 rounded-full 
-          ${item.status === 'pending' ? 'bg-yellow-400/20 text-yellow-400'
-                              : item.status === 'completed' ? 'bg-green-400/20 text-green-400'
-                                 : 'bg-red-400/20 text-red-400'}
-        `}>
-                           {item.status}
-                        </span>
-                     </div>
-
-                     <p className='text-xs font-normal text-(--color2)/50'>
-                        {(() => {
-                           const amt = `$${item.amount}`;
-                           const status = item.status;
-                           const plan = item.plan ?? '';
-
-                           switch (item.type) {
-                              case 'deposit':
-                                 return status === 'pending'
-                                    ? `You initiated a deposit of ${amt}. Awaiting confirmation.`
-                                    : status === 'completed'
-                                       ? `You successfully deposited ${amt} into your account.`
-                                       : `Deposit of ${amt} failed. Please try again.`;
-
-                              case 'withdrawal':
-                                 return status === 'pending'
-                                    ? `You requested a withdrawal of ${amt}. Processing...`
-                                    : status === 'completed'
-                                       ? `${amt} has been successfully withdrawn.`
-                                       : `Withdrawal of ${amt} failed. Contact support if unresolved.`;
-
-                              case 'tier':
-                                 if (plan.includes('-')) {
-                                    const [from, to] = plan.split('-');
-                                    return status === 'completed'
-                                       ? `Your plan was upgraded from ${from} to ${to}.`
-                                       : `Tier upgrade (${from} → ${to}) is ${status}.`;
-                                 }
-                                 return `Tier change of ${amt} is ${status}.`;
-
-                              case 'bonus':
-                                 return status === 'completed'
-                                    ? `You received a bonus of ${amt}.`
-                                    : `Bonus payout of ${amt} is ${status}.`;
-
-                              case 'yield':
-                                 return `Yield reward of ${amt} is currently ${status}.`;
-
-                              default:
-                                 return `Transaction of ${amt} is currently ${status}.`;
-                           }
-                        })()}
-                     </p>
-                     <p className='text-xs font-normal text-(--color2)/50 mt-2'>{formatInTimeZone(item.updatedAt ?? Date.now(), 'UTC', 'dd/MM/yy, HH:mm')}</p>
+                  <div className='flex justify-between text-xs font-normal text-(--color2)/50'>
+                     <p>{formatInTimeZone(item.updatedAt ?? Date.now(), 'Africa/Lagos', 'HH:mm')}</p>
+                     <p>{formatInTimeZone(item.updatedAt ?? Date.now(), 'Africa/Lagos', 'dd/MM/yy')}</p>
                   </div>
                </div>
             )) : <p className="text-center text-sm text-white/60">No Transaction Found yet.</p>}
-
          </div>
-
       </div>
    )
 }
