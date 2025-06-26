@@ -115,7 +115,7 @@ const History = () => {
                      <div className='flex items-center justify-between'>
                         <h1 className='text-sm font-semibold mb-1 capitalize'>
                            {/* Dynamic heading using type and status */}
-                           {item.type} - {item.amount}
+                           {item.type} - ${item.amount.toLocaleString()}
                         </h1>
                         <span className={`text-xs font-bold uppercase px-2 py-1 rounded-full 
           ${item.status === 'pending' ? 'bg-yellow-400/20 text-yellow-400'
