@@ -1,6 +1,8 @@
 import world from '@/assets/Home/Home-world.png'
-import waste from '@/assets/Home/Home-waste.png'
+// import waste from '@/assets/Home/Home-waste.png'
 import refer from '@/assets/Home/Home-refer.png'
+import recycler from '@/assets/Home/Home-recycler.png'
+import no_waste from '@/assets/Home/Home-no-waste.png'
 
 
 
@@ -16,14 +18,14 @@ export const TOP_CARD_LIST = [
       image: world,
    },
    {
-      subTitle: 'Goals | Vision',
-      title: 'Life From Waste',
-      titleIcon:'tabler:world-heart',
+      subTitle: 'Machine | Recycler',
+      title: 'Recycler',
+      titleIcon:'fluent:earth-leaf-48-filled',
       description: 'Earn from enabling us create safer Living from the toxic wastes everywhere',
       descriptionIcon: 'ant-design:dollar-circle-filled',
       description2: '',
       descriptionIcon2: '',
-      image: waste,
+      image: recycler,
    },
    {
       subTitle: 'Invite | Become a crew leader',
@@ -34,6 +36,16 @@ export const TOP_CARD_LIST = [
       description2: '',
       descriptionIcon2: '',
       image: refer,
+   },
+   {
+      subTitle: 'Machine | Recycler',
+      title: 'No waste',
+      titleIcon:'fa:recycle',
+      description: 'Turning toxic wastes everywhere to purposeful safe materials.',
+      descriptionIcon: 'fluent:people-24-filled',
+      description2: '',
+      descriptionIcon2: '',
+      image: no_waste,
    },
 ]
 
