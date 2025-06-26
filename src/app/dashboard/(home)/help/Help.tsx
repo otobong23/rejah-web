@@ -6,10 +6,25 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { HELP_STEPS } from "@/constant/Home";
+import { useEffect, useState } from "react";
+import api from "@/utils/axios";
 
+type globalDataType = { walletAddress: string, whatsappLink: string, telegramLink: string }
 
+ 
 export default function HelpScreen() {
    const router = useRouter()
+   const [whatsappLink, setWhatsappLink] = useState('https://wa.me/447447247209')
+   const [telegramLink, setTelegramLink] = useState('https://t.me/+kWTXS1QL1qlkZTQ0')
+   useEffect(() => {
+    const getGlobal = async () => {
+      const response = await api<globalDataType>('/admin/globalData');
+      const data = response.data
+      setWhatsappLink(data.whatsappLink)
+      setTelegramLink(data.telegramLink)
+    }
+    getGlobal()
+   },[])
   return (
     <div className="text-(--color2) pb-32 relative">
       {/* Header */}
@@ -38,14 +53,14 @@ export default function HelpScreen() {
       </ol>
 
       {/* social media Icon (bottom-right) */}
-      <Link href='https://wa.me/447447247209' target="_blank" className="fixed bottom-40 right-4">
+      <Link href={whatsappLink} target="_blank" className="fixed bottom-40 right-4">
         <Image
           src={whatsappSVG}
           alt="WhatsApp"
           className="w-24 h-full object-cover rounded-full shadow-lg"
         />
       </Link>
-      <Link href='https://t.me/+kWTXS1QL1qlkZTQ0' target="_blank" className="fixed bottom-20 right-4">
+      <Link href={telegramLink} target="_blank" className="fixed bottom-20 right-4">
         <Image
           src={telegramSVG}
           alt="telegram"
