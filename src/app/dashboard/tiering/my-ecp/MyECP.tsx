@@ -3,24 +3,22 @@ import Tier_List from '@/components/Tier_List';
 import { REBOUND_TIER_LIST, PREMIUM_TIER_LIST } from '@/constant/Tier';
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useUserContext } from '@/store/userContext';
+import { differenceInCalendarDays } from 'date-fns';
 
 
-const getRemainingDays = (created_at: string, expiring_date: string) => {
-  const createdAt = new Date(created_at).getTime();
-  const expiringDate = new Date(expiring_date).getTime();
-
-  const diffInMs = expiringDate - createdAt;
-  const remainingDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-
-  return remainingDays > 0 ? remainingDays : 0; // Return 0 if already expired
+const getRemainingDays = (date?: string) => {
+  if (!date) return 0;
+  const expiry = new Date(date);
+  if (isNaN(expiry.getTime())) return 0;
+  return Math.max(0, differenceInCalendarDays(expiry, new Date()));
 };
 
 const MyECP = () => {
   const { user } = useUserContext()
   const router = useRouter()
-  const [option, setOption] = React.useState('active');
+  const [option, setOption] = useState('active');
   const No_data_yet = <h2 className='mt-28 text-center'>no data yet</h2>
   const plans = [...REBOUND_TIER_LIST, ...PREMIUM_TIER_LIST]
   let currentPlans = plans.filter(a =>
@@ -34,7 +32,7 @@ const MyECP = () => {
     const userItem = user.currentPlan?.find(b => b.title === item.title)
     return ({
       ...item, details: {
-        ...item.details, duration: getRemainingDays(userItem?.createdAt ?? '', userItem?.expiring_date ?? '') + ' days'
+        ...item.details, duration: getRemainingDays(userItem?.expiring_date ?? '') + ' days'
       }
     })
   })
@@ -42,7 +40,7 @@ const MyECP = () => {
     const userItem = user.previousPlan?.find(b => b.title === item.title)
     return ({
       ...item, details: {
-        ...item.details, duration: getRemainingDays(userItem?.createdAt ?? '', userItem?.expiring_date ?? '') + ' days'
+        ...item.details, duration: getRemainingDays(userItem?.expiring_date ?? '') + ' days'
       }
     })
   })

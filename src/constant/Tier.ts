@@ -55,7 +55,7 @@ export const REBOUND_TIER_LIST:TIER_LIST_TYPE[] = [
       details: {
          price: '$80',
          daily_yield: '$2.50',
-         duration: '60 Days',
+         duration: '90 Days',
          roi: '$180',
          purchase_limit: '1'
       }
@@ -65,9 +65,9 @@ export const REBOUND_TIER_LIST:TIER_LIST_TYPE[] = [
       image: rubberRise,
       details: {
          price: '$120',
-         daily_yield: '$3.00',
+         daily_yield: '$4.00',
          duration: '90 Days',
-         roi: '$270',
+         roi: '$360',
          purchase_limit: '1'
       }
    },
@@ -94,7 +94,7 @@ export const PREMIUM_TIER_LIST:TIER_LIST_TYPE[] = [
          price: '$500',
          daily_yield: '$8',
          duration: '180 Days',
-         roi: '$1,200',
+         roi: '$1,440',
          purchase_limit: '1'
       }
    },
