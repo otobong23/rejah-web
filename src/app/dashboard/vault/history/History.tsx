@@ -169,7 +169,7 @@ const History = () => {
                            }
                         })()}
                      </p>
-                     <p className='text-xs font-normal text-(--color2)/50'>{formatInTimeZone(item.updatedAt ?? Date.now(), 'UTC', 'dd/MM/yy, HH:mm')}</p>
+                     <p className='text-xs font-normal text-(--color2)/50 mt-3'>{formatInTimeZone(item.updatedAt ?? Date.now(), 'UTC', 'dd/MM/yy, HH:mm')}</p>
                   </div>
                </div>
             )) : <p className="text-center text-sm text-white/60">No Transaction Found yet.</p>}
