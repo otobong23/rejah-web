@@ -15,8 +15,8 @@ const BUTTON_LIST = [
    'Withdraw',
 ]
 
-// const DURATION = 24 * 60 * 60 * 1000 //24 hours
-const DURATION = 1 * 10 * 60 * 1000 //10 minutes
+const DURATION = 24 * 60 * 60 * 1000 //24 hours
+// const DURATION = 1 * 10 * 60 * 1000 //10 minutes
 
 const formatTime = (ms: number | null) => {
    if (ms === null) return '--:--:--';
