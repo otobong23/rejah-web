@@ -3,7 +3,7 @@ import { useLoader } from '@/store/LoaderContext';
 import api from '@/utils/axios';
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import { showToast } from '@/utils/alert';
 import imageCompression from 'browser-image-compression';
@@ -13,6 +13,8 @@ const page = () => {
    const { showPageLoader, hidePageLoader } = useLoader()
    const router = useRouter()
    const [file, setFile] = useState<File | null>(null)
+   const [transactionID, setTransactionID] = useState('')
+   const [active, setActive] = useState(false)
 
    const MAX_FILE_SIZE_MB = 5;
 
@@ -37,6 +39,10 @@ const page = () => {
          showToast('error', 'Failed to compress image.');
       }
    };
+   useEffect(() => {
+      if(file && transactionID) setActive(true);
+      else setActive(false)
+   }, [file, transactionID])
 
 
    const toBase64 = (file: File): Promise<string> =>
@@ -69,6 +75,7 @@ const page = () => {
          const response = await api.post('/transaction/deposit', {
             amount: Number(number),
             image: imageBase64,
+            transactionID
          });
          console.log(response);
          showToast('success', 'Deposit request submitted successfully')
@@ -94,20 +101,36 @@ const page = () => {
          <h1 className="text-[40px] font-bold mb-8">Upload receipt</h1>
 
          <div className='max-w-[396px] mx-auto'>
-            <div className='flex justify-center mt-11'>
-               <label htmlFor='reciept' className='w-[115px] h-[115px] rounded-full bg-(--color2) flex items-center justify-center'>
-                  <span>
-                     <Icon icon='mingcute:upload-3-fill' className='text-[72px] text-[#121A24]' />
-                  </span>
-               </label>
-               <div className='hidden'>
-                  <input type="file" name="reciept" id="reciept" accept="image/*,application/pdf" onChange={handleFileChange} />
+            <div className='flex flex-col items-center gap-5 justify-center mt-11'>
+               <div>
+                  <label htmlFor='reciept' className='w-[115px] h-[115px] rounded-full bg-(--color2) flex items-center justify-center'>
+                     <span>
+                        <Icon icon='mingcute:upload-3-fill' className='text-[72px] text-[#121A24]' />
+                     </span>
+                  </label>
+                  <div className='hidden'>
+                     <input type="file" name="reciept" id="reciept" accept="image/*,application/pdf" onChange={handleFileChange} />
+                  </div>
+               </div>
+
+               <div className='w-full'>
+                  <label htmlFor='transactionId' className='text-xs pb-2'>Transaction ID</label>
+                  <div className='w-full'>
+                     <input
+                        type="password"
+                        placeholder="*******"
+                        id='transactionId'
+                        className="py-[15px] px-3 outline-0 rounded-[15px] border border-(--color2)/20 focus:border-(--color2)/70 text-lg font-medium w-full"
+                        value={transactionID}
+                        onChange={e => setTransactionID(e.target.value)}
+                     />
+                  </div>
                </div>
             </div>
 
             <button
                onClick={handleUpload}
-               className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${file ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!file}
+               className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
             >
                Upload
             </button>
