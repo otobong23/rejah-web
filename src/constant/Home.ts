@@ -3,6 +3,8 @@ import world from '@/assets/Home/Home-world.png'
 import refer from '@/assets/Home/Home-refer.png'
 import recycler from '@/assets/Home/Home-recycler.png'
 import no_waste from '@/assets/Home/Home-no-waste.png'
+import conference1 from '@/assets/Home/Home-conference-1.png'
+import conference2 from '@/assets/Home/Home-conference-2.png'
 
 
 
@@ -22,7 +24,7 @@ export const TOP_CARD_LIST = [
       title: 'Recycler',
       titleIcon:'fluent:earth-leaf-48-filled',
       description: 'Earn from enabling us create safer Living from the toxic wastes everywhere',
-      descriptionIcon: 'ant-design:dollar-circle-filled',
+      descriptionIcon: '',
       description2: '',
       descriptionIcon2: '',
       image: recycler,
@@ -32,7 +34,7 @@ export const TOP_CARD_LIST = [
       title: 'Refer & Multiply',
       titleIcon:'solar:share-bold',
       description: 'With each person you bring in, you earn, they grow, and your collective potential expands.',
-      descriptionIcon: 'fluent:people-24-filled',
+      descriptionIcon: '',
       description2: '',
       descriptionIcon2: '',
       image: refer,
@@ -42,10 +44,30 @@ export const TOP_CARD_LIST = [
       title: 'No waste',
       titleIcon:'fa:recycle',
       description: 'Turning toxic wastes everywhere to purposeful safe materials.',
-      descriptionIcon: 'fluent:people-24-filled',
+      descriptionIcon: '',
       description2: '',
       descriptionIcon2: '',
       image: no_waste,
+   },
+   {
+      subTitle: 'Company | Visionaries',
+      title: '',
+      titleIcon:'',
+      description: 'Turning toxic wastes everywhere to purposeful safe materials.',
+      descriptionIcon: '',
+      description2: '',
+      descriptionIcon2: '',
+      image: conference1,
+   },
+   {
+      subTitle: 'Company | Visionaries',
+      title: '',
+      titleIcon:'',
+      description: 'Turning toxic wastes everywhere to purposeful safe materials.',
+      descriptionIcon: '',
+      description2: '',
+      descriptionIcon2: '',
+      image: conference2,
    },
 ]
 

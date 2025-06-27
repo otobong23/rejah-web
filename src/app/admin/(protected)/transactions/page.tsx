@@ -211,7 +211,7 @@ const page = () => {
          </div>
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>
             {filteredTransactions.length ? filteredTransactions.map((a, i) => {
-               if (a.status === 'pending') return <Pending image={a.image ?? ''} _id={a._id} handleClick={handlebutton} key={a.email + i} email={a.email} type={a.type} amount={a.amount} updatedAt={a.updatedAt ?? ''} walletAddress={a.withdrawWalletAddress} oncopy={handleCopy} />
+               if (a.status === 'pending') return <Pending image={a.image ?? ''} _id={a._id} handleClick={handlebutton} key={a.email + i} email={a.email} type={a.type} amount={a.amount} updatedAt={a.updatedAt ?? ''} walletAddress={a.withdrawWalletAddress} oncopy={handleCopy} transactionID={a.transactionID ?? ''} />
                else return <Done key={a.email + i} email={a.email} type={a.type} amount={a.amount} updatedAt={a.updatedAt ?? ''} status={a.status} />
             }) : <p className="text-center text-sm text-white/60">No Transaction Found yet.</p>}
          </div>
@@ -237,7 +237,7 @@ const Done = ({ email, type, amount, updatedAt, status }: { email: string, type:
       </div>
    </div>
 )
-const Pending = ({ email, image, type, amount, updatedAt, handleClick, _id, walletAddress = '', oncopy }: { email: string, image: string, type: string, amount: number, updatedAt: string, handleClick: (params: 'approve' | 'decline', _id: string, amount: number, email: string, action: 'add' | 'minus') => void, _id: string, walletAddress?: string, oncopy: (text: string) => void }) => {
+const Pending = ({ email, image, type, amount, updatedAt, handleClick, _id, walletAddress = '', oncopy, transactionID }: { email: string, image: string, type: string, amount: number, updatedAt: string, handleClick: (params: 'approve' | 'decline', _id: string, amount: number, email: string, action: 'add' | 'minus') => void, _id: string, walletAddress?: string, oncopy: (text: string) => void, transactionID: string }) => {
    const [toggle, setToggle] = useState(false)
    return (
       <div className='px-[25px] py-[10px] rounded-[15px] bg-white/7 flex items-center gap-3 transition-all duration-300'>
@@ -258,6 +258,12 @@ const Pending = ({ email, image, type, amount, updatedAt, handleClick, _id, wall
                {walletAddress && (<div className='flex text-(--color2) overflow-hidden'>
                   <p className='w-[250px] relative truncate'>Addr: <span>{walletAddress}</span></p>
                   <button className='cursor-pointer' onClick={() => oncopy(walletAddress)}>
+                     <Icon icon='akar-icons:copy' className='text-[20px]' />
+                  </button>
+               </div>)}
+               {type === 'deposit' && (<div className='flex text-(--color2) overflow-hidden'>
+                  <p className='w-[250px] relative truncate'>TrnxID: <span>{transactionID}</span></p>
+                  <button className='cursor-pointer' onClick={() => oncopy(transactionID)}>
                      <Icon icon='akar-icons:copy' className='text-[20px]' />
                   </button>
                </div>)}
