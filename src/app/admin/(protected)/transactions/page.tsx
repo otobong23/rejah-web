@@ -37,13 +37,21 @@ const FILTER = [
       type: 'completed',
       stackValue: 3
    }, {
+      title: 'Deposit',
+      type: 'deposit',
+      stackValue: 4
+   }, {
+      title: 'Withdraw',
+      type: 'withdrawal',
+      stackValue: 5
+   }, {
       title: 'Pending',
       type: 'pending',
-      stackValue: 4
+      stackValue: 6
    }, {
       title: 'Failed',
       type: 'failed',
-      stackValue: 5
+      stackValue: 7
    }
 ]
 
@@ -105,6 +113,10 @@ const page = () => {
             const createdAt = new Date(item.createdAt ?? '').getTime();
             return now - createdAt <= oneDay;
          });
+      } else if (type === 'deposit') {
+         filtered = transaction.filter(item => item.type === 'deposit')
+      } else if (type === 'withdrawal') {
+         filtered = transaction.filter(item => item.type === 'withdrawal')
       } else {
          filtered = transaction.filter(item => item.status === type);
       }
