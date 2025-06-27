@@ -9,8 +9,6 @@ import { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import { useLoader } from '@/store/LoaderContext'
 
-const TIMER_KEY = 'twentyFourHourTimerStart';
-
 const Login = () => {
    const {showPageLoader, hidePageLoader} = useLoader()
    const router = useRouter()
@@ -22,11 +20,6 @@ const Login = () => {
       setForm({ ...form, [e.target.name]: e.target.value })
       setError({ ...error, [e.target.name]: '' })
    }
-
-   useEffect(() => {
-      const startTime = localStorage.getItem(TIMER_KEY);
-      if(startTime)localStorage.removeItem(TIMER_KEY);
-   }, [])
 
    useEffect(() => {
       if (form.email && form.username && form.password) {
