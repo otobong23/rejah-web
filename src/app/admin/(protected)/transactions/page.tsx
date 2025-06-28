@@ -254,7 +254,7 @@ const Pending = ({ email, image, type, amount, updatedAt, handleClick, _id, wall
                <p>{type} | ${amount} <span className='text-[#F59E0B] ml-3'>Pending</span></p>
                <p>{formatTime(updatedAt)}</p>
             </div>
-            <div className={`flex flex-col gap-2 mt-5 justify-end max-w-full overflow-hidden transition-all duration-300 ${toggle ? 'max-h-20' : 'max-h-0'}`}>
+            <div className={`flex flex-col gap-2 mt-5 justify-end max-w-full overflow-hidden transition-all duration-300 ${toggle ? 'max-h-40' : 'max-h-0'}`}>
                {walletAddress && (<div className='flex text-(--color2) overflow-hidden'>
                   <p className='w-[250px] relative truncate'>Addr: <span>{walletAddress}</span></p>
                   <button className='cursor-pointer' onClick={() => oncopy(walletAddress)}>
