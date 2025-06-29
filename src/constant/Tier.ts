@@ -55,8 +55,8 @@ export const REBOUND_TIER_LIST:TIER_LIST_TYPE[] = [
       details: {
          price: '$80',
          daily_yield: '$2.50',
-         duration: '60 Days',
-         roi: '$150',
+         duration: '90 Days',
+         roi: '$225',
          purchase_limit: '1'
       }
    },{
@@ -66,8 +66,8 @@ export const REBOUND_TIER_LIST:TIER_LIST_TYPE[] = [
       details: {
          price: '$120',
          daily_yield: '$4.00',
-         duration: '60 Days',
-         roi: '$240',
+         duration: '80 Days',
+         roi: '$320',
          purchase_limit: '1'
       }
    },
