@@ -28,11 +28,6 @@ export default function Signup() {
       }));
    }, [])
 
-   useEffect(() => {
-      const startTime = localStorage.getItem(TIMER_KEY);
-      if (startTime) localStorage.removeItem(TIMER_KEY);
-   }, [])
-
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setForm({ ...form, [e.target.name]: e.target.value })
       setError({ ...error, [e.target.name]: '' })

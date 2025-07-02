@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
 import api from '@/utils/axios';
+import { AxiosError } from 'axios';
 
 
 const BUTTON_LIST = [
@@ -15,39 +16,53 @@ const BUTTON_LIST = [
    'Withdraw',
 ]
 
-const DURATION = 24 * 60 * 60 * 1000 //24 hours
-// const DURATION = 1 * 10 * 60 * 1000 //10 minutes
+// const DURATION = 24 * 60 * 60 * 1000 //24 hours
+const DURATION = 1 * 1 * 60 * 1000 //1 minutes
 
 const formatTime = (ms: number | null) => {
-   if (ms === null) return '--:--:--';
-   const totalSeconds = Math.floor(ms / 1000);
-   const hours = Math.floor(totalSeconds / 3600);
-   const minutes = Math.floor((totalSeconds % 3600) / 60);
-   const seconds = totalSeconds % 60;
-   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
-      2,
-      '0'
-   )}:${String(seconds).padStart(2, '0')}`;
+  if (ms === null) return '--:--:--';
+  const totalSeconds = Math.floor(ms / 1000);
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return `${h.toString().padStart(2, '0')}:${m
+    .toString()
+    .padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 };
 
 const MiningPage = () => {
-   const { user } = useUserContext()
+
+   const { user, setUser } = useUserContext()
    const [miningActivated, setMiningActivated] = useState(false);
    const [timeLeft, setTimeLeft] = useState<number | null>(null);
    const [wasActive, setWasActive] = useState(false)
    const [confirmModal, setConfirmModal] = useState(false)
 
+   const updateTimer = async (params: string | undefined) => {
+      try {
+         const response = await api.patch<UserType>('/profile/update', { twentyFourHourTimerStart: params })
+         setUser(response.data)
+      } catch (err) {
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message)
+         } else {
+            showToast('error', 'An error occurred')
+         }
+      }
+   }
+   // const TIMER_KEY = 'twentyFourHourTimerStart';
 
-   const TIMER_KEY = 'twentyFourHourTimerStart';
    const [active, setActive] = useState(false)
    const startTimer = useCallback(() => {
       const now = Date.now();
-      localStorage.setItem(TIMER_KEY, now.toString());
-      setActive(true);
+      updateTimer(now.toString()).then(() => {
+         setActive(true)
+      })
    }, []);
 
    useEffect(() => {
-      const startTime = localStorage.getItem(TIMER_KEY);
+      // const startTime = localStorage.getItem(TIMER_KEY)
+      const startTime = user.twentyFourHourTimerStart
 
       if (startTime) {
          setActive(true);
@@ -59,9 +74,11 @@ const MiningPage = () => {
             if (diff <= 0) {
                setTimeLeft(0);
                clearInterval(interval);
-               localStorage.removeItem(TIMER_KEY);
-               setWasActive(true)
-               setActive(false);
+               // localStorage.removeItem(TIMER_KEY);
+               updateTimer('').then(() => {
+                  setWasActive(true)
+                  setActive(false);
+               })
             } else {
                setTimeLeft(diff);
                setWasActive(false)

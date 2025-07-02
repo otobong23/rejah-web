@@ -27,6 +27,7 @@ type UserType = {
   walletPassword: string
   withdrawalWallet?: withdrawalWallet;
   withdrawStatus?: 'pending' | 'completed' | 'failed';
+  twentyFourHourTimerStart?: string | undefined;
   ActivateBot?: boolean;
   vip: number;
   meter: number;
@@ -34,8 +35,8 @@ type UserType = {
 };
 
 type UserContextType = {
-   user: UserType;
-   setUser: React.Dispatch<React.SetStateAction<UserContextType['user']>>
+  user: UserType;
+  setUser: React.Dispatch<React.SetStateAction<UserContextType['user']>>
 }
 
 type UserResponse = {
