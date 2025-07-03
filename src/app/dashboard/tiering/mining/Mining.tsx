@@ -20,14 +20,14 @@ const DURATION = 24 * 60 * 60 * 1000 //24 hours
 // const DURATION = 1 * 1 * 60 * 1000 //1 minutes
 
 const formatTime = (ms: number | null) => {
-  if (ms === null) return '--:--:--';
-  const totalSeconds = Math.floor(ms / 1000);
-  const h = Math.floor(totalSeconds / 3600);
-  const m = Math.floor((totalSeconds % 3600) / 60);
-  const s = totalSeconds % 60;
-  return `${h.toString().padStart(2, '0')}:${m
-    .toString()
-    .padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+   if (ms === null) return '--:--:--';
+   const totalSeconds = Math.floor(ms / 1000);
+   const h = Math.floor(totalSeconds / 3600);
+   const m = Math.floor((totalSeconds % 3600) / 60);
+   const s = totalSeconds % 60;
+   return `${h.toString().padStart(2, '0')}:${m
+      .toString()
+      .padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 };
 
 const MiningPage = () => {
@@ -36,9 +36,9 @@ const MiningPage = () => {
    const [miningActivated, setMiningActivated] = useState(false);
    const [timeLeft, setTimeLeft] = useState<number | null>(null);
    const [wasActive, setWasActive] = useState(false)
-   const [confirmModal, setConfirmModal] = useState(false)
+   // const [confirmModal, setConfirmModal] = useState(false)
 
-   const updateTimer = async (params: string | undefined) => {
+   const updateTimer = async (params: string) => {
       try {
          const response = await api.patch<UserType>('/profile/update', { twentyFourHourTimerStart: params })
          setUser(response.data)
@@ -75,10 +75,8 @@ const MiningPage = () => {
                setTimeLeft(0);
                clearInterval(interval);
                // localStorage.removeItem(TIMER_KEY);
-               updateTimer('').then(() => {
-                  setWasActive(true)
-                  setActive(false);
-               })
+               setWasActive(true)
+               setActive(false);
             } else {
                setTimeLeft(diff);
                setWasActive(false)
@@ -123,20 +121,33 @@ const MiningPage = () => {
    }
 
    const handleUseBalance = async () => {
-      await api.post<number>('/transaction/mine', { amount: handleDailyYield(user.currentPlan) });
-      setConfirmModal(false)
-      showToast('success', 'Daily Yields Claimed successfully')
+      try {
+         await api.post<number>('/transaction/mine', { amount: handleDailyYield(user.currentPlan) });
+         // setConfirmModal(false)
+         showToast('success', 'Daily Yields Claimed successfully')
+      } catch (err) {
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message)
+         } else {
+            showToast('error', 'An error occurred')
+         }
+      }
    };
 
    useEffect(() => { setMiningActivated(active) }, [active])
    useEffect(() => {
       if (wasActive) {
-         setConfirmModal(true)
+         handleUseBalance().then(() => {
+            updateTimer('').then(() => {
+               setWasActive(false)
+            })
+         })
+         // setConfirmModal(true)
       }
    }, [wasActive])
    return (
       <div>
-         <div className={`fixed top-0 left-0 min-w-screen h-screen p-8 bg-black/70 z-[99] items-center  ${confirmModal ? 'flex' : 'hidden'}`}>
+         {/* <div className={`fixed top-0 left-0 min-w-screen h-screen p-8 bg-black/70 z-[99] items-center  ${confirmModal ? 'flex' : 'hidden'}`}>
             <div className='w-full py-[75px] text-(--color2) text-sm rounded-[32px] border-2 border-[#F5F5F552]/50 bg-white/5 backdrop-blur-sm flex flex-col item-center px-[50px]'>
                <h1 className='text-center text-[40px] font-bold'>Cycle complete</h1>
                <p className='text-center flex flex-col items-center'>
@@ -147,7 +158,7 @@ const MiningPage = () => {
                   Claim
                </button>
             </div>
-         </div>
+         </div> */}
          <div className={`bg-white/7 backdrop-blur-md text-(--color2) rounded-[15px] py-[23px] px-[25px] relative`}>
             <div className="text-[10px] font-light mb-1.5 flex items-center gap-1.5">
                <span>Current Reja plan</span>
