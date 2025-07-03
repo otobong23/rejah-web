@@ -57,13 +57,17 @@ const MiningPage = () => {
       const now = Date.now();
       updateTimer(now.toString()).then(() => {
          setActive(true)
-      })
+      }).catch(() => {
+         setActive(false);
+         setTimeLeft(null);
+      });
+
    }, []);
 
    useEffect(() => {
       // const startTime = localStorage.getItem(TIMER_KEY)
       const startTime = user.twentyFourHourTimerStart
-
+      if (!startTime) return;
       if (startTime) {
          setActive(true);
          const interval = setInterval(() => {
@@ -85,7 +89,7 @@ const MiningPage = () => {
 
          return () => clearInterval(interval);
       }
-   }, [active]);
+   }, [active, user.twentyFourHourTimerStart]);
 
 
    function roundUpTo3Decimals(num: number) {
@@ -112,7 +116,7 @@ const MiningPage = () => {
             showToast('info', 'you do not have an active plan')
             return
          }
-         if (timeLeft) return
+         if (timeLeft !== null && timeLeft > 0) return;
 
          startTimer()
       } else {
