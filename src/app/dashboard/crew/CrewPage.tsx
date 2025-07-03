@@ -18,33 +18,6 @@ const TABLEDATA = [
    ['LVL 3', '1%', '3st person Ref'],
 ]
 
-const REFERRAL = [
-   {
-      userId: '6893762',
-      level: '1st',
-      text: 'TreadForge | $80'
-   }, {
-      userId: '6893762',
-      level: '1st',
-      text: 'TreadForge | $80'
-   }, {
-      userId: '6893762',
-      level: '1st',
-      text: 'TreadForge | $80'
-   }, {
-      userId: '6893762',
-      level: '1st',
-      text: 'TreadForge | $80'
-   }, {
-      userId: '6893762',
-      level: '1st',
-      text: 'TreadForge | $80'
-   }, {
-      userId: '6893762',
-      level: '1st',
-      text: 'TreadForge | $80'
-   },
-]
 const CrewPage = () => {
    const [stack, setStack] = useState(1)
    const [referralCode, setReferralCode] = useState('2GR57DX')
