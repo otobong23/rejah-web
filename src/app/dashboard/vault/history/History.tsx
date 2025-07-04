@@ -42,35 +42,71 @@ const getFilterType = (stack: number) => {
    const found = FILTER.find(f => f.stackValue === stack);
    return found?.type ?? 'all';
 };
-
+const limit = 50
 const History = () => {
    const router = useRouter()
    const [stack, setStack] = useState(1);
    const [transaction, setTransaction] = useState<UserTransaction[]>()
-   useEffect(() => {
-      const getUser = async () => {
-         const userToken = Cookies.get("userToken");
+   const [totalTransaction, setTotalTransaction] = useState(0)
+   const [currentTransactionPage, setCurrentTransactionPage] = useState(1)
+   const [totalPages, setTotalPages] = useState(1)
 
-         if (!userToken) {
-            router.replace("/auth/login");
-            return;
-         }
+   const getTransaction = async (page: number = 1) => {
+      const userToken = Cookies.get("userToken");
 
-         try {
-            api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
-            const response = await api.get<{ transactions: UserTransaction[] }>("/transaction/");
-            setTransaction(response.data.transactions)
-            console.log(response.data)
-         } catch (err) {
-            if (err instanceof AxiosError) {
-               showToast('error', err.response?.data.message)
-            } else {
-               showToast('error', 'An error occurred during signup')
-            }
+      if (!userToken) {
+         router.replace("/auth/login");
+         return;
+      }
+
+      try {
+         api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+         const response = await api.get<transactionResponseType>(`/transaction?limit=50&page=${page}`);
+         setTransaction(response.data.transactions)
+         setTotalTransaction(response.data.total)
+         setCurrentTransactionPage(response.data.page)
+         setTotalPages(response.data.totalPages)
+      } catch (err) {
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message)
+         } else {
+            showToast('error', 'An error occurred during signup')
          }
       }
-      getUser()
+   }
+
+   useEffect(() => {
+      getTransaction()
    }, [])
+
+   const next = () => {
+      const offset = totalPages - currentTransactionPage
+      if (offset <= 0) return
+      try {
+         const page = currentTransactionPage + 1
+         getTransaction(page)
+      } catch (err) {
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message)
+         } else {
+            showToast('error', 'An error occurred during signup')
+         }
+      }
+   }
+   const previous = () => {
+      const offset = totalPages - currentTransactionPage
+      if (offset > 0) return
+      try {
+         const page = currentTransactionPage ? currentTransactionPage - 1 : 1
+         getTransaction(page)
+      } catch (err) {
+         if (err instanceof AxiosError) {
+            showToast('error', err.response?.data.message)
+         } else {
+            showToast('error', 'An error occurred during signup')
+         }
+      }
+   }
 
    const filteredTransactions = React.useMemo(() => {
       if (!transaction?.length) return [];
@@ -90,6 +126,10 @@ const History = () => {
             {FILTER.map(({ title, type, stackValue }) => (
                <button key={title} onClick={() => setStack(stackValue)} className={`py-2 px-6 rounded-[15px] flex items-center justify-center  ${stack === stackValue ? 'bg-[#00273298]' : 'bg-[#002732]'}`}>{title}</button>
             ))}
+         </div>
+         <div className="flex justify-between" hidden={totalPages == 1}>
+            <button onClick={previous} className={`flex items-center ${currentTransactionPage == 1 ? 'invisible':'visible'}`}><Icon icon='fluent:chevron-left-24-filled' className="text-2xl" /><span className='leading-tight'>prev</span></button>
+            <button onClick={next} className={`flex items-center ${currentTransactionPage == totalPages ? ' invisible':'visible'}`}><span className='leading-tight'>next</span><Icon icon='fluent:chevron-right-24-filled' className="text-2xl" /></button>
          </div>
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>
             {filteredTransactions.length ? filteredTransactions.map((item, index) => (

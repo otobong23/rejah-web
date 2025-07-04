@@ -17,3 +17,9 @@ interface UserTransaction {
   updatedAt?: string;
 }
 
+interface transactionResponseType {
+  transactions: UserTransaction[],
+  total: number,
+  totalPages: number,
+  page: number
+}
