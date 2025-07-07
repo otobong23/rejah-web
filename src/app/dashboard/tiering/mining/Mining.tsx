@@ -1,6 +1,6 @@
 'use client';
 import { Icon } from '@iconify/react/dist/iconify.js'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 import Rectangle2 from '@/assets/Rectangle2.svg'
 import reja_icon from '@/assets/Mining/Reja_Icon.svg'
 import Image from 'next/image'
@@ -36,7 +36,11 @@ const MiningPage = () => {
    const [miningActivated, setMiningActivated] = useState(false);
    const [timeLeft, setTimeLeft] = useState<number | null>(null);
    const [wasActive, setWasActive] = useState(false)
-   // const [confirmModal, setConfirmModal] = useState(false)
+
+   // Add refs to prevent double execution
+   const isProcessingClaim = useRef(false);
+   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+   const hasInitialized = useRef(false);
 
    const updateTimer = async (params: string) => {
       try {
@@ -50,9 +54,9 @@ const MiningPage = () => {
          }
       }
    }
-   // const TIMER_KEY = 'twentyFourHourTimerStart';
 
    const [active, setActive] = useState(false)
+
    const startTimer = useCallback(() => {
       const now = Date.now();
       updateTimer(now.toString()).then(() => {
@@ -61,50 +65,92 @@ const MiningPage = () => {
          setActive(false);
          setTimeLeft(null);
       });
-
    }, []);
 
+   // Fixed timer logic with proper cleanup
    useEffect(() => {
-      // const startTime = localStorage.getItem(TIMER_KEY)
-      const startTime = user.twentyFourHourTimerStart
-      if (!startTime) return;
-      if (startTime) {
-         setActive(true);
-         const interval = setInterval(() => {
-            const now = Date.now();
-            const endTime = parseInt(startTime) + DURATION;
-            const diff = endTime - now;
+      const startTime = user.twentyFourHourTimerStart;
 
-            if (diff <= 0) {
-               setTimeLeft(0);
-               clearInterval(interval);
-               // localStorage.removeItem(TIMER_KEY);
-               setWasActive(true)
-               setActive(false);
-            } else {
-               setTimeLeft(diff);
-               setWasActive(false)
-            }
-         }, 1000);
-
-         return () => clearInterval(interval);
+      // Clear any existing interval
+      if (intervalRef.current) {
+         clearInterval(intervalRef.current);
+         intervalRef.current = null;
       }
-   }, [active, user.twentyFourHourTimerStart]);
 
+      if (!startTime) {
+         setActive(false);
+         setTimeLeft(null);
+         setWasActive(false);
+         return;
+      }
+
+      const startTimeNum = parseInt(startTime);
+      if (isNaN(startTimeNum)) {
+         setActive(false);
+         setTimeLeft(null);
+         setWasActive(false);
+         return;
+      }
+
+      setActive(true);
+
+      const updateTimerState = () => {
+         const now = Date.now();
+         const endTime = startTimeNum + DURATION;
+         const diff = endTime - now;
+
+         if (diff <= 0) {
+            setTimeLeft(0);
+            setActive(false);
+
+            // Only set wasActive if we haven't already processed this completion
+            if (!isProcessingClaim.current && hasInitialized.current) {
+               setWasActive(true);
+            }
+
+            if (intervalRef.current) {
+               clearInterval(intervalRef.current);
+               intervalRef.current = null;
+            }
+         } else {
+            setTimeLeft(diff);
+            setWasActive(false);
+         }
+      };
+
+      // Initial update
+      updateTimerState();
+
+      // Set up interval
+      intervalRef.current = setInterval(updateTimerState, 1000);
+
+      // Mark as initialized after first render
+      if (!hasInitialized.current) {
+         hasInitialized.current = true;
+      }
+
+      return () => {
+         if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+         }
+      };
+   }, [user.twentyFourHourTimerStart]); // Only depend on the timer value
 
    function roundUpTo3Decimals(num: number) {
       return Math.ceil(num * 1000) / 1000;
    }
 
-
    const handleTotalInvested = (param: TIER_LIST_TYPE[] = []) => param.reduce((total, plan) => {
       const price = Number(plan.details.price.split('$')[1]);
       return total + price;
    }, 0)
+
    const handleDailyYield = (param: TIER_LIST_TYPE[] = []) => param.reduce((total, plan) => {
       const price = Number(plan.details.daily_yield.split('$')[1]);
       return total + price;
    }, 0);
+
    const handleROI = (param: TIER_LIST_TYPE[] = []) => param.reduce((total, plan) => {
       const price = Number(plan.details.roi.split('$')[1]);
       return total + price;
@@ -125,9 +171,14 @@ const MiningPage = () => {
    }
 
    const handleUseBalance = async () => {
+      if (isProcessingClaim.current) {
+         return; // Prevent double execution
+      }
+
+      isProcessingClaim.current = true;
+
       try {
          await api.post<number>('/transaction/mine', { amount: handleDailyYield(user.currentPlan) });
-         // setConfirmModal(false)
          showToast('success', 'Daily Yields Claimed successfully')
       } catch (err) {
          if (err instanceof AxiosError) {
@@ -135,35 +186,34 @@ const MiningPage = () => {
          } else {
             showToast('error', 'An error occurred')
          }
+      } finally {
+         isProcessingClaim.current = false;
       }
    };
 
-   useEffect(() => { setMiningActivated(active) }, [active])
+   // Set mining activated state
    useEffect(() => {
-      if (wasActive) {
+      setMiningActivated(active)
+   }, [active])
+
+   // Handle completion with proper cleanup
+   useEffect(() => {
+      if (wasActive && !isProcessingClaim.current) {
          handleUseBalance().then(() => {
             updateTimer('').then(() => {
-               setWasActive(false)
-               setActive(false)
-            })
-         })
-         // setConfirmModal(true)
+               setWasActive(false);
+               setActive(false);
+            }).catch(() => {
+               // Handle error in updateTimer
+               setWasActive(false);
+               setActive(false);
+            });
+         });
       }
    }, [wasActive])
+
    return (
       <div>
-         {/* <div className={`fixed top-0 left-0 min-w-screen h-screen p-8 bg-black/70 z-[99] items-center  ${confirmModal ? 'flex' : 'hidden'}`}>
-            <div className='w-full py-[75px] text-(--color2) text-sm rounded-[32px] border-2 border-[#F5F5F552]/50 bg-white/5 backdrop-blur-sm flex flex-col item-center px-[50px]'>
-               <h1 className='text-center text-[40px] font-bold'>Cycle complete</h1>
-               <p className='text-center flex flex-col items-center'>
-                  <span>You can now withdraw your earnings or reinvest to start a new cycle.</span>
-               </p>
-               <button onClick={handleUseBalance}
-                  className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition opacity-100 hover:scale-90`}>
-                  Claim
-               </button>
-            </div>
-         </div> */}
          <div className={`bg-white/7 backdrop-blur-md text-(--color2) rounded-[15px] py-[23px] px-[25px] relative`}>
             <div className="text-[10px] font-light mb-1.5 flex items-center gap-1.5">
                <span>Current Reja plan</span>
