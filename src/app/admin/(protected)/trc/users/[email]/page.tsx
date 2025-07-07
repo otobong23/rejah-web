@@ -19,7 +19,7 @@ const nunitoSans = Nunito_Sans({
 
 const actions = [
    { icon: 'mingcute:history-anticlockwise-fill', label: 'history' },
-   { icon: 'lsicon:setting-filled', label: 'setting' },
+   { icon: 'lsicon:setting-filled', label: 'settings' },
    { icon: 'flowbite:download-solid', label: 'Download App' },
    { icon: 'material-symbols:shield', label: 'security' }
 ];
@@ -160,7 +160,7 @@ const page = () => {
 
    const handleClick = (label: string) => {
       if (label === 'history') {
-         router.push('/admin/transactions')
+         router.push(`/admin/trc/users/${email}/history`)
          return
       }
       if (label === 'Data summary') {

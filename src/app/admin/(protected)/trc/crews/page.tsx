@@ -84,7 +84,7 @@ const page = () => {
 
       <div className='max-w-[652px] mx-auto max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3 mt-4'>
         {Array.isArray(crews) && crews ? crews.map(({ userID, totalCrewDeposits }, i) => (
-          <Link href={'crew/' + userID} key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
+          <Link href={'crews/' + userID} key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
             <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
               <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
             </div>
