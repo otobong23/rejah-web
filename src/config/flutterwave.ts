@@ -9,7 +9,7 @@ type FutterWaveConfigProp = {
       name: string;
    }
 };
-const public_key = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY;
+const public_key = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY ?? '';
 console.log("Flutterwave Public Key:", public_key)
 
 const flutterwaveConfig: (props: FutterWaveConfigProp) => FlutterwaveConfig = (props) => ({
