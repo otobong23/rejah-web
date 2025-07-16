@@ -1,6 +1,5 @@
 "use client";
 
-import QRCodeGenerator from "@/components/QRCodeGenerator";
 import { showToast } from "@/utils/alert";
 import { Icon } from "@iconify/react";
 import copy from "copy-to-clipboard";
@@ -10,15 +9,18 @@ import React, { useState } from "react";
 import cryptoLogo from "@/assets/cryptoLogo.svg";
 import { useUserContext } from "@/store/userContext";
 import Link from "next/link";
+import { useFlutterwave } from 'flutterwave-react-v3';
+import { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
+import flutterwaveConfig from "@/config/flutterwave";
 
 const NUMBER_LIST = [10, 30, 80, 120, 300, 500, 1000];
+const NAIRA_RATE = 1600;
 
 const DepositPage = () => {
   const { user } = useUserContext()
   const router = useRouter();
   const [amount, setAmount] = useState("");
   const [step, setStep] = useState(1);
-  const [subStep, setSubStep] = useState(1);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (value: string) => {
@@ -28,14 +30,19 @@ const DepositPage = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleProceed = () => {
-    if (user.ActivateBot) {
-      sessionStorage.setItem("depositAmount", amount);
-      router.push("/dashboard/tiering/deposit/upload-reciept");
-    } else {
-      showToast('warning', 'Your account has been suspended. Please Vist Customer Care')
+  const handleFlutterPayment = useFlutterwave(flutterwaveConfig({
+    amount: Number(amount) * NAIRA_RATE,
+    customer: {
+      email: user.email ?? 'guestuser@gmail.com',
+      phone_number: String(user.whatsappNo ?? ''),
+      name: user.username ?? 'Guest User'
     }
-  };
+  }));
+  const handleCallback = (response: FlutterWaveResponse) => { }
+  const handleOnclose = () => {
+    showToast('info', "Payment Closed By User")
+  }
+
 
   const renderAmountInput = () => (
     <>
@@ -77,67 +84,33 @@ const DepositPage = () => {
   const renderWalletDetails = () => (
     <>
       <div className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-[#002732] text-sm text-[#A8A79E] mb-[30px]">
-        <p>Amount to Deposit</p>
-        <h1 className="text-2xl text-(--color2) font-semibold">{Number(amount).toLocaleString()} USDT</h1>
-        <p>Transfer exact amount of plans</p>
-      </div>
-      <div className="p-4 bg-white rounded-[15px] w-fit mx-auto mb-[30px]">
-        <QRCodeGenerator address={user.depositAddress} />
-      </div>
-
-      {subStep === 1 ? (
-        <>
-          <div className="text-[#A8A79E] text-xs mb-14">
-            <p>Wallet Address</p>
-            <div className="flex justify-between">
-              <h2 className="text-[22px] font-semibold whitespace-nowrap overflow-hidden overflow-ellipsis">{user.depositAddress}</h2>
-              <button onClick={() => handleCopy(user.depositAddress)}>
-                <Icon icon="akar-icons:copy" className="text-[25px] text-(--color2)" />
-              </button>
-            </div>
-            <div className="flex justify-between mt-[30px]">
-              <p className="font-semibold">Coin</p>
-              <div className="flex items-center gap-3">
-                <Image src={cryptoLogo} width={26} alt="crypto logo" />
-                <p className="text-[#2E3033]">USDT/TRC20</p>
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => setSubStep(2)}
-            disabled={!amount}
-            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
-              }`}
-          >
-            Confirm
+        <p>Total Amount in NGN</p>
+        <div className="flex items-center gap-2 justify-center">
+          <h1 className="text-2xl text-(--color2) font-semibold">{(Number(amount) * NAIRA_RATE).toLocaleString()} NGN </h1>
+          <button onClick={() => handleCopy((Number(amount) * NAIRA_RATE).toString())}>
+            <Icon icon="akar-icons:copy" className="text-[25px] text-(--color2)" />
           </button>
-        </>
-      ) : (
-        <>
-          <div className="text-(--color2) text-sm mb-[50px]">
-            <h1 className="text-center text-[40px] font-bold mb-2.5">Confirm</h1>
-            <p className="text-center">You've Deposited to wallet address.</p>
-            <ul className="list-disc px-3">
-              <li className="flex justify-between">
-                <span>Amount:</span><span>${amount}</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Initial Balance:</span><span>${user.balance}</span>
-              </li>
-            </ul>
-          </div>
-
-          <button
-            onClick={handleProceed}
-            disabled={!amount}
-            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
-              }`}
-          >
-            I have Deposited
+        </div>
+        <br />
+        <p>Total Amount to Deposit</p>
+        <div className="flex items-center gap-2 justify-center">
+          <h1 className="text-2xl text-(--color2) font-semibold">{((Number(amount) * NAIRA_RATE) + ((0.02 * Number(amount) * NAIRA_RATE))).toLocaleString()} NGN </h1>
+          <button onClick={() => handleCopy((Number(amount) * NAIRA_RATE).toString())}>
+            <Icon icon="akar-icons:copy" className="text-[25px] text-(--color2)" />
           </button>
-        </>
-      )}
+        </div>
+      </div>
+
+      {/* <p className="text-center">An extra charge will be added for the transaction on process</p> */}
+
+      <button
+        onClick={() => {handleFlutterPayment({ callback: handleCallback, onClose: handleOnclose })}}
+        disabled={!amount}
+        className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[20px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+          }`}
+      >
+        Confirm
+      </button>
     </>
   );
 
