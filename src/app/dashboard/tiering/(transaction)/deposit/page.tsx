@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import cryptoLogo from "@/assets/cryptoLogo.svg";
 import { useUserContext } from "@/store/userContext";
 import Link from "next/link";
-import { useFlutterwave } from 'flutterwave-react-v3';
+import { closePaymentModal, useFlutterwave } from 'flutterwave-react-v3';
 import { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
 import flutterwaveConfig from "@/config/flutterwave";
 
@@ -38,7 +38,18 @@ const DepositPage = () => {
       name: user.username ?? 'Guest User'
     }
   }));
-  const handleCallback = (response: FlutterWaveResponse) => { }
+  const handleCallback = (response: FlutterWaveResponse) => {
+    console.dir(response)
+    if(response.status === 'successful'){
+      showToast('success', 'Payment Processed Successfully')
+      sessionStorage.setItem('depositAmount', amount);
+      sessionStorage.setItem('transactionId', String(response.transaction_id));
+      router.push('/dashboard/tiering/deposit/upload-reciept/')
+    }else{
+      showToast('error', 'Payment Failed')
+    }
+    closePaymentModal();
+  }
   const handleOnclose = () => {
     showToast('info', "Payment Closed By User")
   }

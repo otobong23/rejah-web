@@ -24,6 +24,9 @@ type UserType = {
   referral_count?: number;
   depositAddress: string;
   usdtWallet: string;
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
   walletPassword: string
   withdrawalWallet?: withdrawalWallet;
   withdrawStatus?: 'pending' | 'completed' | 'failed';

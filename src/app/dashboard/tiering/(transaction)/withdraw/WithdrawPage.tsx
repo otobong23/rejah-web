@@ -17,9 +17,11 @@ const WithdrawPage = () => {
    const router = useRouter()
    const [stack, setStack] = useState(1);
    const [amount, setAmount] = useState('');
-   const [address, setAddress] = useState(user.usdtWallet || '');
+   const [bankName, setBankName] = useState(user.bankName || '');
+   const [accountName, setAccountName] = useState(user.accountName || '');
+   const [accountNumber, setAccountNumber] = useState(user.accountNumber || '');
    const [isWithdrawalPassword] = useState(Boolean(user.walletPassword));
-   const [form, setForm] = useState({ USDT_Wallet: '', Withdrawal_Password: '', Confirm_Withdrawal_Password: '' })
+   const [form, setForm] = useState({ bank_name: '', account_name: '', account_number: '', Withdrawal_Password: '', Confirm_Withdrawal_Password: '' })
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
    const [withdrawalPassword, setWithdrawalPassword] = useState('');
@@ -31,22 +33,38 @@ const WithdrawPage = () => {
    }
 
    useEffect(() => {
-      if (isWithdrawalPassword) setStack(2);
-      else setStack(1);
-   }, [isWithdrawalPassword])
+      const hasBankInfo = user.bankName && user.accountName && user.accountNumber;
+      if (!hasBankInfo) {
+         setStack(1); // go to setup
+      } else if (user.walletPassword) {
+         setStack(2); // skip setup, go to amount input
+      } else {
+         setStack(1); // no withdrawal password, go to setup
+      }
+   }, [user]);
    useEffect(() => {
-      if (form.USDT_Wallet && form.Withdrawal_Password && form.Confirm_Withdrawal_Password) {
+      if (form.bank_name && form.account_name && form.account_number && form.Withdrawal_Password && form.Confirm_Withdrawal_Password) {
          setActive(true)
       } else {
          setActive(false)
       }
    }, [form])
 
+   const handleAccountDetails = () => {
+      if(form.account_number.length === 10) {
+         console.log('Valid account number:', form.account_number)
+      }
+      // const account_number = Number(form.account_number.trim())
+
+   }
+
    const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
       const newError: typeof error = {}
 
-      if (!form.USDT_Wallet) newError.USDT_Wallet = 'USDT account is required'
+      if (!form.account_number) newError.account_number = 'Bank account is required';
+      if (!form.account_name) newError.account_name = 'Bank account name is required';
+      if (!form.bank_name) newError.bank_name = 'Bank name is required';
       if (!form.Withdrawal_Password) newError.Withdrawal_Password = 'Withdrawal password is required'
       if (form.Withdrawal_Password !== form.Confirm_Withdrawal_Password) {
          newError.confirm_withdrawal_password = 'Passwords do not match'
@@ -60,12 +78,15 @@ const WithdrawPage = () => {
          showPageLoader()
          try {
             const response = await api.patch<UserType>('/profile/update', {
-               usdtWallet: form.USDT_Wallet.trim(),
+               bankName: form.bank_name.trim(),
+               accountName: form.account_name.trim(),
+               accountNumber: form.account_number.trim(),
                walletPassword: form.Withdrawal_Password.trim(),
             })
             setUser(response.data)
             hidePageLoader()
             showToast('success', 'Password Changed successfully!')
+            setStack(2)
          } catch (err) {
             hidePageLoader()
             if (err instanceof AxiosError) {
@@ -83,6 +104,9 @@ const WithdrawPage = () => {
 
       if (!withdrawalPassword) newError.withdrawalPassword = 'Withdrawal password is required'
       if (withdrawalPassword !== user.walletPassword) newError.withdrawalPassword = 'Passwords do not match'
+      if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+         newError.amount = 'Enter a valid amount';
+      }
 
       setWithdrawError(newError)
       if (Object.keys(newError).length === 0) {
@@ -90,7 +114,6 @@ const WithdrawPage = () => {
          try {
             const response = await api.post<UserType>('/transaction/withdraw', {
                amount: Number(amount),
-               walletAddress: address,
             })
             setUser(response.data)
             hidePageLoader()
@@ -121,23 +144,26 @@ const WithdrawPage = () => {
 
          <div className='max-w-[396px] mx-auto'>
             {stack === 1 && <div>
-               {['USDT_Wallet', 'Withdrawal_Password', 'Confirm_Withdrawal_Password'].map((field) => (
+               {['account_number', 'account_name', 'bank_name', 'Withdrawal_Password', 'Confirm_Withdrawal_Password'].map((field) => (
                   <div key={field} className="mb-3">
-                     <label htmlFor={field} className='text-sm font-light mb-2.5'>{field !== 'Confirm_Withdrawal_Password' && 'Enter'} {field.split('_').join(' ')}</label>
+                     <label htmlFor={field} className='text-sm capitalize font-light mb-2.5'>{field !== 'Confirm_Withdrawal_Password' && 'Enter'} {field.split('_').join(' ')}</label>
                      <div className='flex gap-3.5'>
                         <input
                            id={field}
                            name={field}
+                           maxLength={field === 'account_number' ? 10 : 100}
                            type={field === 'Withdrawal_Password' || field === 'Confirm_Withdrawal_Password' ? 'password' : 'text'}
+                           disabled={field === 'bank_name'}
                            value={form[field as keyof typeof form]}
-                           onChange={handleChange}
+                           onChange={(e) => {handleChange(e)}}
+                           onKeyUp={() => {field === 'account_number' && handleAccountDetails()}}
                            className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
                 ${error[field]
                                  ? 'border-[var(--color6)] text-[var(--color6)]'
                                  : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
                               }`}
                            placeholder={field.split('_').join(' ')}
-                           autoComplete={field === 'USDT_Account' ? 'number' : field === 'Withdrawal_Password' ? 'current-password' : ''}
+                           autoComplete={['bank_name', 'account_name', 'account_number'].includes(field) ? 'text' : field === 'Withdrawal_Password' ? 'current-password' : ''}
                         />
                      </div>
                      {error[field] && (
@@ -147,7 +173,7 @@ const WithdrawPage = () => {
                ))}
                <button
                   type="submit"
-                  onClick={e => { handleSubmit(e), setStack(2) }}
+                  onClick={e => { handleSubmit(e) }}
                   className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[25px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
                >
                   Confirm
@@ -166,17 +192,35 @@ const WithdrawPage = () => {
                         onChange={(e) => setAmount(e.target.value)}
                      />
                   </div>
-                  <div>
-                     <input type="text"
-                        placeholder='Wallet Address'
-                        className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                     />
+                  <div className='flex flex-col gap-3'>
+                     <div>
+                        <input type="text"
+                           placeholder='Account Number'
+                           className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
+                           value={accountNumber}
+                           onChange={(e) => setAccountNumber(e.target.value)}
+                        />
+                     </div>
+                     <div>
+                        <input type="text"
+                           placeholder='Account Name'
+                           className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
+                           value={accountName}
+                           onChange={(e) => setAccountName(e.target.value)}
+                        />
+                     </div>
+                     <div>
+                        <input type="text"
+                           placeholder='Bank Name'
+                           className={`py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full`}
+                           value={bankName}
+                           onChange={(e) => setBankName(e.target.value)}
+                        />
+                     </div>
                   </div>
                   <button
                      onClick={() => setStack(3)}
-                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${address ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!address}
+                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${accountName && accountNumber && bankName ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!(accountName && accountNumber && bankName)}
                   >
                      Confirm
                   </button>

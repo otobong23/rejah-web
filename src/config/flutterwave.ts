@@ -20,7 +20,7 @@ const flutterwaveConfig: (props: FutterWaveConfigProp) => FlutterwaveConfig = (p
    payment_options: "banktransfer,mobilemoney,ussd,card",
    customer: props.customer,
    customizations: {
-      title: props.customer.name,
+      title: 'Rejah',
       description: "Rejah online payment system",
       // logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
       logo: baseURL+"files/rejah_icon.png",

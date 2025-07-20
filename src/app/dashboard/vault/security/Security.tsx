@@ -1,4 +1,5 @@
 'use client';
+import SUPPORTED_BANKS from '@/constant/SUPPORTED_BANKS';
 import { useLoader } from '@/store/LoaderContext';
 import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
@@ -12,18 +13,72 @@ import React, { useEffect, useState } from 'react'
 const Security = () => {
   const { user, setUser } = useUserContext()
   const router = useRouter()
-  const [form, setForm] = useState({ usdt_wallet: user.usdtWallet || '', withdrawal_password: user.walletPassword || '', confirm_withdrawal_password: user.walletPassword || '' })
+  const [form, setForm] = useState({ account_number: user.accountNumber || '', account_name: user.accountName || '', withdrawal_password: user.walletPassword || '', confirm_withdrawal_password: user.walletPassword || '' })
   const [error, setError] = useState<{ [key: string]: string }>({})
   const [active, setActive] = useState(false)
   const { showPageLoader, hidePageLoader } = useLoader()
+  const [selectedBank, setSelectedBank] = useState<Bank | null>(SUPPORTED_BANKS.find(bank => bank.name === user.bankName) || null);
+  const [showBankDropdown, setShowBankDropdown] = useState<boolean>(false);
+  const [isResolvingAccount, setIsResolvingAccount] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
     setError({ ...error, [e.target.name]: '' })
   }
 
+  const resolveAccountName = async (accountNumber: string, bankCode: string) => {
+    if (accountNumber.length !== 10) return;
+
+    setIsResolvingAccount(true);
+    try {
+      const response = await api.post(
+        '/transaction/resolve_account',
+        {
+          account_number: accountNumber,
+          account_bank: bankCode
+        }
+      );
+
+      const data = await response.data;
+
+      if (data.status === 'success') {
+        setForm(prev => ({ ...prev, account_name: data.data.account_name}))
+        showToast('success', 'Account name resolved successfully!');
+      } else {
+        showToast('error', 'Could not resolve account name');
+      }
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        showToast('error', err.response?.data.message)
+        setForm(prev => ({ ...prev, account_name: ''}))
+      } else {
+        showToast('error', 'An error occurred')
+      }
+    } finally {
+      setIsResolvingAccount(false);
+    }
+  };
+
+  const handleAccountDetails = () => {
+      if (form.account_number.length === 10) {
+         // Auto-resolve if bank is selected
+         if (selectedBank) {
+            resolveAccountName(form.account_number, selectedBank.code);
+         }
+      }
+   }
+
+   const handleBankSelect = (bank: Bank) => {
+      setSelectedBank(bank);
+      setShowBankDropdown(false);
+      setError({ ...error, bank_name: '' });
+
+      // Auto-resolve account if account number is already entered
+      resolveAccountName(form.account_number, bank.code);
+   };
+
   useEffect(() => {
-    if (form.usdt_wallet && form.withdrawal_password && form.confirm_withdrawal_password) {
+    if (form.account_name && form.account_number && form.withdrawal_password && form.confirm_withdrawal_password) {
       setActive(true)
     } else {
       setActive(false)
@@ -34,7 +89,8 @@ const Security = () => {
     e.preventDefault()
     const newError: typeof error = {}
 
-    if (!form.usdt_wallet) newError.usdt_wallet = 'USDT account is required'
+    if (!form.account_name) newError.account_name = 'Account name is required'
+    if (!form.account_number) newError.account_number = 'Account number is required'
     if (!form.withdrawal_password) newError.withdrawal_password = 'Withdrawal password is required'
     if (form.withdrawal_password !== form.confirm_withdrawal_password) {
       newError.confirm_withdrawal_password = 'Passwords do not match'
@@ -48,12 +104,14 @@ const Security = () => {
       showPageLoader()
       try {
         const response = await api.patch<UserType>('/profile/update', {
-          usdtWallet: form.usdt_wallet.trim(),
+          bankName: selectedBank?.name.trim(),
+          accountNumber: form.account_number.trim(),
+          accountName: form.account_name.trim(),
           walletPassword: form.withdrawal_password.trim(),
         })
         setUser(response.data)
         hidePageLoader()
-        showToast('success', 'Password Changed successfully!')
+        showToast('success', 'User Account updated successfully!')
       } catch (err) {
         hidePageLoader()
         if (err instanceof AxiosError) {
@@ -80,24 +138,86 @@ const Security = () => {
           </div>
         </div>
         <div className='mt-9 max-w-[396px] mx-auto'>
-          {['usdt_wallet', 'withdrawal_password', 'confirm_withdrawal_password'].map((field) => (
-            <div key={field} className="mb-[30px]">
-              <label htmlFor={field} className='text-lg font-medium text-(--color2) pb-4'>{field !== 'usdt_wallet' ? field.split('_').join(' ').toLowerCase() : 'USDT ' + field.split('_')[1]}</label>
-              <div className='flex gap-3.5'>
-                <input
-                  id={field}
-                  name={field}
-                  type={field === 'usdt_wallet' ? 'text' : 'password'}
-                  value={form[field as keyof typeof form]}
-                  onChange={handleChange}
-                  className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
-                    ${error[field]
-                      ? 'border-[var(--color6)] text-[var(--color6)]'
-                      : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
-                    }`}
-                  autoComplete={field === 'usdt_wallet' ? 'text' : 'password'}
-                />
-              </div>
+          {['account_number', 'bank_name', 'account_name', 'withdrawal_password', 'confirm_withdrawal_password'].map((field) => (
+            <div key={field} className="mb-3">
+              <label htmlFor={field} className='text-sm capitalize font-light mb-2.5'>{field !== 'Confirm_Withdrawal_Password' && 'Enter'} {field.split('_').join(' ')}</label>
+
+              {field === 'bank_name' ? (
+                <div className='relative'>
+                  <div
+                    onClick={() => setShowBankDropdown(!showBankDropdown)}
+                    className={`w-full px-3 py-[18px] rounded-[15px] border-2 cursor-pointer flex justify-between items-center bg-none text-lg
+                                 ${error[field]
+                        ? 'border-[var(--color6)] text-[var(--color6)]'
+                        : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
+                      }`}
+                  >
+                    <div className='flex items-center gap-2'>
+                      {selectedBank && (
+                        <img
+                          src={selectedBank.logo}
+                          alt={selectedBank.name}
+                          className="w-6 h-6 object-contain"
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://nigerianbanks.xyz/logo/default-image.png';
+                          }}
+                        />
+                      )}
+                      <span className={selectedBank ? 'text-[var(--color2)]' : 'text-[#424545]'}>
+                        {selectedBank ? selectedBank.name : 'Select Bank'}
+                      </span>
+                    </div>
+                    <Icon icon={showBankDropdown ? 'mdi:chevron-up' : 'mdi:chevron-down'} className="text-xl" />
+                  </div>
+
+                  {showBankDropdown && (
+                    <div className='absolute z-10 w-full mt-1 bg-(--foreground) border-2 border-[#424545] rounded-[15px] max-h-60 overflow-y-auto shadow-lg'>
+                      {SUPPORTED_BANKS.map((bank) => (
+                        <div
+                          key={bank.code}
+                          onClick={() => handleBankSelect(bank)}
+                          className='flex items-center gap-3 px-3 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0'
+                        >
+                          <img
+                            src={bank.logo}
+                            alt={bank.name}
+                            className="w-8 h-8 object-contain"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://nigerianbanks.xyz/logo/default-image.png';
+                            }}
+                          />
+                          <span className='text-[var(--color2)] text-sm'>{bank.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className='flex gap-3.5 relative'>
+                  <input
+                    id={field}
+                    name={field}
+                    maxLength={field === 'account_number' ? 10 : 100}
+                    type={field === 'Withdrawal_Password' || field === 'Confirm_Withdrawal_Password' ? 'password' : 'text'}
+                    value={form[field as keyof typeof form]}
+                    onChange={(e) => { handleChange(e) }}
+                    onKeyUp={() => { field === 'account_number' && handleAccountDetails() }}
+                    className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
+                                 ${error[field]
+                        ? 'border-[var(--color6)] text-[var(--color6)]'
+                        : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
+                      }`}
+                    placeholder={field.split('_').join(' ')}
+                    autoComplete={['bank_name', 'account_name', 'account_number'].includes(field) ? 'text' : field === 'Withdrawal_Password' ? 'current-password' : ''}
+                  />
+                  {field === 'account_number' && isResolvingAccount && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      <Icon icon="eos-icons:loading" className="text-xl text-[var(--color2)]" />
+                    </div>
+                  )}
+                </div>
+              )}
+
               {error[field] && (
                 <p className="text-sm mt-1 text-[#D54244]">{error[field]}</p>
               )}

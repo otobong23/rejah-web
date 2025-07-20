@@ -13,7 +13,6 @@ const page = () => {
    const { showPageLoader, hidePageLoader } = useLoader()
    const router = useRouter()
    const [file, setFile] = useState<File | null>(null)
-   const [transactionID, setTransactionID] = useState('')
    const [active, setActive] = useState(false)
 
    const MAX_FILE_SIZE_MB = 5;
@@ -40,9 +39,9 @@ const page = () => {
       }
    };
    useEffect(() => {
-      if(file && transactionID) setActive(true);
+      if(file) setActive(true);
       else setActive(false)
-   }, [file, transactionID])
+   }, [file])
 
 
    const toBase64 = (file: File): Promise<string> =>
@@ -69,13 +68,18 @@ const page = () => {
          router.replace("/auth/login");
          return;
       }
+      const transactionId = sessionStorage.getItem('transactionId')
+      if (!transactionId) {
+         router.replace("/dashboard/tiering/deposit/");
+         return;
+      }
 
       try {
          api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
          const response = await api.post('/transaction/deposit', {
             amount: Number(number),
             image: imageBase64,
-            transactionID
+            transactionID: transactionId
          });
          console.log(response);
          showToast('success', 'Deposit request submitted successfully')
@@ -87,6 +91,10 @@ const page = () => {
          } else {
             showToast('error', 'An error occurred during signup')
          }
+      }finally {
+         setFile(null)
+         sessionStorage.removeItem('depositAmount')
+         sessionStorage.removeItem('transactionId')
       }
 
       hidePageLoader(2000);
@@ -110,20 +118,6 @@ const page = () => {
                   </label>
                   <div className='hidden'>
                      <input type="file" name="reciept" id="reciept" accept="image/*,application/pdf" onChange={handleFileChange} />
-                  </div>
-               </div>
-
-               <div className='w-full'>
-                  <label htmlFor='transactionId' className='text-xs pb-2'>Transaction ID</label>
-                  <div className='w-full'>
-                     <input
-                        type="password"
-                        placeholder="*******"
-                        id='transactionId'
-                        className="py-[15px] px-3 outline-0 rounded-[15px] border border-(--color2)/20 focus:border-(--color2)/70 text-lg font-medium w-full"
-                        value={transactionID}
-                        onChange={e => setTransactionID(e.target.value)}
-                     />
                   </div>
                </div>
             </div>

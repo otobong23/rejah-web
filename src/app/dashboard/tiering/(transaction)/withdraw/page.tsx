@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import React from 'react'
-import WithdrawPage from './WithdrawPage'
+import WithdrawPage from './Withdraw_Page'
 
 export const metadata:Metadata = {
    title: "Wihdraw",
