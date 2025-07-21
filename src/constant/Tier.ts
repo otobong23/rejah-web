@@ -120,7 +120,7 @@ export const TRANSACTION_RULES = [
 ]
 
 export const TRANSACTION_RULES_WITHDRAWAL = [
-   "Withdrawal time: Withdrawals can be made at any time from Monday to Friday.",
+   "Withdrawal time: Withdrawals can be made at any time from Monday to Friday, 9:00 AM to 5:00 PM.",
    "Minimum withdrawal: $5",
    "Percentage Withdrawal Charge: 10%",
    "Arrival time: Determined based on the arrival time of international bank transfers, usually 24-48 hours.",
