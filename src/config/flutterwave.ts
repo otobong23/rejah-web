@@ -10,7 +10,7 @@ type FutterWaveConfigProp = {
    }
 };
 
-const siteUrl = 'https://www.rejah.net';
+const siteUrl = 'https://www.rejah.net/';
 // const siteUrl = 'http://localhost:3000/';
 
 const public_key = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY ?? '';
