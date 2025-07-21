@@ -113,7 +113,6 @@ export const PREMIUM_TIER_LIST: TIER_LIST_TYPE[] = [
 ]
 
 export const TRANSACTION_RULES = [
-   "please ensure that your bank account is correct!!",
    'Please do not add assets to accounts other than the official account, otherwise the assets will not be retrieved.',
    'The Deposit amount must be exactly the same as the actual order amount',
    'The Deposit arrival time is based on the bank arrival time. It usually arrives within 5-10 minutes. If it does not arrive after more than 48 hours, please contact the manager for verification.'
@@ -124,5 +123,5 @@ export const TRANSACTION_RULES_WITHDRAWAL = [
    "Minimum withdrawal: $5",
    "Percentage Withdrawal Charge: 10%",
    "Arrival time: Determined based on the arrival time of international bank transfers, usually 24-48 hours.",
-   "Withdrawal account: Ensure that your USDT account or wallet address is correct, if not your withdrawal funds may be lost."
+   "please ensure that your bank account is correct!!"
 ];
