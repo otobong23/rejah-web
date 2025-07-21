@@ -2,7 +2,7 @@
 import { useLoader } from '@/store/LoaderContext';
 import api from '@/utils/axios';
 import { Icon } from '@iconify/react/dist/iconify.js'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import { showToast } from '@/utils/alert';
@@ -14,6 +14,9 @@ const page = () => {
    const router = useRouter()
    const [file, setFile] = useState<File | null>(null)
    const [active, setActive] = useState(false)
+   const query = useSearchParams();
+   const transactionId = query.get('transaction_id');
+   const amount = query.get('amount');
 
    const MAX_FILE_SIZE_MB = 5;
 
@@ -54,8 +57,7 @@ const page = () => {
 
    const handleUpload = async () => {
       showPageLoader();
-      const number = sessionStorage.getItem('depositAmount');
-      if (!number) {
+      if (!amount || !transactionId) {
          router.replace('/dashboard/tiering/deposit/');
          return;
       }
@@ -68,16 +70,11 @@ const page = () => {
          router.replace("/auth/login");
          return;
       }
-      const transactionId = sessionStorage.getItem('transactionId')
-      if (!transactionId) {
-         router.replace("/dashboard/tiering/deposit/");
-         return;
-      }
 
       try {
          api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
          const response = await api.post('/transaction/deposit', {
-            amount: Number(number),
+            amount: Number(amount),
             image: imageBase64,
             transactionID: transactionId
          });
@@ -92,9 +89,7 @@ const page = () => {
             showToast('error', 'An error occurred during signup')
          }
       }finally {
-         setFile(null)
-         sessionStorage.removeItem('depositAmount')
-         sessionStorage.removeItem('transactionId')
+         setFile(null);
       }
 
       hidePageLoader(2000);

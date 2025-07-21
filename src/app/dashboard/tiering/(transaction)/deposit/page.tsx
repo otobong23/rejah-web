@@ -42,9 +42,10 @@ const DepositPage = () => {
     console.dir(response)
     if(response.status === 'successful'){
       showToast('success', 'Payment Processed Successfully')
-      sessionStorage.setItem('depositAmount', amount);
-      sessionStorage.setItem('transactionId', String(response.transaction_id));
-      router.push('/dashboard/tiering/deposit/upload-reciept/')
+      console.log(response)
+      // sessionStorage.setItem('depositAmount', amount);
+      // sessionStorage.setItem('transactionId', String(response.transaction_id));
+      // // router.push('/dashboard/tiering/deposit/upload-reciept/')
     }else{
       showToast('error', 'Payment Failed')
     }
