@@ -123,5 +123,5 @@ export const TRANSACTION_RULES_WITHDRAWAL = [
    "Minimum withdrawal: $5",
    "Percentage Withdrawal Charge: 10%",
    "Arrival time: Determined based on the arrival time of international bank transfers, usually 24-48 hours.",
-   "please ensure that your bank account is correct!!"
+   "please ensure that your bank account is correct, if not your funds may be lost!!"
 ];
