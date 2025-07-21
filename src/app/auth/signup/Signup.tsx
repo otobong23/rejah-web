@@ -10,8 +10,6 @@ import { AxiosError } from 'axios'
 import Cookies from "js-cookie";
 import { useLoader } from '@/store/LoaderContext'
 
-const TIMER_KEY = 'twentyFourHourTimerStart';
-
 export default function Signup() {
    const router = useRouter()
    const [form, setForm] = useState({ email: '', username: '', password: '', confirm_password: '', recruiter_code: '' })
