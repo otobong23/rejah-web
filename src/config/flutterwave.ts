@@ -16,10 +16,12 @@ const siteUrl = 'https://www.rejah.net/';
 const public_key = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY ?? '';
 console.log("Flutterwave Public Key:", public_key)
 
+export const NAIRA_RATE = 1600;
+
 const flutterwaveConfig: (props: FutterWaveConfigProp) => FlutterwaveConfig = (props) => ({
    public_key,
    tx_ref: `rejah-tx-${Date.now()}`,
-   amount: props.amount,
+   amount: props.amount * NAIRA_RATE,
    currency: "NGN",
    payment_options: "banktransfer,mobilemoney,ussd,card",
    customer: props.customer,

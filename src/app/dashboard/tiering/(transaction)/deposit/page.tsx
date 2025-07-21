@@ -11,10 +11,9 @@ import { useUserContext } from "@/store/userContext";
 import Link from "next/link";
 import { closePaymentModal, useFlutterwave } from 'flutterwave-react-v3';
 import { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
-import flutterwaveConfig from "@/config/flutterwave";
+import flutterwaveConfig, { NAIRA_RATE } from "@/config/flutterwave";
 
 const NUMBER_LIST = [10, 30, 80, 120, 300, 500, 1000];
-const NAIRA_RATE = 1600;
 
 const DepositPage = () => {
   const { user } = useUserContext()
@@ -31,7 +30,7 @@ const DepositPage = () => {
   };
 
   const handleFlutterPayment = useFlutterwave(flutterwaveConfig({
-    amount: Number(amount) * NAIRA_RATE,
+    amount: Number(amount),
     customer: {
       email: user.email ?? 'guestuser@gmail.com',
       phone_number: String(user.whatsappNo ?? ''),
