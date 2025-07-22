@@ -31,8 +31,8 @@ export const REBOUND_TIER_LIST: TIER_LIST_TYPE[] = [
       details: {
          price: '$30',
          daily_yield: '$1.20',
-         duration: '60 Days',
-         roi: '$72',
+         duration: '45 Days',
+         roi: '$54',
          purchase_limit: '1'
       }
    },
@@ -43,8 +43,8 @@ export const REBOUND_TIER_LIST: TIER_LIST_TYPE[] = [
       details: {
          price: '$50',
          daily_yield: '$2',
-         duration: '60 Days',
-         roi: '$120',
+         duration: '40 Days',
+         roi: '$80',
          purchase_limit: '1'
       }
    },
@@ -55,8 +55,8 @@ export const REBOUND_TIER_LIST: TIER_LIST_TYPE[] = [
       details: {
          price: '$80',
          daily_yield: '$2.50',
-         duration: '90 Days',
-         roi: '$225',
+         duration: '50 Days',
+         roi: '$125',
          purchase_limit: '1'
       }
    }, {
@@ -66,8 +66,8 @@ export const REBOUND_TIER_LIST: TIER_LIST_TYPE[] = [
       details: {
          price: '$120',
          daily_yield: '$4.00',
-         duration: '80 Days',
-         roi: '$320',
+         duration: '45 Days',
+         roi: '$180',
          purchase_limit: '1'
       }
    },
@@ -81,8 +81,8 @@ export const PREMIUM_TIER_LIST: TIER_LIST_TYPE[] = [
       details: {
          price: '$300',
          daily_yield: '$6',
-         duration: '120 Days',
-         roi: '$720',
+         duration: '80 Days',
+         roi: '$480',
          purchase_limit: '1'
       }
    },
@@ -93,8 +93,8 @@ export const PREMIUM_TIER_LIST: TIER_LIST_TYPE[] = [
       details: {
          price: '$500',
          daily_yield: '$8',
-         duration: '180 Days',
-         roi: '$1,440',
+         duration: '100 Days',
+         roi: '$800',
          purchase_limit: '1'
       }
    },
