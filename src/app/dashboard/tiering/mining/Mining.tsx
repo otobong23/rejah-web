@@ -9,6 +9,8 @@ import { useUserContext } from '@/store/userContext';
 import { showToast } from '@/utils/alert';
 import api from '@/utils/axios';
 import { AxiosError } from 'axios';
+import Cookies from "js-cookie";
+import { useRouter } from 'next/navigation';
 
 
 const BUTTON_LIST = [
@@ -36,6 +38,7 @@ const MiningPage = () => {
    const [miningActivated, setMiningActivated] = useState(false);
    const [timeLeft, setTimeLeft] = useState<number | null>(null);
    const [wasActive, setWasActive] = useState(false)
+   const router = useRouter();
 
    // Add refs to prevent double execution
    const isProcessingClaim = useRef(false);
@@ -67,8 +70,29 @@ const MiningPage = () => {
       });
    }, []);
 
+   useEffect(() => {
+      const fetchUser = async () => {
+         const userToken = Cookies.get("userToken");
+
+         if (!userToken) {
+            router.replace("/auth/login");
+            return;
+         }
+         try {
+            api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+            const response = await api.get<UserType>('/profile/'); // Make sure this returns the full user
+            setUser(response.data);
+         } catch (err) {
+            console.error('Failed to fetch user on mount:', err);
+         }
+      };
+
+      fetchUser();
+   }, []);
+
    // Fixed timer logic with proper cleanup
    useEffect(() => {
+      if (!user || !user.twentyFourHourTimerStart) return;
       const startTime = user.twentyFourHourTimerStart;
 
       // Clear any existing interval
@@ -104,7 +128,7 @@ const MiningPage = () => {
             setActive(false);
 
             // Only set wasActive if we haven't already processed this completion
-            if (!isProcessingClaim.current && hasInitialized.current) {
+            if (!isProcessingClaim.current) {
                setWasActive(true);
             }
 
@@ -135,7 +159,7 @@ const MiningPage = () => {
             intervalRef.current = null;
          }
       };
-   }, [user.twentyFourHourTimerStart]); // Only depend on the timer value
+   }, [user]); // Only depend on the timer value
 
    function roundUpTo3Decimals(num: number) {
       return Math.ceil(num * 1000) / 1000;
@@ -199,16 +223,16 @@ const MiningPage = () => {
    // Handle completion with proper cleanup
    useEffect(() => {
       if (wasActive && !isProcessingClaim.current) {
-         handleUseBalance().then(() => {
-            updateTimer('').then(() => {
-               setWasActive(false);
-               setActive(false);
-            }).catch(() => {
-               // Handle error in updateTimer
-               setWasActive(false);
-               setActive(false);
+         const delay = setTimeout(() => {
+            handleUseBalance().then(() => {
+               updateTimer('').then(() => {
+                  setWasActive(false);
+                  setActive(false);
+               });
             });
-         });
+         }, 500); // wait 500ms before executing
+
+         return () => clearTimeout(delay); // cleanup
       }
    }, [wasActive])
 
