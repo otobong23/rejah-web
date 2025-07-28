@@ -9,7 +9,7 @@ import axios from 'axios';
  * @export default
  */
 
-export const baseURL = 'https://rejah-backend.onrender.com'
+export const baseURL = 'https://rejah-backend-zplt.onrender.com'
 // export const baseURL = 'http://localhost:5000/'
 
 // Create an Axios instance
