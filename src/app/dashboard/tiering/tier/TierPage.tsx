@@ -124,7 +124,7 @@ const TierPage = () => {
    return (
       <div>
          <div className={`fixed top-0 left-0 min-w-screen h-screen bg-black/70 z-[99] items-end ${confirmModal ? 'flex' : 'hidden'}`}>
-            <div className='py-[63px] px-[50px] w-full flex flex-col justify-center bg-[#000914] rounded-t-[50px]'>
+            <div className='py-[63px] px-[50px] w-full flex flex-col justify-center bg-white rounded-t-[50px]'>
                <div className='mb-[50px] text-(--color2) text-sm leading-relaxed'>
                   <h1 className='text-center text-[40px] font-bold text-(--color2)'>Confirm</h1>
                   <p>You&apos;ve selected the ASCEND pack.</p>
@@ -143,7 +143,7 @@ const TierPage = () => {
                      </li>
                      <li>
                         <div className='flex justify-between'>
-                           <span>Duration:</span>
+                           <span>Duration:</span>  
                            <span>{purchaseDetails?.details.duration}</span>
                         </div>
                      </li>
@@ -161,7 +161,7 @@ const TierPage = () => {
                </div>
                <div className='flex gap-2.5'>
                   {(['proceed', 'cancel'] as ('proceed' | 'cancel')[]).map(item => (
-                     <button key={item} onClick={() => handleModalButton(item)} className={`flex-1 flex justify-center py-[17px] rounded-[15px] text-lg tracking-wide font-bold text-white ${item === 'proceed' ? 'bg-[#6EBA0E]' : 'bg-[#C0C0C063]'}`}>{item}</button>
+                     <button key={item} onClick={() => handleModalButton(item)} className={`flex-1 flex justify-center py-[17px] rounded-[15px] text-lg tracking-wide font-bold text-white ${item === 'proceed' ? 'bg-[#040439]' : 'bg-[#390404e7]'}`}>{item}</button>
                   ))}
                </div>
             </div>
@@ -183,9 +183,9 @@ const TierPage = () => {
             </div>
          </div>
 
-         <div className={`bg-(--color2) text-(--color1) rounded-xl py-[23px] px-[25px] relative`}>
+         <div className={`bg-[#040439] text-[#FBFBFF] rounded-xl py-[23px] px-[25px] relative`}>
             <button onClick={() => router.back()} className="text-[10px] font-light mb-1.5 flex items-center gap-1.5">
-               <Icon icon='mdi:chevron-left' className="text-2xl" />
+               <Icon icon='mdi:chevron-left' className="text-2xl text-[#0000FF]" />
                <span>Shape Your Journey.</span>
             </button>
             <div className="flex items-center gap-1.5">
@@ -197,8 +197,8 @@ const TierPage = () => {
 
          <div className="flex items-center gap-3 mt-3 max-w-[570px] mx-auto">
             {BUTTON_LIST.map(({ title, icon, iconColor }, index) => (
-               <button onClick={() => setActiveTier(title)} key={index} className={`text-(--color2) rounded-[20px] px-4 py-5 flex-1 flex justify-center items-center gap-5 
-               ${activeTier === title ? 'bg-(--color1) drop-shadow-2xl drop-shadow-[#6B6B6B40]/25' : 'bg-[#002732]'} transition-all duration-300
+               <button onClick={() => setActiveTier(title)} key={index} className={`text-[#FBFBFF] rounded-[20px] px-4 py-5 flex-1 flex justify-center items-center gap-5 
+               ${activeTier === title ? 'bg-[#040439] drop-shadow-2xl drop-shadow-[#6B6B6B40]/25' : 'bg-[#040439a2]'} transition-all duration-300
                `}>
                   <Icon icon={icon} className="text-2xl" color={iconColor} />
                   <div className="flex flex-col items-end">
@@ -216,8 +216,8 @@ const TierPage = () => {
             {activeTier === 'Premium' && <div className='pt-[15px] pb-7 flex flex-col gap-3'>
                {PREMIUM_TIER_LIST.filter(item => ![...previousPlans, ...currentPlans].includes(item)).map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleClick} key={item.title + i} btn_bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F94E4E_100%)]' bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
             </div>}
-            <div className='text-center bg-(--color1) py-8 px-4 rounded-[20px]'>
-               <p className='text-4xl font-black text-(--color1) text-outline'>Coming Soon!</p>
+            <div className='text-center bg-[#040439] py-8 px-4 rounded-[20px]'>
+               <p className='text-4xl font-black text-[#FBFBFF] text-outline'>Coming Soon!</p>
             </div>
          </div>
       </div>

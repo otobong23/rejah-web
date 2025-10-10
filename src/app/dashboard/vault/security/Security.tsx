@@ -231,7 +231,7 @@ const Security = () => {
           <button
             onClick={handleSubmit}
             type="submit"
-            className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
+            className={`w-full bg-(--color4) text-white text-lg font-bold py-[18px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
           >
             Continue
           </button>

@@ -124,7 +124,7 @@ const Vault = () => {
    }
    return (
       <div>
-         <div className='py-[34px] lg:py-[52px] px-[15px] lg:px-[73px] rounded-[15px] lg:rounded-[23px] bg-(--color1) flex items-center gap-3'>
+         <div className='py-[34px] lg:py-[52px] px-[15px] lg:px-[73px] rounded-[15px] lg:rounded-[23px] bg-(--color4) flex items-center gap-3'>
             <div>
                <div className='w-[90px] lg:w-[151px] h-[90px] overflow-hidden lg:h-[151px] relative rounded-full bg-[#EFEFEF] flex items-center justify-center'>
                   {user.profileImage
@@ -132,7 +132,7 @@ const Vault = () => {
                      : <Icon icon="solar:user-bold" className='text-[#808080]' width={48} />}
                </div>
             </div>
-            <div className={`${nunitoSans.className} w-full text-(--color2)`}>
+            <div className={`${nunitoSans.className} w-full text-[#E8E3D3]`}>
                <div className={`flex justify-between`}>
                   <h1 className='text-xl lg:text-4xl font-semibold'>User_<span className='uppercase'>{user.userID}</span></h1>
                   <div>
@@ -174,7 +174,7 @@ const Vault = () => {
          <div className={`pt-[15px] pb-7 flex flex-col lg:flex-row gap-3 overflow-y-hidden`}>
             <Vault_List VAULT_LIST={TOTAL_ASSET} />
          </div>
-         <div className="flex items-center justify-between bg-[#121A24] py-6 lg:py-[52px] px-4 lg:px-32 rounded-[15px] gap-3">
+         <div className="flex items-center justify-between bg-(--color4) py-6 lg:py-[52px] px-4 lg:px-32 rounded-[15px] gap-3">
             {actions.map(({ icon, label }, index) => (
                <button
                   onClick={() => handleClick(label)}
@@ -182,7 +182,7 @@ const Vault = () => {
                   className="flex flex-col items-center p-3"
                >
                   <div>
-                     <Icon icon={icon} className='text-[40px] lg:text-[52px] text-(--color2)' />
+                     <Icon icon={icon} className='text-[40px] lg:text-[52px] text-[#E8E3D3]' />
                   </div>
                   <p className="text-xs lg:text-base text-center text-white capitalize">{label}</p>
                </button>
@@ -190,7 +190,7 @@ const Vault = () => {
          </div>
          <div className="flex items-center lg:not-visited:justify-center w-full gap-3 my-3">
             {BUTTON_LIST.map(title => (
-               <Link href={`/dashboard/tiering/${title.toLowerCase()}`} key={title} className={`text-(--color2) bg-[#003B46] rounded-[20px] px-4 py-5 flex-1 max-w-[316px] flex justify-center items-center gap-5 transition-all duration-300`}>
+               <Link href={`/dashboard/tiering/${title.toLowerCase()}`} key={title} className={`text-[#E8E3D3] bg-(--color4) rounded-[20px] px-4 py-5 flex-1 max-w-[316px] flex justify-center items-center gap-5 transition-all duration-300`}>
                   {title}
                </Link>
             ))}

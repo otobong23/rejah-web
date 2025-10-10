@@ -124,7 +124,7 @@ const History = () => {
          <h1 className="text-[40px] font-bold mb-8">Account History</h1>
          <div className="flex gap-2 my-3 overflow-scroll lg:overflow-auto no-scrollbar">
             {FILTER.map(({ title, type, stackValue }) => (
-               <button key={title} onClick={() => setStack(stackValue)} className={`py-2 px-6 rounded-[15px] flex items-center justify-center  ${stack === stackValue ? 'bg-[#00273298]' : 'bg-[#002732]'}`}>{title}</button>
+               <button key={title} onClick={() => setStack(stackValue)} className={`py-2 px-6 rounded-[15px] flex items-center justify-center  ${stack === stackValue ? 'bg-(--color4)/30' : 'bg-(--color4) text-[#E8E3D3]'}`}>{title}</button>
             ))}
          </div>
          <div className="flex justify-between" hidden={totalPages == 1}>

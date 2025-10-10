@@ -61,14 +61,14 @@ const CrewPage = () => {
 
    return (
       <div>
-         <div className={`text-(--color2) rounded-[15px] py-[23px] h-fit px-[25px] relative bg-white/7 mb-3`}>
+         <div className={`text-[#E8E3D3] rounded-[15px] py-[23px] h-fit px-[25px] relative bg-(--color4) mb-3`}>
             {/* <ParticlesBackground /> */}
             <div className="text-[10px] md:text-xs font-light mb-3.5 flex items-center gap-1.5">
                <span>Your Crew, Your Power</span>
             </div>
             <div className="max-w-[652px] flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px] mb-[5px]">
-               <h1 className="text-sm">{`https://rejah.net/auth/signup?filter=true&code=${referralCode}`}</h1>
-               <button className='cursor-pointer' onClick={() => handleCopy(`https://rejah.net/auth/signup?filter=true&code=${referralCode}`)}>
+               <h1 className="text-sm">{`https://novox.app/auth/signup?filter=true&code=${referralCode}`}</h1>
+               <button className='cursor-pointer' onClick={() => handleCopy(`https://novox.app/auth/signup?filter=true&code=${referralCode}`)}>
                   <Icon icon='akar-icons:copy' className='text-[20px]' />
                </button>
             </div>
@@ -79,7 +79,7 @@ const CrewPage = () => {
                </button>
             </div>
          </div>
-         <div className='bg-[#003B46] rounded-[20px] py-[22px] px-[25px] mb-3'>
+         <div className='bg-[#0000FF] rounded-[20px] py-[22px] px-[25px] mb-3'>
             <div className='flex justify-center mb-6'>
                <Image src={team_commission} alt="Team Commission" className='object-cover mt-6' width={192} />
             </div>
@@ -100,8 +100,9 @@ const CrewPage = () => {
                </div>
             </div>
          </div>
+
          <div className='flex gap-2 mb-3 lg:justify-center'>
-            {new Array(3).fill("").map((a, i) => <button onClick={() => setStack(i + 1)} className={`text-center flex-1 lg:max-w-[149px] py-3.5 rounded-[20px] shadow-[0px_0px_24px_0px_#6B6B6B/25] transition-all duration-300  ${stack === (i + 1) ? 'bg-[#003B46]' : 'bg-[#002732]'}`} key={i + 1}>Level {i + 1}</button>)}
+            {new Array(3).fill("").map((a, i) => <button onClick={() => setStack(i + 1)} className={`text-center flex-1 lg:max-w-[149px] py-3.5 rounded-[20px] shadow-[0px_0px_24px_0px_#6B6B6B/25] transition-all duration-300 text-[#E8E3D3]  ${stack === (i + 1) ? 'bg-[#0000FF]' : 'bg-[#0000FF] opacity-40'}`} key={i + 1}>Level {i + 1}</button>)}
          </div>
 
          {/* stack */}
