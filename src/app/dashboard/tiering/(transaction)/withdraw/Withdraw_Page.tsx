@@ -252,7 +252,7 @@ const WithdrawPage = () => {
                            </div>
 
                            {showBankDropdown && (
-                              <div className='absolute z-10 w-full mt-1 bg-(--foreground) border-2 border-[#424545] rounded-[15px] max-h-60 overflow-y-auto shadow-lg'>
+                              <div className='absolute z-10 w-full mt-1 bg-(--background) border-2 border-[#424545] rounded-[15px] max-h-60 overflow-y-auto shadow-lg'>
                                  {SUPPORTED_BANKS.map((bank) => (
                                     <div
                                        key={bank.code}
@@ -307,7 +307,7 @@ const WithdrawPage = () => {
                <button
                   type="submit"
                   onClick={e => { handleSubmit(e) }}
-                  className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[25px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
+                  className={`w-full bg-[#0000FF] text-white text-lg font-bold py-[18px] mt-[25px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
                >
                   Confirm
                </button>
@@ -396,7 +396,7 @@ const WithdrawPage = () => {
                   </div>
                   <button
                      onClick={() => setStack(3)}
-                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${accountName && accountNumber && bankName ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!(accountName && accountNumber && bankName)}
+                     className={`w-full bg-[#0000FF] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${accountName && accountNumber && bankName ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!(accountName && accountNumber && bankName)}
                   >
                      Confirm
                   </button>
@@ -421,14 +421,14 @@ const WithdrawPage = () => {
                   </div>
                   <button
                      onClick={handleWithdraw}
-                     className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${withdrawalPassword ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!withdrawalPassword}
+                     className={`w-full bg-[#0000FF] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${withdrawalPassword ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!withdrawalPassword}
                   >
                      Confirm
                   </button>
                </div>
             )}
          </div>
-         <div className='bg-[#121A24] text-(--color2) p-4 pb-[46px] text-xs rounded-[15px] mt-[25px] max-w-[396px] mx-auto'>
+         <div className='bg-[#040439] text-white p-4 pb-[46px] text-xs rounded-[15px] mt-[25px] max-w-[396px] mx-auto'>
             {TRANSACTION_RULES_WITHDRAWAL.map((rule, index) => (
                <div className='flex items-start gap-2 mb-4' key={index}>
                   <span>{index + 1}.</span>

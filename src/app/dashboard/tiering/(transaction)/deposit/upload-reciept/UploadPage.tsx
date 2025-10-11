@@ -104,11 +104,11 @@ const UploadPage = () => {
          <h1 className="text-[40px] font-bold mb-8">Upload receipt</h1>
 
          <div className='max-w-[396px] mx-auto'>
-            <div className='flex flex-col items-center gap-5 justify-center mt-11'>
+            <div className='flex flex-col items-center gap-5 justify-center mt-11 bg-[#040439] py-[25px] rounded-[15px]'>
                <div>
-                  <label htmlFor='reciept' className='w-[115px] h-[115px] rounded-full bg-(--color2) flex items-center justify-center'>
+                  <label htmlFor='reciept' className='w-[115px] h-[115px] rounded-full bg-[#fff] flex items-center justify-center'>
                      <span>
-                        <Icon icon='mingcute:upload-3-fill' className='text-[72px] text-[#121A24]' />
+                        <Icon icon='mingcute:upload-3-fill' className='text-[72px] text-[#040439]' />
                      </span>
                   </label>
                   <div className='hidden'>
@@ -119,7 +119,7 @@ const UploadPage = () => {
 
             <button
                onClick={handleUpload}
-               className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
+               className={`w-full bg-[#0000FF] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${active ? 'opacity-100 hover:scale-90' : 'opacity-50 cursor-not-allowed'}`} disabled={!active}
             >
                Upload
             </button>

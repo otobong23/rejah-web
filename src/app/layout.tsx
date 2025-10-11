@@ -11,8 +11,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Rejah',
-    template: '%s | Rejah'
+    default: 'Novox',
+    template: '%s | Novox'
   },
   description: "Reja is a trading company where you can be a part of the peer-to-peer exchange community worldwide, we offer a unique investment model to traders of bitcoin and other methods.",
 };

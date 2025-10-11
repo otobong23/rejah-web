@@ -59,11 +59,11 @@ const DepositPage = () => {
     <>
       <h3 className="text-xs pb-2">Enter Amount</h3>
       <div className="flex gap-2 items-stretch">
-        <div className="flex justify-center items-center text-lg py-3.5 px-7 rounded-[15px] border-white border">USDT</div>
+        <div className="flex justify-center items-center text-lg py-3.5 px-7 rounded-[15px] border-[#000914] border">USDT</div>
         <input
           type="text"
           placeholder="600,000.00"
-          className="py-[15px] px-3 rounded-[15px] border border-(--color2)/20 text-lg font-medium w-full"
+          className="py-[15px] px-3 rounded-[15px] border border-[#000914] text-lg font-medium w-full"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
@@ -74,7 +74,7 @@ const DepositPage = () => {
             <button
               key={idx}
               onClick={() => setAmount(String(number))}
-              className="w-[70px] text-sm px-2 py-[7px] border-white border rounded-[15px] transition-all duration-300"
+              className="w-[70px] text-sm px-2 py-[7px] border-[#000914] border rounded-[15px] transition-all duration-300"
             >
               {number}
             </button>
@@ -83,7 +83,7 @@ const DepositPage = () => {
         <button
           onClick={() => setStep(2)}
           disabled={!amount}
-          className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+          className={`w-full bg-[#0000FF] text-white text-lg font-bold py-[18px] mt-[35px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
             }`}
         >
           Confirm
@@ -94,20 +94,20 @@ const DepositPage = () => {
 
   const renderWalletDetails = () => (
     <>
-      <div className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-[#002732] text-sm text-[#A8A79E] mb-[30px]">
+      <div className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-[#0000FF] text-sm text-[#fff] mb-[30px]">
         <p>Total Amount in NGN</p>
         <div className="flex items-center gap-2 justify-center">
-          <h1 className="text-2xl text-(--color2) font-semibold">{(Number(amount) * NAIRA_RATE).toLocaleString()} NGN </h1>
+          <h1 className="text-2xl font-semibold">{(Number(amount) * NAIRA_RATE).toLocaleString()} NGN </h1>
           <button onClick={() => handleCopy((Number(amount) * NAIRA_RATE).toString())}>
-            <Icon icon="akar-icons:copy" className="text-[25px] text-(--color2)" />
+            <Icon icon="akar-icons:copy" className="text-[25px]" />
           </button>
         </div>
         <br />
         <p>Total Amount to Deposit</p>
         <div className="flex items-center gap-2 justify-center">
-          <h1 className="text-2xl text-(--color2) font-semibold">{((Number(amount) * NAIRA_RATE) + ((0.02 * Number(amount) * NAIRA_RATE))).toLocaleString()} NGN </h1>
+          <h1 className="text-2xl font-semibold">{((Number(amount) * NAIRA_RATE) + ((0.02 * Number(amount) * NAIRA_RATE))).toLocaleString()} NGN </h1>
           <button onClick={() => handleCopy((Number(amount) * NAIRA_RATE).toString())}>
-            <Icon icon="akar-icons:copy" className="text-[25px] text-(--color2)" />
+            <Icon icon="akar-icons:copy" className="text-[25px]" />
           </button>
         </div>
       </div>
@@ -117,7 +117,7 @@ const DepositPage = () => {
       <button
         onClick={() => {handleFlutterPayment({ callback: handleCallback, onClose: handleOnclose })}}
         disabled={!amount}
-        className={`w-full bg-[#6EBA0E] text-white text-lg font-bold py-[18px] mt-[20px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
+        className={`w-full bg-[#040439] text-white text-lg font-bold py-[18px] mt-[20px] rounded-[15px] transition ${amount ? "opacity-100 hover:scale-90" : "opacity-50 cursor-not-allowed"
           }`}
       >
         Confirm

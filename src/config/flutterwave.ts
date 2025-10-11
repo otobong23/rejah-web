@@ -10,7 +10,7 @@ type FutterWaveConfigProp = {
    }
 };
 
-const siteUrl = 'https://www.rejah.net/';
+const siteUrl = 'https://www.novox.app/';
 // const siteUrl = 'http://localhost:3000/';
 
 const public_key = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY ?? '';
@@ -20,7 +20,7 @@ export const NAIRA_RATE = 1600;
 
 const flutterwaveConfig: (props: FutterWaveConfigProp) => FlutterwaveConfig = (props) => ({
    public_key,
-   tx_ref: `rejah-tx-${Date.now()}`,
+   tx_ref: `novox-tx-${Date.now()}`,
    amount: props.amount * NAIRA_RATE,
    currency: "NGN",
    payment_options: "banktransfer,mobilemoney,ussd,card",
