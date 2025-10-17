@@ -183,7 +183,7 @@ const TierPage = () => {
             </div>
          </div>
 
-         <div className={`bg-[#040439] text-[#FBFBFF] rounded-xl py-[23px] px-[25px] relative`}>
+         <div className={`bg-[url('/layer.png')] bg-cover bg-no-repeat bg-[center_bottom] text-[#FBFBFF] rounded-xl pt-[23px] pb-10 px-[25px] relative`}>
             <button onClick={() => router.back()} className="text-[10px] font-light mb-1.5 flex items-center gap-1.5">
                <Icon icon='mdi:chevron-left' className="text-2xl text-[#0000FF]" />
                <span>Shape Your Journey.</span>
@@ -216,9 +216,6 @@ const TierPage = () => {
             {/* {activeTier === 'Premium' && <div className='pt-[15px] pb-7 flex flex-col gap-3'>
                {PREMIUM_TIER_LIST.filter(item => ![...previousPlans, ...currentPlans].includes(item)).map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleClick} key={item.title + i} btn_bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F94E4E_100%)]' bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
             </div>} */}
-            <div className='text-center bg-[#040439] py-8 px-4 rounded-[20px]'>
-               <p className='text-4xl font-black text-[#FBFBFF] text-outline'>Coming Soon!</p>
-            </div>
          </div>
       </div>
    )

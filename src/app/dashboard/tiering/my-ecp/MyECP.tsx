@@ -49,13 +49,14 @@ const MyECP = () => {
       {/* Header */}
       <button onClick={() => router.back()} className="flex items-center mb-2 space-x-2 transition-all duration-300 cursor-pointer hover:opacity-80">
         <Icon icon='fluent:ios-arrow-24-regular' className="" />
+        <span>Min withdrawal $6</span>
       </button>
-      <h1 className="text-[40px] font-bold mb-8">My Earning Cycles</h1>
+      <h1 className="text-[40px] text-center font-bold mb-8">My Machine</h1>
 
       <div className="flex items-center gap-3 mt-3 max-w-[570px] mx-auto">
         {['active', 'expired'].map((item, index) => (
-          <button onClick={() => setOption(item)} key={index} className={`text-(--color2) rounded-[20px] px-4 py-5 flex-1 flex justify-center items-center gap-5 
-                     ${option === item ? 'bg-(--color1) drop-shadow-2xl drop-shadow-[#6B6B6B40]/25' : 'bg-[#002732]'} transition-all duration-300
+          <button onClick={() => setOption(item)} key={index} className={`text-white rounded-[20px] px-4 py-6 flex-1 flex justify-center items-center gap-5 
+                     ${option === item ? 'bg-[#0000FF] drop-shadow-2xl drop-shadow-[#6B6B6B40]/25' : 'bg-[#040439]'} transition-all duration-300
                      `}>
             <div className="flex flex-col items-end">
               <span className="text-lg font-semibold capitalize">{item}</span>

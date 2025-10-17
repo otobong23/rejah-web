@@ -124,7 +124,7 @@ const Vault = () => {
    }
    return (
       <div>
-         <div className='py-[34px] lg:py-[52px] px-[15px] lg:px-[73px] rounded-[15px] lg:rounded-[23px] bg-(--color4) flex items-center gap-3'>
+         <div className='py-[24px] lg:py-[52px] px-[15px] lg:px-[73px] rounded-[15px] lg:rounded-[23px] bg-(--color4) flex items-center flex-col gap-3'>
             <div>
                <div className='w-[90px] lg:w-[151px] h-[90px] overflow-hidden lg:h-[151px] relative rounded-full bg-[#EFEFEF] flex items-center justify-center'>
                   {user.profileImage
@@ -132,26 +132,26 @@ const Vault = () => {
                      : <Icon icon="solar:user-bold" className='text-[#808080]' width={48} />}
                </div>
             </div>
-            <div className={`${nunitoSans.className} w-full text-[#E8E3D3]`}>
+            <div className={`${nunitoSans.className} w-full flex flex-col items-center text-[#E8E3D3]`}>
                <div className={`flex justify-between`}>
                   <h1 className='text-xl lg:text-4xl font-semibold'>User_<span className='uppercase'>{user.userID}</span></h1>
-                  <div>
+                  {/* <div>
                      {user.vip === 0 && ''}
                      {user.vip === 1 && <VIP iconColor='text-[#295F4B]' />}
                      {user.vip === 2 && <VIP bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' number={2} />}
                      {user.vip === 3 && <VIP bg='bg-[linear-gradient(180deg,_#FFD700_0%,_#A56409_128.07%)]' number={3} />}
-                  </div>
+                  </div> */}
                </div>
                <p className='text-sm lg:text-lg opacity-50'>ID: <span className='uppercase'>{user.userID}</span></p>
                <p className='text-sm lg:text-lg opacity-50'>Phone No: {user.whatsappNo ? user.whatsappNo : 'Unknown'}</p>
-               <div className='w-full relative h-[2px] bg-white/30 mt-[5px]'>
+               {/* <div className='w-full relative h-[2px] bg-white/30 mt-[5px]'>
                   <span className='w-2.5 h-2.5 block bg-white/50 rounded-full absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'></span>
                   <p className='z-[99] text-[8px] text-[#003B46] px-2 py-1 rounded-[20px] bg-white leading-tight absolute top-1/2 transform -translate-y-1/2' style={{
                      left: user.meter + '%'
                   }}>{crew?.totalCrewDeposits}/{handleText()}</p>
                   <span className='w-2.5 h-2.5 block bg-white/50 rounded-full absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 z-50'></span>
-               </div>
-               <div className='flex justify-between text-[#4C767D] text-[10px] lg:text-lg mt-2'>
+               </div> */}
+               {/* <div className='flex justify-between text-[#4C767D] text-[10px] lg:text-lg mt-2'>
                   {user.vip === 0 && <>
                      <span></span>
                      <span>VIP 1</span>
@@ -168,7 +168,7 @@ const Vault = () => {
                      <span>VIP 2</span>
                      <span>VIP 3</span>
                   </>}
-               </div>
+               </div> */}
             </div>
          </div>
          <div className={`pt-[15px] pb-7 flex flex-col lg:flex-row gap-3 overflow-y-hidden`}>

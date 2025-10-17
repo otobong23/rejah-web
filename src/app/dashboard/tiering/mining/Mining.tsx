@@ -11,6 +11,7 @@ import api from '@/utils/axios';
 import { AxiosError } from 'axios';
 import Cookies from "js-cookie";
 import { useRouter } from 'next/navigation';
+import { formatInTimeZone } from 'date-fns-tz';
 
 const claim_video_animation = '/videos/claim-animation.mp4'
 
@@ -40,6 +41,7 @@ const MiningPage = () => {
    const [timeLeft, setTimeLeft] = useState<number | null>(null);
    const [wasActive, setWasActive] = useState(false)
    const router = useRouter();
+   const videoRef = useRef<HTMLVideoElement>(null)
 
    // Add refs to prevent double execution
    const isProcessingClaim = useRef(false);
@@ -190,6 +192,7 @@ const MiningPage = () => {
          if (timeLeft !== null && timeLeft > 0) return;
 
          startTimer()
+         videoRef.current?.play();
       } else {
          showToast('warning', 'Your account has been suspended. Please Vist Customer Care')
       }
@@ -237,6 +240,35 @@ const MiningPage = () => {
       }
    }, [wasActive])
 
+
+   const [transaction, setTransaction] = useState<UserTransaction[]>()
+
+   const getTransaction = async (page: number = 1) => {
+      const userToken = Cookies.get("userToken");
+
+      if (!userToken) {
+         router.replace("/auth/login");
+         return;
+      }
+
+      try {
+         api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+         const response = await api.get<transactionResponseType>(`/transaction?limit=10&page=${page}`);
+         setTransaction(response.data.transactions)
+      } catch (err) {
+         if (err instanceof AxiosError) {
+            console.log(err)
+            showToast('error', err.response?.data.message)
+         } else {
+            console.error(err)
+            showToast('error', 'An error occurred during signup')
+         }
+      }
+   }
+   useEffect(() => {
+      getTransaction()
+   }, [])
+
    return (
       <div>
          <div className={`backdrop-blur-md text-[#FBFBFF] py-[23px] px-[25px] relative bg-[url('/layer.png')] bg-cover bg-no-repeat bg-[center_bottom]`}>
@@ -275,10 +307,10 @@ const MiningPage = () => {
                   </div>
                </button> */}
 
-               <video src={claim_video_animation} loop muted controls={false} autoPlay={miningActivated} className='w-[225px] object-cover' />
+               <video src={claim_video_animation} loop muted controls={false} autoPlay={miningActivated} ref={videoRef} className='w-[225px] object-cover' />
 
                <p className='flex justify-center items-center gap-1 text-lg font-semibold text-[#00091480]'>
-                  <span>{miningActivated ? <Icon icon='ri:hourglass-fill' className='text-[#B8FF5E]' /> : <Icon icon='gravity-ui:thunderbolt-fill' className='text-[#B8FF5E]' />}</span>
+                  <span>{miningActivated ? <Icon icon='ri:hourglass-fill' className='text-[#F59E0B]' /> : <Icon icon='gravity-ui:thunderbolt-fill' className='text-[#F59E0B]' />}</span>
                   <span>{miningActivated ? formatTime(timeLeft) + 'hrs Left' : 'Daily Earnings'}</span>
                </p>
             </div>
@@ -286,6 +318,23 @@ const MiningPage = () => {
             <button onClick={handleMine} disabled={miningActivated} className={`w-full py-6 text-[#E8E3D3] bg-[#0000FF] rounded-[20px] ${miningActivated ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#0000CC]'} transition-colors duration-300 font-semibold text-lg mb-10`}>
                Start Miner
             </button>
+
+            <div className="flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[300px] mx-auto mt-4">
+               {transaction?.length ? transaction.map((item, index) => (
+                  <div key={item.type + index} className='flex flex-col py-2.5 px-5 bg-[#3C3C3C21] text-[#000914] gap-3 rounded-[15px]'>
+                     <div className='flex justify-between'>
+                        <h1 className='text-sm font-semibold mb-1 capitalize'>
+                           {item.type} {item.status === 'pending' ? 'pending' : item.status === 'completed' ? 'successful' : 'failed'}
+                        </h1>
+                        <p>${item.amount.toLocaleString()}</p>
+                     </div>
+                     <div className='flex justify-between text-xs font-normal text-[#000914]'>
+                        <p>{formatInTimeZone(item.updatedAt ?? Date.now(), 'Africa/Lagos', 'HH:mm')}</p>
+                        <p>{formatInTimeZone(item.updatedAt ?? Date.now(), 'Africa/Lagos', 'dd/MM/yy')}</p>
+                     </div>
+                  </div>
+               )) : <p className="text-center text-sm text-[#272E37]">No Recent Transaction Found yet.</p>}
+            </div>
 
             {/* <div className='text-center bg-(--color1) py-8 px-4 rounded-[20px] w-full'>
                <p className='text-4xl font-black text-(--color1) text-outline'>Coming Soon!</p>

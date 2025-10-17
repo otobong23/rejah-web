@@ -31,11 +31,7 @@ const FAQ = () => {
         {FAQ_LIST.map((faq, index) => (
           <div
             key={index}
-            className={`p-4 rounded-xl border transition-all duration-300 ${
-              openIndex === index && faq.answer
-                ? "bg-(--color2) text-(--color4) border-(--color2)"
-                : "border-(--color2)/30 text-(--color2)"
-            }`}
+            className={`p-4 rounded-xl border transition-all duration-300 border-(--color2)/30 text-(--color2)`}
             onClick={() => setOpenIndex(index)}
           >
             <div className="flex items-center justify-between cursor-pointer">
