@@ -12,6 +12,7 @@ import { AxiosError } from 'axios';
 import Cookies from "js-cookie";
 import { useRouter } from 'next/navigation';
 
+const claim_video_animation = '/videos/claim-animation.mp4'
 
 const BUTTON_LIST = [
    'Deposit',
@@ -238,36 +239,24 @@ const MiningPage = () => {
 
    return (
       <div>
-         <div className={`bg-white/7 backdrop-blur-md text-(--color2) rounded-[15px] py-[23px] px-[25px] relative`}>
-            <div className="text-[10px] font-light mb-1.5 flex items-center gap-1.5">
-               <span>Current Reja plan</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-               <h1 className="text-3xl font-bold lg:text-4xl">${handleTotalInvested(user.currentPlan)}</h1>
-               <span className="inline-block bg-[#B8FF5E] text-(--color4) text-xs font-semibold px-3 py-1 rounded-full">
-                  Launch Tier | Ascend
-               </span>
-            </div>
-            <div className='flex gap-4 mt-2'>
-               <div className="flex items-start gap-2">
-                  <div><Icon icon="mdi:pickaxe" className="text-xl" /></div>
-                  <p className="text-sm">{miningActivated ? '+' + (roundUpTo3Decimals(handleDailyYield(user.currentPlan) / 24)) + '/' : ''}{handleDailyYield(user.currentPlan)}</p>
-               </div>
-               <div className="flex items-start gap-2">
-                  <div><Icon icon="tabler:coin-filled" className="text-xl" /></div>
-                  <p className="text-sm">{handleROI(user.currentPlan)}</p>
-               </div>
-            </div>
-            <div className='bg-cover bg-center bg-no-repeat px-[10px] py-[9px] pl-4 absolute right-0 bottom-0 transform translate-y-1/2' style={{
-               backgroundImage: `url(${Rectangle2.src})`,
-            }}>
-               <Link href='/dashboard/tiering/my-ecp' className='text-[#F68A3F]'>My Earnings Cycles</Link>
+         <div className={`backdrop-blur-md text-[#FBFBFF] py-[23px] px-[25px] relative bg-[url('/layer.png')] bg-cover bg-no-repeat bg-[center_bottom]`}>
+            <h1 className='text-xs text-center mb-2'>Total Balance</h1>
+            <h1 className="text-4xl font-bold text-center mb-2">${handleTotalInvested(user.currentPlan)}</h1>
+            <p className="text-xs text-center text-[#0000FF] m3">{miningActivated ? '+$' + (roundUpTo3Decimals(handleDailyYield(user.currentPlan) / 24)) + '/' : ''}{handleDailyYield(user.currentPlan)}</p>
+
+            <div className='flex gap-2 text-white text-xs font-medium'>
+               <Link href='/dashboard/tiering/deposit' className={`flex-1 bg-[url('/deposit_vector.png')] bg-cover bg-no-repeat bg-[center_bottom] py-3 pb-4 text-right`}>
+                  <span className='pr-10'>Deposit</span>
+               </Link>
+               <Link href='/dashboard/tiering/withdraw' className={`flex-1 bg-[url('/withdrawal_vector.png')] bg-cover bg-no-repeat bg-[center_bottom] py-3 pb-4 text-left`}>
+                  <span className='pl-10'>Withdrawal</span>
+               </Link>
             </div>
          </div>
 
          <div className='flex flex-col items-center justify-center mt-[82px] max-w-[647px] mx-auto'>
             <div className='flex flex-col items-center justify-center mb-9'>
-               <button className='mb-[38px] clickable transform scale-100' onClick={handleMine}>
+               {/* <button className='mb-[38px] clickable transform scale-100' onClick={handleMine}>
                   <div className={`shadow-[0px_0px_119.05px_0px_#B8FF5E4D] w-[196px] h-[196px] rounded-full flex items-center justify-center relative transition-all duration-300 
                   ${miningActivated ? "border-8 border-l-[#9D62D9] border-t-[#6EBA0E] border-b-[#F97316] border-r-[#F97316] rotateMine" : 'bg-[linear-gradient(180deg,_#424748_0%,_#003B46_145.74%)] '}
                      `}>
@@ -284,24 +273,23 @@ const MiningPage = () => {
                         ) : (<Image src={reja_icon} alt="Reja Icon" className='w-[72px] h-[72px] object-cover transform rotate-45' />)}
                      </div>
                   </div>
-               </button>
-               <p className='flex justify-center items-center gap-1 text-lg font-semibold text-(--color2)'>
+               </button> */}
+
+               <video src={claim_video_animation} loop muted controls={false} autoPlay={miningActivated} className='w-[225px] object-cover' />
+
+               <p className='flex justify-center items-center gap-1 text-lg font-semibold text-[#00091480]'>
                   <span>{miningActivated ? <Icon icon='ri:hourglass-fill' className='text-[#B8FF5E]' /> : <Icon icon='gravity-ui:thunderbolt-fill' className='text-[#B8FF5E]' />}</span>
-                  <span>{miningActivated ? formatTime(timeLeft) + 'hrs Left' : 'Tap to start Cycle'}</span>
+                  <span>{miningActivated ? formatTime(timeLeft) + 'hrs Left' : 'Daily Earnings'}</span>
                </p>
             </div>
 
-            <div className="flex items-center w-full gap-3 my-3">
-               {BUTTON_LIST.map(title => (
-                  <Link href={`/dashboard/tiering/${title.toLowerCase()}`} key={title} className={`text-(--color2) bg-[#003B46] rounded-[20px] px-4 py-5 flex-1 flex justify-center items-center gap-5 transition-all duration-300`}>
-                     {title}
-                  </Link>
-               ))}
-            </div>
+            <button onClick={handleMine} disabled={miningActivated} className={`w-full py-6 text-[#E8E3D3] bg-[#0000FF] rounded-[20px] ${miningActivated ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#0000CC]'} transition-colors duration-300 font-semibold text-lg mb-10`}>
+               Start Miner
+            </button>
 
-            <div className='text-center bg-(--color1) py-8 px-4 rounded-[20px] w-full'>
+            {/* <div className='text-center bg-(--color1) py-8 px-4 rounded-[20px] w-full'>
                <p className='text-4xl font-black text-(--color1) text-outline'>Coming Soon!</p>
-            </div>
+            </div> */}
          </div>
       </div>
    )

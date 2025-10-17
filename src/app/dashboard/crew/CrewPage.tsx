@@ -81,7 +81,7 @@ const CrewPage = () => {
          </div>
          <div className='bg-[#0000FF] rounded-[20px] py-[22px] px-[25px] mb-3'>
             <div className='flex justify-center mb-6'>
-               <Image src={team_commission} alt="Team Commission" className='object-cover mt-6' width={192} />
+               <h2 className='text-white text-[32.5px] tracking-[0px] font-semibold'>Team Commission</h2>
             </div>
             <div className='font-semibold text-white max-w-[649px] mx-auto'>
                <div className="thead grid grid-cols-[0.8fr_0.6fr_1.2fr] justify-items-center text-sm">
@@ -109,45 +109,45 @@ const CrewPage = () => {
          <div className='max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3'>
             {stack === 1 && (<>
                {Array.isArray(crew?.members.level_1) && crew.members.level_1.length ? crew?.members.level_1.map(({ userID, level, currentPlan }, i) => (
-                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
-                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
-                        <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
+                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-[#32323212] flex items-center gap-3'>
+                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-[#C7C7C7] rounded-full'>
+                        <Icon icon='solar:user-bold' className='text-2xl text-[#fff]' />
                      </div>
                      <div>
-                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userID}</h2>
-                        <p className='text-(--color2)/50 text-xs'>{level}</p>
-                        <p className='text-(--color2)/50 text-xs'>{currentPlan}</p>
+                        <h2 className='text-[#00091480] text-sm font-semibold'>User_{userID}</h2>
+                        <p className='text-[#00091480] text-xs'>{level}</p>
+                        <p className='text-[#00091480] text-xs'>{currentPlan}</p>
                      </div>
                   </div>
-               )) : <p className="text-center text-sm text-white/60">No referrals at this level yet.</p>}
+               )) : <p className="text-center text-sm text-[#00091480]">No referrals at this level yet.</p>}
             </>)}
             {stack === 2 && (<>
                {Array.isArray(crew?.members.level_2) && crew.members.level_2.length ? crew?.members.level_2.map(({ userID, level, currentPlan }, i) => (
-                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
-                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
-                        <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
+                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-[#32323212] flex items-center gap-3'>
+                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-[#C7C7C7] rounded-full'>
+                        <Icon icon='solar:user-bold' className='text-2xl text-[#fff]' />
                      </div>
                      <div>
-                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userID}</h2>
-                        <p className='text-(--color2)/50 text-xs'>{level}</p>
-                        <p className='text-(--color2)/50 text-xs'>{currentPlan}</p>
+                        <h2 className='text-[#00091480] text-sm font-semibold'>User_{userID}</h2>
+                        <p className='text-[#00091480] text-xs'>{level}</p>
+                        <p className='text-[#00091480] text-xs'>{currentPlan}</p>
                      </div>
                   </div>
-               )) : <p className="text-center text-sm text-white/60">No referrals at this level yet.</p>}
+               )) : <p className="text-center text-sm text[#00091480]">No referrals at this level yet.</p>}
             </>)}
             {stack === 3 && (<>
                {Array.isArray(crew?.members.level_3) && crew.members.level_3.length ? crew?.members.level_3.map(({ userID, level, currentPlan }, i) => (
-                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
-                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
-                        <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
+                  <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-[#32323212] flex items-center gap-3'>
+                     <div className='w-[50px] h-[50px] flex justify-center items-center bg-[#C7C7C7] rounded-full'>
+                        <Icon icon='solar:user-bold' className='text-2xl text-[#fff]' />
                      </div>
                      <div>
-                        <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userID}</h2>
-                        <p className='text-(--color2)/50 text-xs'>{level}</p>
-                        <p className='text-(--color2)/50 text-xs'>{currentPlan}</p>
+                        <h2 className='text-[#00091480] text-sm font-semibold'>User_{userID}</h2>
+                        <p className='text-[#00091480] text-xs'>{level}</p>
+                        <p className='text-[#00091480] text-xs'>{currentPlan}</p>
                      </div>
                   </div>
-               )) : <p className="text-center text-sm text-white/60">No referrals at this level yet.</p>}
+               )) : <p className="text-center text-sm text-[#00091480]">No referrals at this level yet.</p>}
             </>)}
          </div>
       </div>

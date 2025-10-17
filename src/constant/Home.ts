@@ -89,7 +89,7 @@ export const STE = [
 export const HOME_NAV_LIST = [
    {
       title: 'Withdraw',
-      icon: 'fa6-solid:sack-dollar',
+      icon: 'solar:money-bag-bold',
       path: '/tiering/withdraw',
    },
    {
@@ -98,9 +98,9 @@ export const HOME_NAV_LIST = [
       path: '/tiering/deposit',
    },
    {
-      title: 'Updates',
-      icon: 'fluent:dual-screen-update-20-filled',
-      path: '/updates',
+      title: 'Daily earnings',
+      icon: 'ic:outline-browser-updated',
+      path: '/daily-spins',
    },
    {
       title: 'FAQ',
@@ -113,18 +113,18 @@ export const HOME_NAV_LIST = [
       path: '/help',
    },
    {
-      title: 'My ECP',
-      icon: 'fa:recycle',
-      path: '/tiering/my-ecp',
-   },
-   {
-      title: 'Recycler',
-      icon: 'material-symbols:factory',
+      title: 'Miner',
+      icon: 'mdi:hand-coin',
       path: '/tiering/mining',
    },
    {
-      title: 'Crew',
-      icon: 'fluent:people-24-filled',
+      title: 'My machine',
+      icon: 'material-symbols:factory',
+      path: '/tiering/my-ecp',
+   },
+   {
+      title: 'Team',
+      icon: 'fluent:people-team-16-filled',
       path: '/crew',
    },
 ]

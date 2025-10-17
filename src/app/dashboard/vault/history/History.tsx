@@ -133,14 +133,14 @@ const History = () => {
          </div>
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>
             {filteredTransactions.length ? filteredTransactions.map((item, index) => (
-               <div key={item.type + index} className='flex flex-col py-2.5 px-5 bg-white/7 gap-3 rounded-[15px]'>
+               <div key={item.type + index} className='flex flex-col py-2.5 px-5 bg-[#040439]/10 text-[#040439] gap-3 rounded-[15px]'>
                   <div className='flex justify-between'>
                      <h1 className='text-sm font-semibold mb-1 capitalize'>
                         {item.type} {item.status === 'pending' ? 'pending' : item.status === 'completed' ? 'successful' : 'failed'}
                      </h1>
                      <p>${item.amount.toLocaleString()}</p>
                   </div>
-                  <div className='flex justify-between text-xs font-normal text-(--color2)/50'>
+                  <div className='flex justify-between text-xs font-normal'>
                      <p>{formatInTimeZone(item.updatedAt ?? Date.now(), 'Africa/Lagos', 'HH:mm')}</p>
                      <p>{formatInTimeZone(item.updatedAt ?? Date.now(), 'Africa/Lagos', 'dd/MM/yy')}</p>
                   </div>

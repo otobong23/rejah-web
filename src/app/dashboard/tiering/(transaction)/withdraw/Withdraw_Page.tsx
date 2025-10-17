@@ -372,7 +372,7 @@ const WithdrawPage = () => {
                         </div>
 
                         {showBankDropdown && (
-                           <div className='absolute z-10 w-full mt-1 bg-(--foreground) border-2 border-[#424545] rounded-[15px] max-h-60 overflow-y-auto shadow-lg'>
+                           <div className='absolute z-10 w-full mt-1 bg-(--background) border-2 border-[#424545] rounded-[15px] max-h-60 overflow-y-auto shadow-lg'>
                               {SUPPORTED_BANKS.map((bank) => (
                                  <div
                                     key={bank.code}
