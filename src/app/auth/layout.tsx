@@ -7,7 +7,7 @@ const layout = ({
 }>) => {
   return (
     // <div className="min-h-screen flex justify-center bg-[url('/Mobile_bg.png')] lg:bg-[url('/Desktop_bg.png')] bg-cover bg-no-repeat bg-center">
-    <div className="min-h-screen flex justify-center bg-white">
+    <div className="min-h-screen flex justify-center bg-[url('/auth_bg.png')] bg-cover bg-no-repeat bg-center">
       {children}
     </div>
   )
