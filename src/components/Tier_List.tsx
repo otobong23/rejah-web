@@ -14,7 +14,7 @@ const Tier_List: FC<Tier_List_Props> = ({
 }) => {
    return (
       <div className={`text-(--color2) rounded-[15px] p-[3px] shadow-lg ${bg}`}>
-         <h2 className="text-lg font-semibold px-[22px] py-[9px]">{title}</h2>
+         <h2 className="text-lg font-semibold px-[22px] py-[9px] text-[#fff]">{title}</h2>
 
          <div className="flex items-center gap-6 px-[15px] py-5 bg-[#fff] rounded-[13px]">
             <div className='flex-1'>

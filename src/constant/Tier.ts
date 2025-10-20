@@ -1,9 +1,7 @@
-import poly from '@/assets/Tier/PolyCycle.png'
-import flexForm from '@/assets/Tier/FlexForm.png'
-import rubberRise from '@/assets/Tier/RubberRise.png'
-import vaultan from '@/assets/Tier/Vaultan.png'
-import titane from '@/assets/Tier/Titane.png'
-import nova from '@/assets/Tier/Nova.png'
+import reverb from '@/assets/Tier/reverb.png'
+import reverb2 from '@/assets/Tier/reverb2.png'
+import votan from '@/assets/Tier/votan.png'
+import votan2 from '@/assets/Tier/votan2.png'
 
 
 export const BUTTON_LIST = [
@@ -14,10 +12,10 @@ export const BUTTON_LIST = [
 export const REBOUND_TIER_LIST: TIER_LIST_TYPE[] = [
    {
       type: 'rebound_tier',
-      title: 'PolyCycle',
-      image: poly,
+      title: 'Reverb',
+      image: reverb,
       details: {
-         price: '$10',
+         price: '$11',
          daily_yield: '$0.50',
          duration: '30 Days',
          roi: '$15',
@@ -26,87 +24,40 @@ export const REBOUND_TIER_LIST: TIER_LIST_TYPE[] = [
    },
    {
       type: 'rebound_tier',
-      title: 'FlexForm',
-      image: flexForm,
-      details: {
-         price: '$30',
-         daily_yield: '$1.20',
-         duration: '45 Days',
-         roi: '$54',
-         purchase_limit: '1'
-      }
-   },
-   {
-      type: 'rebound_tier',
-      title: 'GridForm',
-      image: flexForm,
+      title: 'Votan',
+      image: votan,
       details: {
          price: '$50',
          daily_yield: '$2',
-         duration: '40 Days',
-         roi: '$80',
-         purchase_limit: '1'
-      }
-   },
-   {
-      type: 'rebound_tier',
-      title: 'CoreMelt',
-      image: rubberRise,
-      details: {
-         price: '$80',
-         daily_yield: '$2.50',
          duration: '50 Days',
-         roi: '$125',
+         roi: '$100',
          purchase_limit: '1'
       }
-   }, {
-      type: 'rebound_tier',
-      title: 'RubberRise',
-      image: rubberRise,
-      details: {
-         price: '$120',
-         daily_yield: '$4.00',
-         duration: '45 Days',
-         roi: '$180',
-         purchase_limit: '1'
-      }
-   },
+   }
 ]
 
 export const PREMIUM_TIER_LIST: TIER_LIST_TYPE[] = [
    {
       type: 'premium_tier',
-      title: 'Vaultan',
-      image: vaultan,
+      title: 'Reverb 2.0',
+      image: reverb2,
       details: {
-         price: '$300',
-         daily_yield: '$6',
-         duration: '80 Days',
-         roi: '$480',
+         price: '$30',
+         daily_yield: '$1.20',
+         duration: '60 Days',
+         roi: '$72',
          purchase_limit: '1'
       }
    },
    {
       type: 'premium_tier',
-      title: 'Titane',
-      image: titane,
+      title: 'Votan 2.0',
+      image: votan2,
       details: {
-         price: '$500',
-         daily_yield: '$8',
-         duration: '100 Days',
-         roi: '$800',
-         purchase_limit: '1'
-      }
-   },
-   {
-      type: 'premium_tier',
-      title: 'Nova',
-      image: nova,
-      details: {
-         price: '$1,000',
-         daily_yield: '$12',
-         duration: '180 Days',
-         roi: '$2,160',
+         price: '$120',
+         daily_yield: '$4',
+         duration: '50 Days',
+         roi: '$200',
          purchase_limit: '1'
       }
    }
