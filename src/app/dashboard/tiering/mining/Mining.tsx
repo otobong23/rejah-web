@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 import { useRouter } from 'next/navigation';
 import { formatInTimeZone } from 'date-fns-tz';
 
-const claim_video_animation = '/videos/claim-animation.mp4'
+const claim_video_animation = '/videos/claim-animation.webm'
 
 const BUTTON_LIST = [
    'Deposit',
@@ -319,7 +319,7 @@ const MiningPage = () => {
                Start Miner
             </button>
 
-            <div className="flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[300px] mx-auto mt-4">
+            <div className="flex flex-col gap-3 overflow-scroll no-scrollbar w-full mt-4">
                {transaction?.length ? transaction.map((item, index) => (
                   <div key={item.type + index} className='flex flex-col py-2.5 px-5 bg-[#3C3C3C21] text-[#000914] gap-3 rounded-[15px]'>
                      <div className='flex justify-between'>

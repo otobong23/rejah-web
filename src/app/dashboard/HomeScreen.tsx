@@ -131,7 +131,7 @@ export default function HomeScreen() {
             <h1>Notification</h1>
             <AiFillNotification color="#5ADA5A" />
          </div>
-         <div className="flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[300px] mx-auto">
+         <div className="flex flex-col gap-3 overflow-scroll no-scrollbar w-full">
             {transaction?.length ? transaction.map((item, index) => (
                <div key={item.type + index} className='flex flex-col py-2.5 px-5 bg-[#3C3C3C21] text-[#000914] gap-3 rounded-[15px]'>
                   <div className='flex justify-between'>
