@@ -183,7 +183,7 @@ const TierPage = () => {
             </div>
          </div>
 
-         <div className={`bg-[url('/layer.png')] bg-cover bg-no-repeat bg-[center_bottom] text-[#FBFBFF] rounded-xl pt-[23px] pb-10 px-[25px] relative`}>
+         <div className={`bg-[url('/layer.png')] bg-cover bg-no-repeat bg-[center_bottom] text-[#FBFBFF] rounded-xl pt-[23px] pb-10 px-[25px] mb-3 relative`}>
             <button onClick={() => router.back()} className="text-[10px] font-light mb-1.5 flex items-center gap-1.5">
                <Icon icon='mdi:chevron-left' className="text-2xl text-[#0000FF]" />
                <span>Shape Your Journey.</span>
@@ -209,7 +209,7 @@ const TierPage = () => {
             ))}
          </div> */}
 
-         <div className='max-w-[570px] mx-auto'>
+         <div className='max-w-[570px] mx-auto flex flex-col gap-3'>
             {/* {activeTier === 'Rebound' && <div className={`pt-[15px] pb-7 flex flex-col gap-3 overflow-y-hidden ${activeTier === 'Rebound' ? 'h-fit' : 'h-0'}`}>
                {REBOUND_TIER_LIST.filter(item => ![...previousPlans, ...currentPlans].includes(item)).map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleClick} key={item.title + i} />)}
             </div>} */}
