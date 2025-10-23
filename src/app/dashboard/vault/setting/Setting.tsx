@@ -141,7 +141,7 @@ const Settings = () => {
       <button onClick={() => router.back()} className="flex items-center mb-2 space-x-2 transition-all duration-300 cursor-pointer hover:opacity-80">
         <Icon icon='fluent:ios-arrow-24-regular' className="" />
       </button>
-      <h1 className="text-[40px] font-bold mb-8">Settings</h1>
+      <h1 className="text-[40px] font-bold text-center mb-8">Settings</h1>
       <div className='mt-[35px]'>
         <div className='flex items-center justify-center'>
           <input type="file" name="profileImage" className='hidden' id="profileImage" accept="image/*" onChange={handleFileChange} />

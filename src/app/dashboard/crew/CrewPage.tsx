@@ -89,12 +89,12 @@ const CrewPage = () => {
                   <div>RVG (%)</div>
                   <div>CCD</div>
                </div>
-               <div className='border border-white rounded-[10px] overflow-hidden mt-[10px] text-lg'>
+               <div className='overflow-hidden mt-[10px] text-lg'>
                   {TABLEDATA.map(([item1, item2, item3], index) => (
                      <div key={index} className='grid grid-cols-[0.8fr_0.6fr_1.2fr]'>
-                        <div className='py-4 border border-white text-center'>{item1}</div>
-                        <div className='py-4 border border-white text-center'>{item2}</div>
-                        <div className='py-4 border border-white text-center'>{item3}</div>
+                        <div className='py-4 border-b border-white text-center'>{item1}</div>
+                        <div className='py-4 border-b border-white text-center'>{item2}</div>
+                        <div className='py-4 border-b border-white text-center'>{item3}</div>
                      </div>
                   ))}
                </div>
