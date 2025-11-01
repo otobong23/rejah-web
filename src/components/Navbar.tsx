@@ -42,7 +42,7 @@ const Navbar = () => {
    return (
       <div className='px-4 lg:px-24'>
          <div className='bg-(--color4) text-white rounded-[15px]'>
-            <ul className='flex items-center justify-between gap-4 py-5 px-14'>
+            <ul className='flex items-center justify-between gap-4 py-5 px-11'>
                {NAVBAR_LIST.map(({ icon, path, title }) => (
                   <li key={icon}>
                      <Link href={'/dashboard'+path} className={isActive === title ? 'text-(--color7)' : 'text-(--off-white)'} key={icon}>
