@@ -185,7 +185,6 @@ const Settings = () => {
 
           <div className='my-12 flex flex-col gap-3.5 items-center text-lg font-medium text-(--color2)'>
             <button onClick={handleDelete} className='opacity-100 cursor-pointer hover:opacity-50 transition-all duration-300'>Delete Account</button>
-            <button onClick={handleLogout} className='opacity-100 cursor-pointer hover:opacity-50 transition-all duration-300'>Logout</button>
           </div>
 
           <button
