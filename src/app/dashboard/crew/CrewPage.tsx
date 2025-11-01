@@ -84,17 +84,17 @@ const CrewPage = () => {
                <h2 className='text-white text-[32.5px] tracking-[0px] font-semibold'>Team Commission</h2>
             </div>
             <div className='font-semibold text-white max-w-[649px] mx-auto'>
-               <div className="thead grid grid-cols-[0.8fr_0.6fr_1.2fr] justify-items-center text-sm">
+               <div className="thead grid grid-cols-[1fr_1fr] justify-items-center text-sm">
                   <div>Level (LVL)</div>
                   <div>RVG (%)</div>
-                  <div>CCD</div>
+                  {/* <div>CCD</div> */}
                </div>
                <div className='overflow-hidden mt-[10px] text-lg'>
                   {TABLEDATA.map(([item1, item2, item3], index) => (
-                     <div key={index} className='grid grid-cols-[0.8fr_0.6fr_1.2fr]'>
+                     <div key={index} className='grid grid-cols-[1fr_1fr]'>
                         <div className='py-4 border-b border-white text-center'>{item1}</div>
                         <div className='py-4 border-b border-white text-center'>{item2}</div>
-                        <div className='py-4 border-b border-white text-center'>{item3}</div>
+                        {/* <div className='py-4 border-b border-white text-center'>{item3}</div> */}
                      </div>
                   ))}
                </div>
