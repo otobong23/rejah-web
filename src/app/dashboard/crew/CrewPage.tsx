@@ -61,6 +61,11 @@ const CrewPage = () => {
 
    return (
       <div>
+         <button onClick={() => router.back()} className="flex items-center mb-2 space-x-2 transition-all duration-300 cursor-pointer hover:opacity-80">
+            <Icon icon='fluent:ios-arrow-24-regular' className="" />
+         </button>
+         <h1 className="text-[40px] font-bold mb-8">Team Commission</h1>
+
          <div className={`text-[#E8E3D3] rounded-[15px] py-[23px] h-fit px-[25px] relative bg-(--color4) mb-3`}>
             {/* <ParticlesBackground /> */}
             <div className="text-[10px] md:text-xs font-light mb-3.5 flex items-center gap-1.5">
@@ -79,7 +84,7 @@ const CrewPage = () => {
                </button>
             </div>
          </div>
-         <div className='bg-[#0000FF] rounded-[20px] py-[22px] px-[25px] mb-3'>
+         {/* <div className='bg-[#0000FF] rounded-[20px] py-[22px] px-[25px] mb-3'>
             <div className='flex justify-center mb-6'>
                <h2 className='text-white text-[32.5px] tracking-[0px] font-semibold'>Team Commission</h2>
             </div>
@@ -87,19 +92,17 @@ const CrewPage = () => {
                <div className="thead grid grid-cols-[1fr_1fr] justify-items-center text-sm">
                   <div>Level (LVL)</div>
                   <div>RVG (%)</div>
-                  {/* <div>CCD</div> */}
                </div>
                <div className='overflow-hidden mt-[10px] text-lg'>
                   {TABLEDATA.map(([item1, item2, item3], index) => (
                      <div key={index} className='grid grid-cols-[1fr_1fr]'>
                         <div className='py-4 border-b border-white text-center'>{item1}</div>
                         <div className='py-4 border-b border-white text-center'>{item2}</div>
-                        {/* <div className='py-4 border-b border-white text-center'>{item3}</div> */}
                      </div>
                   ))}
                </div>
             </div>
-         </div>
+         </div> */}
 
          <div className='flex gap-2 mb-3 lg:justify-center'>
             {new Array(3).fill("").map((a, i) => <button onClick={() => setStack(i + 1)} className={`text-center flex-1 lg:max-w-[149px] py-3.5 rounded-[20px] shadow-[0px_0px_24px_0px_#6B6B6B/25] transition-all duration-300 text-[#E8E3D3]  ${stack === (i + 1) ? 'bg-[#0000FF]' : 'bg-[#0000FF] opacity-40'}`} key={i + 1}>Level {i + 1}</button>)}

@@ -104,6 +104,17 @@ const Vault = () => {
       }
       getCrew()
    }, [])
+
+   const handleLogout = () => {
+      const userToken = Cookies.get("userToken");
+      if (!userToken) {
+         router.replace("/auth/login");
+         return;
+      }
+      Cookies.remove("userToken");
+      router.replace("/auth/login");
+   }
+
    const handleText = () => {
       const tc = crew?.totalCrewDeposits ?? 0;
       let level = 0;
@@ -171,22 +182,47 @@ const Vault = () => {
                </div> */}
             </div>
          </div>
-         <div className={`pt-[15px] pb-7 flex flex-col lg:flex-row gap-3 overflow-y-hidden`}>
+         {/* <div className={`pt-[15px] pb-7 flex flex-col lg:flex-row gap-3 overflow-y-hidden`}>
             <Vault_List VAULT_LIST={TOTAL_ASSET} />
+         </div> */}
+
+         <div className="bg-[#040439]/10 text-[#040439] px-4 py-5 rounded-[8px] my-3">
+            <div className="flex gap-2 text-[#040439CC] text-xl">
+               <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1">
+                  <Icon icon='mdi:wallet' />
+                  <h1>Total Assets</h1>
+               </div>
+               <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1">
+                  <Icon icon='vaadin:connect' />
+                  <h1>Ref Bonus</h1>
+               </div>
+            </div>
+
+            <div className="flex gap-2 mt-[5px] text-3xl font-bold">
+               <h1 className="flex-1 flex items-center justify-center gap-1">${Number(user.balance).toLocaleString()}</h1>
+               <h1 className="flex-1 flex items-center justify-center gap-1">${Number(user.totalYield).toLocaleString()}</h1>
+            </div>
          </div>
-         <div className="flex items-center justify-between bg-(--color4) py-6 lg:py-[52px] px-4 lg:px-32 rounded-[15px] gap-3">
+
+         <div className="flex flex-col bg-(--color4) py-6 lg:py-[52px] px-4 lg:px-32 rounded-[15px] gap-3">
             {actions.map(({ icon, label }, index) => (
                <button
                   onClick={() => handleClick(label)}
                   key={index}
-                  className="flex flex-col items-center p-3"
+                  className="flex items-center p-3 gap-4 border-b border-[#E8E3D3]"
                >
                   <div>
-                     <Icon icon={icon} className='text-[40px] lg:text-[52px] text-[#E8E3D3]' />
+                     <Icon icon={icon} className='text-[27px] lg:text-[40px] text-[#E8E3D3]' />
                   </div>
-                  <p className="text-xs lg:text-base text-center text-white capitalize">{label}</p>
+                  <p className="text-2xl lg:text-2xl text-center text-white capitalize">{label}</p>
                </button>
             ))}
+            <button onClick={handleLogout} className='flex items-center p-3 gap-4'>
+               <div>
+                  <Icon icon='material-symbols:logout-rounded' className='text-[27px] lg:text-[40px] text-[#E8E3D3]' />
+               </div>
+               <p className="text-2xl lg:text-2xl text-center text-white capitalize">Logout</p>
+            </button>
          </div>
          <div className="flex items-center lg:not-visited:justify-center w-full gap-3 my-3">
             {BUTTON_LIST.map(title => (
