@@ -98,7 +98,7 @@ export const HOME_NAV_LIST = [
       path: '/tiering/deposit',
    },
    {
-      title: 'Daily earnings',
+      title: 'Daily Spin',
       icon: 'ic:outline-browser-updated',
       path: '/daily-spins',
    },
