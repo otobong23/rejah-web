@@ -1,15 +1,9 @@
-'use client';
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import Refer from './Refer'
 
 const page = () => {
-   const router = useRouter()
-   const searchParams = useSearchParams();
-   const refCode = searchParams.get('inviteCode');
-   useEffect(() => {
-      router.replace(`/auth/signup?inviteCode=${refCode}`)
-   })
-   return null
+  return (
+    <Refer />
+  )
 }
 
 export default page
