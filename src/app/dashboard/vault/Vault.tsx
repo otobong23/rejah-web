@@ -193,7 +193,7 @@ const Vault = () => {
                   <Icon icon='mynaui:pin-solid' />
                   <h1 className='capitalize'>{key}</h1>
                </div>
-               <h1 className="flex-1 flex items-center justify-center gap-1 text-3xl font-bold">${value}</h1>
+               <h1 className="flex-1 flex items-center justify-center gap-1 text-3xl font-bold">{value}</h1>
             </div>
          ))}
 
