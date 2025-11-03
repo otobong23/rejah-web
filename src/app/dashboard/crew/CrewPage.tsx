@@ -72,8 +72,8 @@ const CrewPage = () => {
                <span>Your Crew, Your Power</span>
             </div>
             <div className="max-w-[652px] flex items-center justify-between gap-1.5 bg-[#696969]/60 rounded-[5px] px-[13px] py-[10px] mb-[5px]">
-               <h1 className="text-sm">{`https://novox.app/auth/signup?filter=true&code=${referralCode}`}</h1>
-               <button className='cursor-pointer' onClick={() => handleCopy(`https://novox.app/auth/signup?filter=true&code=${referralCode}`)}>
+               <h1 className="text-sm">{`https://novox.app/pages/register?inviteCode=${referralCode}`}</h1>
+               <button className='cursor-pointer' onClick={() => handleCopy(`https://novox.app/pages/register?inviteCode=${referralCode}`)}>
                   <Icon icon='akar-icons:copy' className='text-[20px]' />
                </button>
             </div>
@@ -111,6 +111,7 @@ const CrewPage = () => {
          {/* stack */}
          <div className='max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3'>
             {stack === 1 && (<>
+               <p className="text-center text-sm text[#00091480]">5% bonus on referrals</p>
                {Array.isArray(crew?.members.level_1) && crew.members.level_1.length ? crew?.members.level_1.map(({ userID, level, currentPlan }, i) => (
                   <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-[#32323212] flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-[#C7C7C7] rounded-full'>
@@ -125,6 +126,7 @@ const CrewPage = () => {
                )) : <p className="text-center text-sm text-[#00091480]">No referrals at this level yet.</p>}
             </>)}
             {stack === 2 && (<>
+               <p className="text-center text-sm text[#00091480]">2% bonus on referrals</p>
                {Array.isArray(crew?.members.level_2) && crew.members.level_2.length ? crew?.members.level_2.map(({ userID, level, currentPlan }, i) => (
                   <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-[#32323212] flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-[#C7C7C7] rounded-full'>
@@ -139,6 +141,7 @@ const CrewPage = () => {
                )) : <p className="text-center text-sm text[#00091480]">No referrals at this level yet.</p>}
             </>)}
             {stack === 3 && (<>
+               <p className="text-center text-sm text[#00091480]">1% bonus on referrals</p>
                {Array.isArray(crew?.members.level_3) && crew.members.level_3.length ? crew?.members.level_3.map(({ userID, level, currentPlan }, i) => (
                   <div key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-[#32323212] flex items-center gap-3'>
                      <div className='w-[50px] h-[50px] flex justify-center items-center bg-[#C7C7C7] rounded-full'>

@@ -16,11 +16,9 @@ export default function Signup() {
    const [error, setError] = useState<{ [key: string]: string }>({})
    const [active, setActive] = useState(false)
    const searchParams = useSearchParams();
-   const refCode = searchParams.get('code');
-   const filter = searchParams.get('filter')
+   const refCode = searchParams.get('inviteCode');
    const { showPageLoader, hidePageLoader } = useLoader()
    useEffect(() => {
-      console.log(filter)
       if (refCode) setForm(prev => ({
          ...prev, recruiter_code: refCode
       }));
@@ -86,7 +84,7 @@ export default function Signup() {
 
    return (
       <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
-         <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Signup</h1>
+         <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Register</h1>
          <p className='text-center text-sm mb-10 text-[var(--color2)]'>Welcome to Novox — where<br />impact meets innovation.</p>
 
          {['email', 'username', 'password', 'confirm_password', 'recruiter_code'].map((field) => (

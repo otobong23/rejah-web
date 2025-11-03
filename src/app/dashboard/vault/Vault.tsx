@@ -71,11 +71,11 @@ const Vault = () => {
       title: 'Total Assets',
       icon: 'tabler:chart-pie-filled',
       details: {
-         balance: '$' + ((user?.balance || 0).toLocaleString()),
-         total_invested: '$' + ((handleTotalInvested(user?.currentPlan ?? []) || 0).toLocaleString()),
-         total_yield_earned: '$' + ((user?.totalYield || 0).toLocaleString()),
-         total_withdrawn: '$' + ((user?.totalWithdraw || 0).toLocaleString()),
-         CRV: '$' + ((CRV() || 0).toLocaleString()),
+         "balance": '$' + ((user?.balance || 0).toLocaleString()),
+         "capital invested": '$' + ((handleTotalInvested(user?.currentPlan ?? []) || 0).toLocaleString()),
+         "total yield earned": '$' + ((user?.totalYield || 0).toLocaleString()),
+         "total withdrawal": '$' + ((user?.totalWithdraw || 0).toLocaleString()),
+         "CVR": '$' + ((CRV() || 0).toLocaleString()),
       }
    }
    const [crew, setCrew] = useState<CrewType>()
@@ -186,21 +186,23 @@ const Vault = () => {
             <Vault_List VAULT_LIST={TOTAL_ASSET} />
          </div> */}
 
-         <div className="bg-[#040439]/10 text-[#040439] px-4 py-5 rounded-[8px] my-3">
-            <div className="flex gap-2 text-[#040439CC] text-xl">
-               <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1">
-                  <Icon icon='mdi:wallet' />
-                  <h1>Total Assets</h1>
+         <div className="bg-[#040439]/10 text-[#040439] px-4 py-5 rounded-[8px] my-3 grid grid-cols-2 items-stretch gap-2">
+         {Object.entries(TOTAL_ASSET.details).map(([key, value]) => (
+            <div key={'total_assets' + '_' + key} className="flex gap-2 flex-col">
+               <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1 text-[#040439CC] text-xl">
+                  <Icon icon='mynaui:pin-solid' />
+                  <h1 className='capitalize'>{key}</h1>
                </div>
-               <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1">
-                  <Icon icon='vaadin:connect' />
-                  <h1>Ref Bonus</h1>
-               </div>
+               <h1 className="flex-1 flex items-center justify-center gap-1 text-3xl font-bold">${value}</h1>
             </div>
+         ))}
 
-            <div className="flex gap-2 mt-[5px] text-3xl font-bold">
-               <h1 className="flex-1 flex items-center justify-center gap-1">${Number(user.balance).toLocaleString()}</h1>
-               <h1 className="flex-1 flex items-center justify-center gap-1">${Number(user.totalYield).toLocaleString()}</h1>
+         <div className="flex gap-2 flex-col">
+               <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1 text-[#040439CC] text-xl">
+                  <Icon icon='vaadin:connect' />
+                  <h1 className='capitalize'>Ref Bonus</h1>
+               </div>
+               <h1 className="flex-1 flex items-center justify-center gap-1 text-3xl font-bold">${Number(user.totalYield).toLocaleString()}</h1>
             </div>
          </div>
 
@@ -209,7 +211,7 @@ const Vault = () => {
                <button
                   onClick={() => handleClick(label)}
                   key={index}
-                  className="flex items-center p-3 gap-4 border-b border-[#E8E3D3]"
+                  className="flex items-center p-3 gap-4 border-b border-[#e8e3d323]"
                >
                   <div>
                      <Icon icon={icon} className='text-[27px] lg:text-[40px] text-[#E8E3D3]' />
