@@ -23,21 +23,6 @@ export const REBOUND_TIER_LIST: TIER_LIST_TYPE[] = [
       }
    },
    {
-      type: 'rebound_tier',
-      title: 'Votan',
-      image: votan,
-      details: {
-         price: '$50',
-         daily_yield: '$2',
-         duration: '50 Days',
-         roi: '$100',
-         purchase_limit: '1'
-      }
-   }
-]
-
-export const PREMIUM_TIER_LIST: TIER_LIST_TYPE[] = [
-   {
       type: 'premium_tier',
       title: 'Reverb 2.0',
       image: reverb2,
@@ -46,6 +31,21 @@ export const PREMIUM_TIER_LIST: TIER_LIST_TYPE[] = [
          daily_yield: '$1.20',
          duration: '60 Days',
          roi: '$72',
+         purchase_limit: '1'
+      }
+   }
+]
+
+export const PREMIUM_TIER_LIST: TIER_LIST_TYPE[] = [
+   {
+      type: 'rebound_tier',
+      title: 'Votan',
+      image: votan,
+      details: {
+         price: '$50',
+         daily_yield: '$2',
+         duration: '50 Days',
+         roi: '$100',
          purchase_limit: '1'
       }
    },
