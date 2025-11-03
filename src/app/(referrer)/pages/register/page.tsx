@@ -1,8 +1,11 @@
+import { Suspense } from 'react'
 import Refer from './Refer'
 
 const page = () => {
   return (
-    <Refer />
+    <Suspense fallback={<div>Loading signup form...</div>}>
+      <Refer />
+    </Suspense>
   )
 }
 
