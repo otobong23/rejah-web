@@ -163,6 +163,10 @@ const page = () => {
          router.push(`/admin/trc/users/${email}/history`)
          return
       }
+      if (label === 'settings') {
+         router.push(`/admin/trc/users/${email}/settings`)
+         return
+      }
       if (label === 'Data summary') {
          router.push('/admin/dashboard')
          return

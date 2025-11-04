@@ -31,8 +31,8 @@ const page = () => {
           <Icon icon="eos-icons:admin" className='text-[#808080]' width={48} />
         </div>
         <div className='flex items-center justify-center flex-col'>
-          <h1 className='text-2xl font-semibold text-(--color2)'>Admin</h1>
-        <p className='text-sm text-(--color2)/70'>ID: 4R890B0S</p>
+          <h1 className='text-2xl font-semibold text-[#EFEFEF]'>Admin</h1>
+        <p className='text-sm text-[#EFEFEF]/70'>ID: 4R890B0S</p>
         </div>
       </div>
 
@@ -44,7 +44,7 @@ const page = () => {
             className="flex flex-col items-center p-3 cursor-pointer"
           >
             <div>
-              <Icon icon={icon} className='text-[40px] lg:text-[52px] text-(--color2)' />
+              <Icon icon={icon} className='text-[40px] lg:text-[52px] text-[#EFEFEF]' />
             </div>
             <p className="text-xs lg:text-base text-center text-white capitalize">{label}</p>
           </button>

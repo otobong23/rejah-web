@@ -45,7 +45,7 @@ const AdminNavbar = () => {
             <ul className='flex items-center justify-between gap-4 py-5 px-14'>
                {NAVBAR_LIST.map(({ icon, path, title }) => (
                   <li key={icon}>
-                     <Link href={path} className={isActive === title ? 'text-(--color7)' : 'text-(--color2)'} key={icon}>
+                     <Link href={path} className={isActive === title ? 'text-(--color7)' : 'text-(--background)'} key={icon}>
                         <Icon icon={icon} className="text-2xl" />
                      </Link>
                   </li>

@@ -55,11 +55,11 @@ const Login = () => {
       }
    }
    return (
-      <div className="bg-(--color4) lg:bg-[url('/Desktop_bg.png')] bg-cover bg-no-repeat bg-center relative text-(--color2)">
+      <div className="bg-[url('/Desktop_bg.png')] bg-cover bg-no-repeat bg-center relative text-[#E8E3D3]">
          <div className="min-h-screen flex items-center justify-center ">
             <form onSubmit={handleSubmit} className="w-full max-w-md p-10">
-               <h1 className="text-[40px] leading-normal font-bold text-[var(--color2)] mb-[10px] text-center">Admin Login</h1>
-               <p className='text-center text-sm mb-10 text-[var(--color2)]'>Welcome back Admin — check in<br />& control users actions daily.</p>
+               <h1 className="text-[40px] leading-normal font-bold text-[#E8E3D3] mb-[10px] text-center">Admin Login</h1>
+               <p className='text-center text-sm mb-10 text-[#E8E3D3]'>Welcome back Admin — check in<br />& control users actions daily.</p>
 
                {['username', 'password'].map((field) => (
                   <div key={field} className="mb-[30px]">
@@ -74,7 +74,7 @@ const Login = () => {
                            className={`w-full px-3 py-[18px] rounded-[15px] border-2 focus:outline-none bg-none text-lg placeholder:capitalize placeholder:text-[#424545]
                 ${error[field]
                                  ? 'border-[var(--color6)] text-[var(--color6)]'
-                                 : 'border-[#424545] focus:border-[var(--color2)] text-[var(--color2)]'
+                                 : 'border-[#424545] focus:border-[var(--color2)] text-[#E8E3D3]'
                               }`}
                            placeholder={field.split('_').join(' ')}
                            autoComplete={field === 'username' ? 'username' : field === 'password' ? 'new-password' : ''}

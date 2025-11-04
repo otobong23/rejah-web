@@ -50,7 +50,7 @@ const page = () => {
                <h1 className="text-[40px] font-bold">TRC</h1>
             </div>
 
-            <div className={`px-5 py-4 mb-9 rounded-[15px] bg-[#0A1D28]`}>
+            <div className={`px-5 py-4 mb-9 rounded-[15px] text-[#EFEFEF] bg-[#0A1D28]`}>
                <h1 className={`text-lg font-medium mb-1`}>Total Users</h1>
                <h2 className={`text-4xl font-extrabold pb-5`}>{totalUsers}</h2>
                <h1 className={`text-lg font-medium mb-1`}>Total Crews</h1>
@@ -65,7 +65,7 @@ const page = () => {
             </div>
          </div>
          <div className='flex flex-col gap-3'>
-            {['users', 'crews'].map(item => <Link href={`trc/${item}`} key={item} className={`w-full flex justify-center items-center text-2xl font-semibold text-(--color2) py-6 rounded-[20px] ${item === 'users' ? 'bg-[#101924]' : 'bg-[#003B46]'}`}>View All {item}</Link>)}
+            {['users', 'crews'].map(item => <Link href={`trc/${item}`} key={item} className={`w-full flex justify-center items-center text-2xl font-semibold text-[#EFEFEF] py-6 rounded-[20px] ${item === 'users' ? 'bg-[#101924]' : 'bg-[#003B46]'}`}>View All {item}</Link>)}
          </div>
       </div>
    )

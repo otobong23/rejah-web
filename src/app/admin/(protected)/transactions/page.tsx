@@ -198,15 +198,15 @@ const page = () => {
          <div className='flex justify-between items-center pb-10'>
             <h1 className="text-[40px] font-bold">Transactions</h1>
             <div className='flex items-center justify-center'>
-               <div className='w-[49px] h-[49px] rounded-full flex justify-center items-center relative bg-[#EFEFEF]'>
-                  <Icon icon="eos-icons:admin" className='text-[#808080]' width={23} />
+               <div className='w-[49px] h-[49px] rounded-full flex justify-center items-center relative bg-[#0A1D28]'>
+                  <Icon icon="eos-icons:admin" className='text-[#EFEFEF]' width={23} />
                </div>
             </div>
          </div>
 
          <div className="flex gap-2 my-3 overflow-scroll lg:overflow-auto no-scrollbar">
             {FILTER.map(({ title, type, stackValue }) => (
-               <button key={title} onClick={() => setStack(stackValue)} className={`py-2 px-7 rounded-[15px] flex items-center justify-center transition-all duration-300 ${stack === stackValue ? 'bg-[#00273298]' : 'bg-[#002732]'}`}>{title}</button>
+               <button key={title} onClick={() => setStack(stackValue)} className={`py-2 px-7 text-[#EFEFEF] rounded-[15px] flex items-center justify-center transition-all duration-300 ${stack === stackValue ? 'bg-[#00273298]' : 'bg-[#002732]'}`}>{title}</button>
             ))}
          </div>
          <div className='flex flex-col gap-3 overflow-scroll no-scrollbar max-w-[649px] mx-auto'>

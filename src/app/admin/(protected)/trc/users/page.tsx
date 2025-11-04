@@ -62,8 +62,8 @@ const page = () => {
          <div className='flex justify-between items-center pb-10'>
             <h1 className="text-[40px] font-bold">All Users</h1>
             <div className='flex items-center justify-center'>
-               <div className='w-[49px] h-[49px] rounded-full flex justify-center items-center relative bg-[#EFEFEF]'>
-                  <Icon icon="eos-icons:admin" className='text-[#808080]' width={23} />
+               <div className='w-[49px] h-[49px] rounded-full flex justify-center items-center relative bg-(--color2)'>
+                  <Icon icon="eos-icons:admin" className='text-[#EFEFEF]' width={23} />
                </div>
             </div>
          </div>
@@ -82,22 +82,22 @@ const page = () => {
 
          <div className='max-w-[652px] mx-auto max-h-[500px] overflow-scroll no-scrollbar flex flex-col gap-3 mt-4'>
             {Array.isArray(users) && users ? users.map(({ userID, email, totalDeposit, vip }, i) => (
-               <Link href={'users/' + email} key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-white/7 flex items-center gap-3'>
+               <Link href={'users/' + email} key={userID + i} className='py-3 px-[25px] rounded-[15px] bg-(--color2)/7 flex items-center gap-3'>
                   <div className='w-[50px] h-[50px] flex justify-center items-center bg-(--color2) rounded-full'>
-                     <Icon icon='solar:user-bold' className='text-2xl text-[#808080]' />
+                     <Icon icon='solar:user-bold' className='text-2xl text-[#EFEFEF]' />
                   </div>
                   <div>
-                     <h2 className='text-[#C3C3C3] text-sm font-semibold'>User_{userID}</h2>
-                     <p className='text-(--color2)/50 text-xs'>VIP
+                     <h2 className='text-(--color2) text-sm font-semibold'>User_{userID}</h2>
+                     <p className='text-(--color2)/70 text-xs'>VIP
                         {vip === 0 && '0'}
                         {vip === 1 && '1st'}
                         {vip === 2 && '2nd'}
                         {vip === 3 && '3rd'}
                      </p>
-                     <p className='text-(--color2)/50 text-xs'>Total Deposit | {totalDeposit}</p>
+                     <p className='text-(--color2)/70 text-xs'>Total Deposit | {totalDeposit}</p>
                   </div>
                </Link>
-            )) : <p className="text-center text-sm text-white/60">No User yet.</p>}
+            )) : <p className="text-center text-sm text-(--color2)/60">No User yet.</p>}
          </div>
       </div>
    )

@@ -32,6 +32,7 @@ type UserType = {
   withdrawStatus?: 'pending' | 'completed' | 'failed';
   twentyFourHourTimerStart?: string | undefined;
   spinWheelTimerStart: number
+  oneTimeBonus: boolean;
   ActivateBot?: boolean;
   vip: number;
   meter: number;

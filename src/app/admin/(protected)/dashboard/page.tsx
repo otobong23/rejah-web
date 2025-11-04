@@ -33,19 +33,19 @@ const page = () => {
    ]
 
    return (
-      <div className='text-(--color2)'>
+      <div className='text-[#EFEFEF]'>
          <div className='flex justify-between items-center pb-10'>
-            <h1 className="text-[40px] font-bold">Dashboard</h1>
+            <h1 className="text-[40px] font-bold text-(--color2)">Dashboard</h1>
             <div className='flex items-center justify-center'>
-               <div className='w-[49px] h-[49px] rounded-full flex justify-center items-center relative bg-[#EFEFEF]'>
-                  <Icon icon="eos-icons:admin" className='text-[#808080]' width={23} />
+               <div className='w-[49px] h-[49px] rounded-full flex justify-center items-center relative bg-[#0A1D28]'>
+                  <Icon icon="eos-icons:admin" className='text-[#EFEFEF]' width={23} />
                </div>
             </div>
          </div>
 
          <div className='grid grid-cols-2 gap-3'>
             {LIST.map(({ title, value, progress }, i) => (
-               <div key={title} className={`px-5 py-4 rounded-[15px] ${i === 0 ? 'bg-(--color2) text-[#000914]' : 'bg-[#0A1D28]'}`}>
+               <div key={title} className={`px-5 py-4 rounded-[15px] ${i === 0 ? 'bg-(--color2) text-[#EFEFEF]' : 'bg-[#0A1D28]'}`}>
                   <h1 className={`text-sm font-medium mb-1`}>{title}</h1>
                   <h2 className={`text-xl font-extrabold pb-11`}>{Number(value).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h2>
                   <div className='text-xs font-medium flex justify-between items-center'>

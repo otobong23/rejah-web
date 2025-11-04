@@ -13,7 +13,7 @@ import { closePaymentModal, useFlutterwave } from 'flutterwave-react-v3';
 import { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
 import flutterwaveConfig, { NAIRA_RATE } from "@/config/flutterwave";
 
-const NUMBER_LIST = [10, 30, 80, 120, 300, 500, 1000];
+const NUMBER_LIST = [11, 30, 80, 120, 300, 500, 1000];
 
 const DepositPage = () => {
   const { user } = useUserContext()
