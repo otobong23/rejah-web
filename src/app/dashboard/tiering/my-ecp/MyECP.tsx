@@ -49,7 +49,7 @@ const MyECP = () => {
       {/* Header */}
       <button onClick={() => router.back()} className="flex items-center mb-2 space-x-2 transition-all duration-300 cursor-pointer hover:opacity-80">
         <Icon icon='fluent:ios-arrow-24-regular' className="" />
-        <span>Min withdrawal $5</span>
+        <span>Min withdrawal $6</span>
       </button>
       <h1 className="text-[40px] text-center font-bold mb-8">My Machine</h1>
 
