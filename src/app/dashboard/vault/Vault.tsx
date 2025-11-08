@@ -200,9 +200,9 @@ const Vault = () => {
          <div className="flex gap-2 flex-col">
                <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1 text-[#040439CC] text-xl">
                   <Icon icon='vaadin:connect' />
-                  <h1 className='capitalize'>Ref Bonus</h1>
+                  <h1 className='capitalize'>Spin Bonus</h1>
                </div>
-               <h1 className="flex-1 flex items-center justify-center gap-1 text-3xl font-bold">${Number(user.totalYield).toLocaleString()}</h1>
+               <h1 className="flex-1 flex items-center justify-center gap-1 text-3xl font-bold">${Number(user.totalYield).toLocaleString() ? 0.01 : 0}</h1>
             </div>
          </div>
 
