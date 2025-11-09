@@ -116,13 +116,13 @@ export default function HomeScreen() {
                </div>
                <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1">
                   <Icon icon='vaadin:connect' />
-                  <h1>Ref Bonus</h1>
+                  <h1>Spin Bonuss</h1>
                </div>
             </div>
 
             <div className="flex gap-2 mt-[5px] text-3xl font-bold">
                <h1 className="flex-1 flex items-center justify-center gap-1">${Number(user.balance).toLocaleString()}</h1>
-               <h1 className="flex-1 flex items-center justify-center gap-1">${Number(user.totalYield).toLocaleString()}</h1>
+               <h1 className="flex-1 flex items-center justify-center gap-1">${Number(user.totalYield).toLocaleString() ? 0.01 : 0}</h1>
             </div>
          </div>
 
