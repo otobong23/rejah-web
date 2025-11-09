@@ -216,7 +216,7 @@ const TierPage = () => {
             {/* {activeTier === 'Premium' && <div className='pt-[15px] pb-7 flex flex-col gap-3'>
                {PREMIUM_TIER_LIST.filter(item => ![...previousPlans, ...currentPlans].includes(item)).map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleClick} key={item.title + i} btn_bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F94E4E_100%)]' bg='bg-[linear-gradient(180deg,_#F59E0B_0%,_#F97316_100%)]' />)}
             </div>} */}
-            {[...REBOUND_TIER_LIST, ...PREMIUM_TIER_LIST].map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleClick} key={item.title + i} />)}
+            {[...REBOUND_TIER_LIST, ...PREMIUM_TIER_LIST].filter(item => ![...previousPlans, ...currentPlans].includes(item)).map((item, i) => <Tier_List TIER_LIST={item} handleBUY={handleClick} key={item.title + i} />)}
          </div>
       </div>
    )
