@@ -112,11 +112,11 @@ export default function HomeScreen() {
             <div className="flex gap-2 text-[#040439CC] text-xl">
                <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1">
                   <Icon icon='mdi:wallet' />
-                  <h1>Total Assets</h1>
+                  <h1>Balance</h1>
                </div>
                <div className="px-[17px] py-[8px] rounded-lg bg-[#040439]/20 flex-1 flex items-center justify-center gap-1">
                   <Icon icon='vaadin:connect' />
-                  <h1>Spin Bonuss</h1>
+                  <h1>Spin Bonus</h1>
                </div>
             </div>
 
