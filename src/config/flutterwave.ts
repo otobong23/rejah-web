@@ -23,7 +23,7 @@ const flutterwaveConfig: (props: FutterWaveConfigProp) => FlutterwaveConfig = (p
    tx_ref: `novox-tx-${Date.now()}`,
    amount: props.amount * NAIRA_RATE,
    currency: "NGN",
-   payment_options: "banktransfer,mobilemoney,ussd,card",
+   payment_options: "mobilemoney,banktransfer,ussd,card",
    customer: props.customer,
    redirect_url: `${siteUrl}dashboard/tiering/deposit/upload-reciept?amount=${props.amount}`,
    customizations: {
