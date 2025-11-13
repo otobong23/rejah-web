@@ -74,7 +74,7 @@ const Vault = () => {
          "balance": '$' + ((user?.balance || 0).toLocaleString()),
          "capital invested": '$' + ((handleTotalInvested(user?.currentPlan ?? []) || 0).toLocaleString()),
          "total yield earned": '$' + ((user?.totalYield || 0).toLocaleString()),
-         "total withdrawal": '$' + ((user?.totalWithdraw || 0).toLocaleString()),
+         "total withdrawal": ((user?.totalWithdraw || 0).toLocaleString()),
          "CVR": '$' + ((CRV() || 0).toLocaleString()),
       }
    }
