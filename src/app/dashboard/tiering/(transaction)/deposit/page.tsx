@@ -13,6 +13,7 @@ import { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
 import flutterwaveConfig, { NAIRA_RATE } from "@/config/flutterwave";
 import QRCodeGenerator from "@/components/QRCodeGenerator";
 import Image from "next/image";
+import { v4 as uuidv4 } from 'uuid';
 
 const NUMBER_LIST = [11, 30, 80, 120, 300, 500, 1000];
 
@@ -33,8 +34,9 @@ const DepositPage = () => {
   const depositAddress = "TLfPTR5Ho8Y7CVpku18e4BdbG6rSjmKFTw";
 
   const handleNext = () => {
+    const transactionId = uuidv4();
     sessionStorage.setItem('depositAmount', amount);
-    sessionStorage.setItem('transactionId', String(1234));
+    sessionStorage.setItem('transactionId', transactionId);
     router.push('/dashboard/tiering/deposit/upload-reciept/')
   }
 
