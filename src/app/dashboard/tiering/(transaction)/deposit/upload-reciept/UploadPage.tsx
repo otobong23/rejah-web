@@ -15,8 +15,8 @@ const UploadPage = () => {
    const [file, setFile] = useState<File | null>(null)
    const [active, setActive] = useState(false)
    const query = useSearchParams();
-   const transactionId = query.get('transaction_id');
-   const amount = query.get('amount');
+   // const transactionId = query.get('transaction_id');
+   // const amount = query.get('amount');
 
    const MAX_FILE_SIZE_MB = 5;
 
@@ -57,7 +57,10 @@ const UploadPage = () => {
 
    const handleUpload = async () => {
       showPageLoader();
+      const amount = sessionStorage.getItem('depositAmount')
+      const transactionId = sessionStorage.getItem('transactionId')
       if (!amount || !transactionId) {
+         hidePageLoader(2000);
          router.replace('/dashboard/tiering/deposit/');
          return;
       }
@@ -67,9 +70,11 @@ const UploadPage = () => {
       const userToken = Cookies.get("userToken");
 
       if (!userToken) {
+         hidePageLoader(2000);
          router.replace("/auth/login");
          return;
       }
+
 
       try {
          api.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
