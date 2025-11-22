@@ -168,12 +168,12 @@ const DepositPage = () => {
               </p>
             </div>
 
-            <div>
+            {/* <div>
               <p className="text-gray-600 text-sm font-medium mb-1">
                 Minimum Deposit
               </p>
               <p className="text-gray-800 text-base">6 USDT</p>
-            </div>
+            </div> */}
 
             <div>
               <p className="text-gray-600 text-sm font-medium mb-1">
